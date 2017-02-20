@@ -33,7 +33,7 @@ def main(argv):
      print 'sAliViz.py -i <inputfile> -o <outputType>'
      print 'outputType can be block or color'
      sys.exit()
-   if outputType != 'color' and outputType != 'block':
+   if outputType != 'color' and outputType != 'block' and outputType != 'block2':
      print "Provide an output type!"
      print 'outputType must be block or color'
      sys.exit()
@@ -120,6 +120,27 @@ def main(argv):
                            elif float(linePart) > 0.5 and float(linePart) <= 0.75:
                                outfile.write('░')
                            elif float(linePart) > 0.75 and float(linePart) <= 1:
+                               outfile.write(' ')
+                           else:
+                               outfile.write('█')
+                       elif outputType == 'block2':
+                           if float(linePart) == 0:
+                               outfile.write('█')
+                           elif float(linePart) > 0 and float(linePart) <= 0.125:
+                               outfile.write('▉')
+                           elif float(linePart) > 0.125 and float(linePart) <= 0.250:
+                               outfile.write('▊')
+                           elif float(linePart) > 0.250 and float(linePart) <= 0.375:
+                               outfile.write('▋')
+                           elif float(linePart) > 0.375 and float(linePart) <= 0.500:
+                               outfile.write('▌')
+                           elif float(linePart) > 0.500 and float(linePart) <= 0.625:
+                               outfile.write('▍')
+                           elif float(linePart) > 0.625 and float(linePart) <= 0.750:
+                               outfile.write('▎')
+                           elif float(linePart) > 0.750 and float(linePart) <= 0.875:
+                               outfile.write('▏')
+                           elif float(linePart) > 0.875 and float(linePart) <= 1:
                                outfile.write(' ')
                            else:
                                outfile.write('█')
