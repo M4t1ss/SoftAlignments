@@ -2,35 +2,54 @@
 
 import sys, getopt
 import numpy as np
+import string
 
 def main(argv):
    try:
-      opts, args = getopt.getopt(argv,"hi:o:")
+      opts, args = getopt.getopt(argv,"hi:o:s:t:")
    except getopt.GetoptError:
-      print 'sAliViz.py -i <inputfile> -o <outputType>'
+      print 'sAliViz.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
       print 'outputType can be block or color'
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
-         print 'sAliViz.py -i <inputfile> -o <outputType>'
+         print 'sAliViz.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
          print 'outputType can be block or color'
          sys.exit()
       elif opt == '-i':
          inputfile = arg
       elif opt == '-o':
          outputType = arg
+      elif opt == '-s':
+         sourcefile = arg
+      elif opt == '-t':
+         targetfile = arg
    try:
      inputfile
    except NameError:
      print "Provide an input file!"
-     print 'sAliViz.py -i <inputfile> -o <outputType>'
+     print 'sAliViz.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
      print 'outputType can be block or color'
      sys.exit()
    try:
      outputType
    except NameError:
      print "Provide an output type!"
-     print 'sAliViz.py -i <inputfile> -o <outputType>'
+     print 'sAliViz.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
+     print 'outputType can be block or color'
+     sys.exit()
+   try:
+     sourcefile
+   except NameError:
+     print "Provide an source sentence file!"
+     print 'sAliViz.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
+     print 'outputType can be block or color'
+     sys.exit()
+   try:
+     targetfile
+   except NameError:
+     print "Provide an target sentence file!"
+     print 'sAliViz.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
      print 'outputType can be block or color'
      sys.exit()
    if outputType != 'color' and outputType != 'block' and outputType != 'block2':
@@ -39,6 +58,10 @@ def main(argv):
      sys.exit()
 
    data = np.load(inputfile)
+
+   # Read source and target sentences
+   sourcelines = [line.rstrip('\n') for line in open(sourcefile)]
+   targetlines = [line.rstrip('\n') for line in open(targetfile)]
 
    with file('test.txt', 'w') as outfile:
        for data_slice in data:
@@ -53,8 +76,11 @@ def main(argv):
 		
    with open('test.txt') as infile:
        with open(inputfile + '.out.txt', 'w') as outfile:
+           sent = 0
+           word = 0
            for line in infile:
                if line != '\n' and line != '\r\n':
+                   tokens = sourcelines[sent].split(' ')
                    lineParts = line.split()
                    for linePart in lineParts:
                        if outputType == 'color':
@@ -144,8 +170,13 @@ def main(argv):
                                outfile.write(' ')
                            else:
                                outfile.write('█')
+                   if word < len(tokens):
+                       outfile.write(tokens[word])
+                   word+=1
                    outfile.write('\n')
                else:
+                   sent+=1
+                   word = 0
                    outfile.write('\n')
 
 if __name__ == "__main__":
