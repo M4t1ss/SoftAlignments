@@ -250,7 +250,7 @@
 		data.forEach(function(biP,s){
 			svg.append("g")
 				.attr("id", biP.id)
-				.attr("transform","translate( 0, " + (100)+")");//+ (550*s)+",0)");
+				.attr("transform","translate( 0, " + (0)+")");//+ (550*s)+",0)");
 				
 			var visData = visualize(biP.data);
 			drawPart(visData, biP.id, 0);

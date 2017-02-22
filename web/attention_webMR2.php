@@ -28,7 +28,7 @@ header('Content-Type: text/html; charset=utf-8');
 </head>
 <style>
 body{
-	width:100%;
+	width:98%;
 }
 svg text{
 	font-size:10px;
@@ -43,7 +43,6 @@ Forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nem
 <a href="?s=<?php echo $_GET['s']>0?$_GET['s']-1:0;?>">< previous</a>
 <a href="?s=<?php echo $_GET['s']<50?$_GET['s']+1:50;?>" style="float:right;"> next ></a>
 <div id="area1"></div>
-<div id="area2"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="attentionMR.js"></script>
 <script>
@@ -222,23 +221,20 @@ var target = [targets[<?php echo $_GET['s'];?>]];
 var source = [sources[<?php echo $_GET['s'];?>]];
 var sales_data=alignments[<?php echo $_GET['s'];?>];
 
-var width = 2200, height = 690, margin ={b:0, t:40, l:0, r:50};
+var width = 2200, height = 690, margin ={b:0, t:20, l:-20, r:0};
 var c = "area1";
 var svg = d3.select("#area1")
-	.append("svg").attr('width',width/2).attr('height',(height+margin.b+margin.t)/2)
-	.append("g").attr("transform","translate("+ margin.l+","+margin.t+")");
+	.append("svg")
+   .attr("preserveAspectRatio", "xMinYMin meet")
+   .attr("viewBox", "0 0 600 400")
+   .classed("svg-content-responsive", true)
+	.append("g")
+	.attr("transform","translate("+ margin.l+","+margin.t+")");
 
 var data = [ 
 	{data:bP.partData(sales_data,0,0,target,source), id:'SalesAttempts', header:["Channel","State", "Sales Attempts"]}
 ];
 
 bP.draw(data, svg);
-var data = [ 
-        {data:bP.partData(sales_data,1,1,target,source), id:'SsAttempts', header:["Channel","State", "Sales Attempts"]}
-];
-svg2 = d3.select("#area2")
-        .append("svg").attr('width',width/2).attr('height',(height+margin.b+margin.t)/2)
-        .append("g").attr("transform","translate("+ margin.l+","+margin.t+")");
-bP.draw(data, svg2);
 </script>
 </body>
