@@ -1,4 +1,4 @@
-# sAliViz
+# Soft NMT alignment visualisations
 Soft alignment visualisations tools for command line and web
   - Train a neural MT system (like Neural Monkey or Nematus)
   - Get a NumPy 3d tensor (or json) of alignments (word level or BPE)
