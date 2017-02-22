@@ -5,18 +5,18 @@ Soft alignment visualisations tools for command line and web
   - Convert the alignments to a text file
   - Visualize
     - in the command line as shaded blocks
-       ```sh
-       python2 sAliViz.py -i numpytensor.npy -o color -s source_sentence_bpe.txt -t target_sentence_bpe.txt
-       ```
+    ```sh
+    python2 sAliViz.py -i numpytensor.npy -o color -s source_sentence_bpe.txt -t target_sentence_bpe.txt
+    ```
 	- in a text file as Unicode block elements
-       ```sh
-       python2 sAliViz.py -i numpytensor.npy -o block -s source_sentence_bpe.txt -t target_sentence_bpe.txt
-       ```
+    ```sh
+    python2 sAliViz.py -i numpytensor.npy -o block -s source_sentence_bpe.txt -t target_sentence_bpe.txt
+    ```
 	or
-       ```sh
-       python2 sAliViz.py -i numpytensor.npy -o block2 -s source_sentence_bpe.txt -t target_sentence_bpe.txt
-       ```
+    ```sh
+    python2 sAliViz.py -i numpytensor.npy -o block2 -s source_sentence_bpe.txt -t target_sentence_bpe.txt
+    ```
 	- in the browser as links
-       ```sh
-       python2 alTXTtoJSON.py -i alignments.txt
-       ```
+    ```sh
+    python2 alTXTtoJSON.py -i alignments.txt
+    ```
