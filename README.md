@@ -16,7 +16,7 @@ Soft alignment visualisations tools for command line and web
     ```sh
     python2 sAliViz.py -i numpytensor.npy -o block2 -s source_sentence_bpe.txt -t target_sentence_bpe.txt
     ```
-	- in the browser as links
+	- in the browser as links between words (demo [here](http://lielakeda.lv/other/NLP/alignments/?s=19))
     ```sh
     python2 alTXTtoJSON.py -i alignments.txt
     ```
