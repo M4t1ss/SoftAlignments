@@ -81,15 +81,24 @@ def main(argv):
                 sent = 0
                 word = 0
                 wasNew = True
+                atEnd = False
+                stokens = sourcelines[sent].split(' ')
+                ttokens = targetlines[sent].split(' ')
+
+                #height
                 for line in infile:
                    if wasNew:
                        out_a_js.write('[')
                        wasNew = False
                    if line != '\n' and line != '\r\n':
-                       tokens = sourcelines[sent].split(' ')
+                       if word > len(stokens):
+                           continue
                        lineParts = line.split()
                        linePartC=0
+                       #width
                        for linePart in lineParts:
+                           if linePartC > len(ttokens):
+                               continue
                            if linePartC < len(lineParts) and linePart.replace("  ", " ").replace("  ", " ").replace("  ", " ") != "":
                                out_a_js.write('['+`word`+', 0, ' + linePart + ', '+`linePartC`+', 0], ')
                                linePartC+=1
@@ -180,16 +189,22 @@ def main(argv):
                                    outfile.write(' ')
                                else:
                                    outfile.write('█')
-                       if word < len(tokens):
-                           outfile.write(tokens[word])
+                       if word < len(stokens):
+                           outfile.write(stokens[word])
                        word+=1
                        outfile.write('\n')
                    else:
                        sent+=1
+                       if len(sourcelines) >= sent+1 and len(targetlines) >= sent+1:
+                           stokens = sourcelines[sent].split(' ')
+                           ttokens = targetlines[sent].split(' ')
                        word = 0
                        wasNew = True
                        out_a_js.write('], \n')
                        outfile.write('\n')
+                   if atEnd:
+                       atEnd = False
+                       continue
                 out_a_js.write('\n]')
    
 
