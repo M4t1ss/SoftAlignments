@@ -91,13 +91,13 @@ def main(argv):
                        out_a_js.write('[')
                        wasNew = False
                    if line != '\n' and line != '\r\n':
-                       if word > len(stokens):
+                       if word > len(stokens)-1:
                            continue
                        lineParts = line.split()
                        linePartC=0
                        #width
                        for linePart in lineParts:
-                           if linePartC > len(ttokens):
+                           if linePartC > len(ttokens)-1:
                                continue
                            if linePartC < len(lineParts) and linePart.replace("  ", " ").replace("  ", " ").replace("  ", " ") != "":
                                out_a_js.write('['+`word`+', 0, ' + linePart + ', '+`linePartC`+', 0], ')
