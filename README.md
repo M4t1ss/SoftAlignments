@@ -1,6 +1,6 @@
 # NMT soft alignment visualisations
-Soft alignment visualisations tools for command line and web
-  - Train a neural MT system (like Neural Monkey or Nematus)
+Soft alignment visualisations tools for command line and web. Parts of the web version are borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
+  - Train a neural MT system (like [Neural Monkey](https://github.com/ufal/neuralmonkey/) or [Nematus](https://github.com/rsennrich/nematus/)
   - Get a NumPy 3d tensor of alignments (word level or BPE)
   - Convert the alignments to a bunch of text files
     - 2 files for command line visualisation
