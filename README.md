@@ -1,8 +1,16 @@
 # NMT soft alignment visualisations
 Soft alignment visualisations tools for command line and web
   - Train a neural MT system (like Neural Monkey or Nematus)
-  - Get a NumPy 3d tensor (or json) of alignments (word level or BPE)
-  - Convert the alignments to a text file
+  - Get a NumPy 3d tensor of alignments (word level or BPE)
+  - Convert the alignments to a bunch of text files
+    - 2 files for command line visualisation
+		- *.txt
+		- *.block.txt, *.block2.txt or *.color.txt
+    - 3 files for web visualisation
+		- *.src.js
+		- *.trg.js
+		- *.ali.js
+  
   - Visualize
     - in the command line as shaded blocks
     ```sh
@@ -17,9 +25,7 @@ Soft alignment visualisations tools for command line and web
     python2 process_alignments.py -i test_data/alignments.npy -o block2 -s test_data/test.src.en.bpe -t test.out.lv.bpe
     ```
 	- in the browser as links between words (demo [here](http://lielakeda.lv/other/NLP/alignments/?s=19))
-    ```sh
-    python2 alTXTtoJSON.py -i alignments.txt
-    ```
+
 
 Screenshots:
   - Block
