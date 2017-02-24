@@ -104,96 +104,144 @@ def main(argv):
                                linePartC+=1
                            if outputType == 'color':
                                if float(linePart) == 0:
-                                   outfile.write('[48;5;232m[K [m[K')
+                                   outfile.write('[48;5;232m[K  [m[K' )
                                elif float(linePart) > 0.00 and float(linePart) <= 0.04:
-                                   outfile.write('[48;5;233m[K [m[K')
+                                   outfile.write('[48;5;233m[K  [m[K' )
                                elif float(linePart) > 0.04 and float(linePart) <= 0.08:
-                                   outfile.write('[48;5;234m[K [m[K')
+                                   outfile.write('[48;5;234m[K  [m[K' )
                                elif float(linePart) > 0.08 and float(linePart) <= 0.13:
-                                   outfile.write('[48;5;235m[K [m[K')
+                                   outfile.write('[48;5;235m[K  [m[K' )
                                elif float(linePart) > 0.13 and float(linePart) <= 0.17:
-                                   outfile.write('[48;5;236m[K [m[K')
+                                   outfile.write('[48;5;236m[K  [m[K' )
                                elif float(linePart) > 0.17 and float(linePart) <= 0.21:
-                                   outfile.write('[48;5;237m[K [m[K')
+                                   outfile.write('[48;5;237m[K  [m[K' )
                                elif float(linePart) > 0.21 and float(linePart) <= 0.25:
-                                   outfile.write('[48;5;238m[K [m[K')
+                                   outfile.write('[48;5;238m[K  [m[K' )
                                elif float(linePart) > 0.25 and float(linePart) <= 0.29:
-                                   outfile.write('[48;5;239m[K [m[K')
+                                   outfile.write('[48;5;239m[K  [m[K' )
                                elif float(linePart) > 0.29 and float(linePart) <= 0.33:
-                                   outfile.write('[48;5;240m[K [m[K')
+                                   outfile.write('[48;5;240m[K  [m[K' )
                                elif float(linePart) > 0.33 and float(linePart) <= 0.38:
-                                   outfile.write('[48;5;241m[K [m[K')
+                                   outfile.write('[48;5;241m[K  [m[K' )
                                elif float(linePart) > 0.38 and float(linePart) <= 0.42:
-                                   outfile.write('[48;5;242m[K [m[K')
+                                   outfile.write('[48;5;242m[K  [m[K' )
                                elif float(linePart) > 0.42 and float(linePart) <= 0.46:
-                                   outfile.write('[48;5;243m[K [m[K')
+                                   outfile.write('[48;5;243m[K  [m[K' )
                                elif float(linePart) > 0.46 and float(linePart) <= 0.50:
-                                   outfile.write('[48;5;244m[K [m[K')
+                                   outfile.write('[48;5;244m[K  [m[K' )
                                elif float(linePart) > 0.50 and float(linePart) <= 0.54:
-                                   outfile.write('[48;5;245m[K [m[K')
+                                   outfile.write('[48;5;245m[K  [m[K' )
                                elif float(linePart) > 0.54 and float(linePart) <= 0.58:
-                                   outfile.write('[48;5;246m[K [m[K')
+                                   outfile.write('[48;5;246m[K  [m[K' )
                                elif float(linePart) > 0.58 and float(linePart) <= 0.63:
-                                   outfile.write('[48;5;247m[K [m[K')
+                                   outfile.write('[48;5;247m[K  [m[K' )
                                elif float(linePart) > 0.63 and float(linePart) <= 0.67:
-                                   outfile.write('[48;5;248m[K [m[K')
+                                   outfile.write('[48;5;248m[K  [m[K' )
                                elif float(linePart) > 0.67 and float(linePart) <= 0.71:
-                                   outfile.write('[48;5;249m[K [m[K')
+                                   outfile.write('[48;5;249m[K  [m[K' )
                                elif float(linePart) > 0.71 and float(linePart) <= 0.75:
-                                   outfile.write('[48;5;250m[K [m[K')
+                                   outfile.write('[48;5;250m[K  [m[K' )
                                elif float(linePart) > 0.75 and float(linePart) <= 0.79:
-                                   outfile.write('[48;5;251m[K [m[K')
+                                   outfile.write('[48;5;251m[K  [m[K' )
                                elif float(linePart) > 0.79 and float(linePart) <= 0.83:
-                                   outfile.write('[48;5;252m[K [m[K')
+                                   outfile.write('[48;5;252m[K  [m[K' )
                                elif float(linePart) > 0.83 and float(linePart) <= 0.88:
-                                   outfile.write('[48;5;253m[K [m[K')
+                                   outfile.write('[48;5;253m[K  [m[K' )
                                elif float(linePart) > 0.88 and float(linePart) <= 0.92:
-                                   outfile.write('[48;5;254m[K [m[K')
+                                   outfile.write('[48;5;254m[K  [m[K' )
                                elif float(linePart) > 0.92 and float(linePart) <= 0.96:
-                                   outfile.write('[48;5;255m[K [m[K')
+                                   outfile.write('[48;5;255m[K  [m[K' )
                                elif float(linePart) > 0.96 and float(linePart) <= 1:
-                                   outfile.write('[48;5;255m[K [m[K')
+                                   outfile.write('[48;5;255m[K  [m[K' )
                                else:
-                                   outfile.write('[48;5;232m[K [m[K')
+                                   outfile.write('[48;5;232m[K  [m[K' )
                            elif outputType == 'block':
                                if float(linePart) == 0:
-                                   outfile.write('█')
+                                   outfile.write('██')
                                elif float(linePart) > 0 and float(linePart) <= 0.25:
-                                   outfile.write('▓')
+                                   outfile.write('▓▓')
                                elif float(linePart) > 0.25 and float(linePart) <= 0.5:
-                                   outfile.write('▒')
+                                   outfile.write('▒▒')
                                elif float(linePart) > 0.5 and float(linePart) <= 0.75:
-                                   outfile.write('░')
+                                   outfile.write('░░')
                                elif float(linePart) > 0.75 and float(linePart) <= 1:
-                                   outfile.write(' ')
+                                   outfile.write('  ')
                                else:
-                                   outfile.write('█')
+                                   outfile.write('██')
                            elif outputType == 'block2':
                                if float(linePart) == 0:
-                                   outfile.write('█')
+                                   outfile.write('██')
                                elif float(linePart) > 0 and float(linePart) <= 0.125:
-                                   outfile.write('▉')
+                                   outfile.write('▉▉')
                                elif float(linePart) > 0.125 and float(linePart) <= 0.250:
-                                   outfile.write('▊')
+                                   outfile.write('▊▊')
                                elif float(linePart) > 0.250 and float(linePart) <= 0.375:
-                                   outfile.write('▋')
+                                   outfile.write('▋▋')
                                elif float(linePart) > 0.375 and float(linePart) <= 0.500:
-                                   outfile.write('▌')
+                                   outfile.write('▌▌')
                                elif float(linePart) > 0.500 and float(linePart) <= 0.625:
-                                   outfile.write('▍')
+                                   outfile.write('▍▍')
                                elif float(linePart) > 0.625 and float(linePart) <= 0.750:
-                                   outfile.write('▎')
+                                   outfile.write('▎▎')
                                elif float(linePart) > 0.750 and float(linePart) <= 0.875:
-                                   outfile.write('▏')
+                                   outfile.write('▏▏')
                                elif float(linePart) > 0.875 and float(linePart) <= 1:
-                                   outfile.write(' ')
+                                   outfile.write('  ')
                                else:
-                                   outfile.write('█')
+                                   outfile.write('██')
                        if word < len(stokens):
                            outfile.write(stokens[word])
                        word+=1
                        outfile.write('\n')
                    else:
+                       # write target sentences
+                       #build 2d array
+                       occupied_to = []
+                       outchars = []
+                       outchars.append([])
+                       tw = 0
+                       for tword in ttokens:
+                            columns = len(ttokens)
+                            twchars = list(tword)
+                            twlen = len(twchars)
+                            xpos = tw * 2
+                            emptyline = 0
+                            
+                            for el in range(0, len(occupied_to)):
+                                # if occupied, move to a new line!
+                                if occupied_to[el] < xpos:
+                                    emptyline = el
+                                    if len(outchars) < emptyline+1:
+                                        # add a new row
+                                        outchars.append([])
+                                    break
+                                if el == len(occupied_to)-1:
+                                    emptyline=el+1
+                                    if len(outchars) < emptyline+1:
+                                        outchars.append([])
+                                    
+                            for column in range(0, xpos):
+                                if len(outchars[emptyline]) <= column:
+                                    outchars[emptyline].append(' ')
+
+                            for charindex in range(0, twlen):
+                                if xpos+charindex == len(outchars[emptyline]):
+                                    outchars[emptyline].append(twchars[charindex])
+                                else:
+                                    outchars[emptyline][charindex] = twchars[charindex]
+                                                           
+                            if len(occupied_to) <= emptyline:
+                                occupied_to.append(xpos+twlen+1)
+                            else:
+                                occupied_to[emptyline]=xpos+twlen+1;
+                       
+                            tw+=1
+
+                       #print 2d array
+                       for liline in outchars:
+                            outfile.write(''.join(liline) + '\n')
+                       
+                       # write target sentences
                        sent+=1
                        if len(sourcelines) >= sent+1 and len(targetlines) >= sent+1:
                            stokens = sourcelines[sent].split(' ')
