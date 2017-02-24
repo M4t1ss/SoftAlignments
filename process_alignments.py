@@ -202,7 +202,8 @@ def main(argv):
                        tw = 0
                        for tword in ttokens:
                             columns = len(ttokens)
-                            twchars = list(tword)
+                            # Some characters use multiple symbols. Need to decode and then encode...
+                            twchars = list(tword.decode("utf-8"))
                             twlen = len(twchars)
                             xpos = tw * 2
                             emptyline = 0
@@ -226,9 +227,9 @@ def main(argv):
 
                             for charindex in range(0, twlen):
                                 if xpos+charindex == len(outchars[emptyline]):
-                                    outchars[emptyline].append(twchars[charindex])
+                                    outchars[emptyline].append(twchars[charindex].encode("utf-8"))
                                 else:
-                                    outchars[emptyline][charindex] = twchars[charindex]
+                                    outchars[emptyline][charindex] = twchars[charindex].encode("utf-8")
                                                            
                             if len(occupied_to) <= emptyline:
                                 occupied_to.append(xpos+twlen+1)
