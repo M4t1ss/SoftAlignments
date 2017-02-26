@@ -8,27 +8,20 @@
 	
 	bP.partData = function(data,p,p1,target,source){
 		var sData={};
-	        //console.log(sData);	
 		sData.keys=[
                           source[p],target[p1]
 		];
-		//console.log(sData);
 		sData.data = [	sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 10; }); }),//source[p],
 				sData.keys[1].map( function(d){ return sData.keys[1].map( function(v){ return 10; }); }),
 				sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 0; });}) 
 		];
-		//console.log(sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 0; });}));
 		data.forEach(function(d){ 
 			if((d[1] == p1) && (d[4] == p)){ 
-				// console.log(sData.data[2]);
-				// console.log(d[3]);
-				//console.log("DGG" + d[2] + " t1 " + d[3]);
 				if(sData.data[2][d[3]] != undefined){
 					sData.data[2][d[3]][d[0]] = d[2];
 				}
 			}
 		});
-	        //console.log(sData);
 		return sData;
 	}
 	
@@ -38,7 +31,6 @@
 			var total=d3.sum(a);//a :data
 			var sum=0, neededHeight=0, leftoverHeight= e-s-2*b*a.length;
 			var ret =[];
-		        //console.log(a);	
 			a.forEach(
 				function(d){ 
 					var v={};
@@ -69,7 +61,6 @@
                         var total=d3.sum(a);
                         var sum=0, neededHeight=0, leftoverHeight= e-s-2*b*a.length;
                         var ret =[];
-                        //console.log(a);
                         a.forEach(
                                 function(d){
                                         var v={};
@@ -101,7 +92,6 @@
 			calculatePosition1( data.data[0].map(function(d){ return d3.sum(d);}), 0, height, buffMargin, minHeight,0),
 			calculatePosition1( data.data[1].map(function(d){ return d3.sum(d);}), 0, height, buffMargin, minHeight,1)
 		];
-		//console.log("ma ",vis.mainBars);
 		vis.subBars = [[],[]];
 		vis.edges = [];
 		vis.mainBars[0].forEach(function(pos,i){
@@ -118,7 +108,6 @@
 				
 			});
 		});
-		//console.log(vis.edges);
 		vis.keys=data.keys;
 		return vis;
 	}
@@ -137,34 +126,32 @@
 		d3.select("#"+id).select(".part"+p).append("g").attr("class","subbars");
 		d3.select("#"+id).select(".part"+p).append("g").attr("class","mainbars");
 		
-	        var me = "0em";
+	    var me = "0em";
 		var bar = d3.select("#"+id).select(".part"+p).select(".mainbars")
                         .selectAll(".mainbar").data(data.mainBars[p])
                         .enter();
 			
-		     bar.append("rect").attr("class","mainbar")//"subbar")
+		bar.append("rect").attr("class","mainbar")//"subbar")
 			.attr("x", function(d){ return d.middle})
                         .attr("y",p)
 			.attr("width",function(d){ return d.h})
 			.attr("height",b)
 			.style("fill","None");
 		bar.append("text")
-        	  .attr("x", function(d) {
-     	                return d.middle;
-                    })
-        .attr("dy", function(d){ 
-                        if (d.p == 1) {
-			    return "2em";
-			} else {
-			    return "0em";
-			}
-	})//"1.35em")
-        .attr("dx", "2em")
-        .text(function(d,i) { return data.keys[p][i];
-	})
-        .attr("text-anchor", "left")
-	.attr("fill","black");
-	}
+        	.attr("x", function(d) {return d.middle;})
+			.attr("dy", function(d){ 
+				if (d.p == 1) {
+					return "0.5em";
+				} else {
+					return "-2em";
+				}
+			})//"1.35em")
+			.attr("dx", "3em")
+			.text(function(d,i) { return data.keys[p][i];})
+			.attr("text-anchor", "left")
+			.attr("style", "writing-mode: sideways-lr;")
+			.attr("fill","black");
+		}
 	
 	function drawEdges(data, id){
 		var color = d3.interpolateLab("#FBCEB1","#E34234");
