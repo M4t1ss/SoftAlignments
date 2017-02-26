@@ -1,5 +1,8 @@
 <?php 
 header('Content-Type: text/html; charset=utf-8');
+if (!isset($_GET['s'])){
+	$_GET['s'] = 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
