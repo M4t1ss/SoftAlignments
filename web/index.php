@@ -56,7 +56,7 @@ var target = [targets[<?php echo $_GET['s'];?>]];
 var source = [sources[<?php echo $_GET['s'];?>]];
 var sales_data=alignments[<?php echo $_GET['s'];?>];
 
-var width = 2200, height = 690, margin ={b:0, t:20, l:-20, r:0};
+var width = 2200, height = 690, margin ={b:0, t:60, l:-20, r:0};
 var c = "area1";
 var svg = d3.select("#area1")
 	.append("svg")

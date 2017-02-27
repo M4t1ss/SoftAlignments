@@ -143,13 +143,19 @@
 				if (d.p == 1) {
 					return "0.5em";
 				} else {
-					return "-2em";
+					return "-0.5em";
 				}
 			})//"1.35em")
 			.attr("dx", "3em")
 			.text(function(d,i) { return data.keys[p][i];})
-			.attr("text-anchor", "left")
-			.attr("style", "writing-mode: sideways-lr;")
+			.attr("text-anchor", function(d){ 
+				if (d.p == 1) {
+					return "start";
+				} else {
+					return "end";
+				}
+			})
+			.attr("style", "writing-mode: vertical-lr;")
 			.attr("fill","black");
 		}
 	
