@@ -3,55 +3,49 @@ header('Content-Type: text/html; charset=utf-8');
 if (!isset($_GET['s'])){
 	$_GET['s'] = 0;
 }
+function getLineCount($fileName){
+	$linecount = 0;
+	$handle = fopen($fileName, "r");
+	while(!feof($handle)){
+	  $line = fgets($handle);
+	  $linecount++;
+	}
+	fclose($handle);
+	return $linecount;
+}
+$alignments = './baseline/alignment.npy.ali.js';
+$sources = './baseline/alignment.npy.src.js';
+$targets = './baseline/alignment.npy.trg.js';
+$count = getLineCount($alignments)-3;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
-<title>Visualization Demo</title>
-    <link href="_assets/css/global.css" type="text/css" rel="stylesheet">
-    <link href="_assets/css/fonts.css" rel='stylesheet' type='text/css'>
-
-    <link href="_assets/css/basic.css" type="text/css" rel="stylesheet" />
-    <link href="_assets/css/visualize.css" type="text/css" rel="stylesheet" />
-    <link href="_assets/css/visualize-light.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="_assets/js/d3.min.js"  charset="utf-8"></script>
-    <script src="_assets/js/jquery-1.9.1.js"></script>
-    <script src="_assets/js/jquery.min.js"></script>
-    <script type="text/javascript" src="_assets/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="_assets/js/visualize.jQuery.js"></script>
-    <script type="text/javascript" src="_assets/js/plugins.js" ></script>
-    <script type="text/javascript" src="_assets/js/global.js" ></script>
-    <script language="javascript" src="_assets/calendar/calendar/calendar.js"></script>
-
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+	<meta name="description" content="Soft Alignment Visualization">
+	<meta name="author" content="Matīss Rikters">
+	<title>Soft Alignment Visualization</title>
+	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<style>
+		body{width:98%;}
+		svg text{font-size:10px;}
+		rect{shape-rendering:crispEdges;}
+	</style>
 </head>
-<style>
-body{
-	width:98%;
-}
-svg text{
-	font-size:10px;
-}
-rect{
-	shape-rendering:crispEdges;
-}
-</style>
 <body>
 Neural MT alignment visualization. <br/>
 Forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nematus utils</a><br/>
-<a href="?s=<?php echo $_GET['s']>0?$_GET['s']-1:0;?>">< previous</a>
-<a href="?s=<?php echo $_GET['s']<50?$_GET['s']+1:50;?>" style="float:right;"> next ></a>
+<a href="?s=<?php echo $_GET['s']>0?$_GET['s']-1:$count-1;?>">< previous</a>
+<a style="position:absolute; width:90%; text-align:center;">Showing sentence <?php echo $_GET['s']+1; ?><a>
+<a href="?s=<?php echo $_GET['s']<$count-1?$_GET['s']+1:0;?>" style="float:right;"> next ></a>
 <div id="area1"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="attentionMR.js"></script>
 <script>
-<?php include('alignments.npy.ali.js'); ?>
-<?php include('alignments.npy.src.js'); ?>
-<?php include('alignments.npy.trg.js'); ?>
+<?php include($alignments); ?>; 
+<?php include($sources); ?>; 
+<?php include($targets); ?>; 
 var target = [targets[<?php echo $_GET['s'];?>]];
 var source = [sources[<?php echo $_GET['s'];?>]];
 var sales_data=alignments[<?php echo $_GET['s'];?>];
