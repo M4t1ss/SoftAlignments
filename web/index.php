@@ -1,21 +1,26 @@
 <?php 
 header('Content-Type: text/html; charset=utf-8');
+
+// Get a list of directories in ./data
+// And remove first two (. and ..)
+$dataDirs = cleanDirArray(scandir("./data"));
+
+// What do we want to see?
 if (!isset($_GET['s'])){
-	$_GET['s'] = 0;
+	$sentence = 0;
+}else{
+	$sentence = $_GET['s'];
 }
-function getLineCount($fileName){
-	$linecount = 0;
-	$handle = fopen($fileName, "r");
-	while(!feof($handle)){
-	  $line = fgets($handle);
-	  $linecount++;
-	}
-	fclose($handle);
-	return $linecount;
+if (!isset($_GET['directory'])){
+	$dataDir = $dataDirs[0];
+}else{
+	$dataDir = $_GET['directory'];
 }
-$alignments = './baseline/alignment.npy.ali.js';
-$sources = './baseline/alignment.npy.src.js';
-$targets = './baseline/alignment.npy.trg.js';
+$dataFiles = cleanDirArray(scandir("./data/".$dataDir));
+
+$alignments = "./data/".$dataDir."/".array_pop(preg_grep("/\.ali\.js/", $dataFiles));
+$sources = "./data/".$dataDir."/".array_pop(preg_grep("/\.src\.js/", $dataFiles));
+$targets = "./data/".$dataDir."/".array_pop(preg_grep("/\.trg\.js/", $dataFiles));
 $count = getLineCount($alignments)-3;
 ?>
 <!DOCTYPE html>
@@ -34,11 +39,24 @@ $count = getLineCount($alignments)-3;
 	</style>
 </head>
 <body>
-Neural MT alignment visualization. <br/>
-Forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nematus utils</a><br/>
-<a href="?s=<?php echo $_GET['s']>0?$_GET['s']-1:$count-1;?>">< previous</a>
-<a style="position:absolute; width:90%; text-align:center;">Showing sentence <?php echo $_GET['s']+1; ?><a>
-<a href="?s=<?php echo $_GET['s']<$count-1?$_GET['s']+1:0;?>" style="float:right;"> next ></a>
+<b>Neural MT alignment visualization</b> <small>(forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nematus utils</a>)</small><br/>
+<div style="display:block;position:absolute; width:90%; text-align:center;">Data directory:
+<form action="?">
+<select name="directory">
+<?php 
+foreach($dataDirs as $directory){
+	$selected = $dataDir==$directory?" SELECTED":"";
+	echo "<option value='$directory'$selected>$directory</option>";
+}
+?>
+</select>
+<button type="submit">show</button>
+</form>
+</div> 
+<br/>
+<a href="?s=<?php echo $sentence>0?$sentence-1:$count-1;?>&directory=<?php echo $dataDir; ?>">< previous</a>
+<a style="position:absolute; width:90%; text-align:center;display:block;">Showing sentence <?php echo $sentence+1; ?><a>
+<a href="?s=<?php echo $sentence<$count-1?$sentence+1:0;?>&directory=<?php echo $dataDir; ?>" style="float:right;"> next ></a>
 <div id="area1"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="attentionMR.js"></script>
@@ -46,9 +64,9 @@ Forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nem
 <?php include($alignments); ?>; 
 <?php include($sources); ?>; 
 <?php include($targets); ?>; 
-var target = [targets[<?php echo $_GET['s'];?>]];
-var source = [sources[<?php echo $_GET['s'];?>]];
-var sales_data=alignments[<?php echo $_GET['s'];?>];
+var target = [targets[<?php echo $sentence;?>]];
+var source = [sources[<?php echo $sentence;?>]];
+var sales_data=alignments[<?php echo $sentence;?>];
 
 var width = 2200, height = 690, margin ={b:0, t:60, l:-20, r:0};
 var c = "area1";
@@ -67,3 +85,22 @@ var data = [
 bP.draw(data, svg);
 </script>
 </body>
+<?php
+
+
+function getLineCount($fileName){
+	$linecount = 0;
+	$handle = fopen($fileName, "r");
+	while(!feof($handle)){
+	  $line = fgets($handle);
+	  $linecount++;
+	}
+	fclose($handle);
+	return $linecount;
+}
+
+function cleanDirArray($data){
+	array_shift($data);
+	array_shift($data);
+	return $data;
+}
