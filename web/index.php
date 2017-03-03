@@ -3,7 +3,9 @@ header('Content-Type: text/html; charset=utf-8');
 
 // Get a list of directories in ./data
 // And remove first two (. and ..)
-$dataDirs = cleanDirArray(scandir("./data"));
+foreach(glob('./data/*', GLOB_ONLYDIR) as $dir) {
+    $dataDirs[] = basename($dir);
+}
 
 // What do we want to see?
 if (!isset($_GET['s'])){
