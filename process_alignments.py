@@ -100,7 +100,7 @@ def main(argv):
                            if linePartC > len(ttokens)-1:
                                continue
                            if linePartC < len(lineParts) and linePart.replace("  ", " ").replace("  ", " ").replace("  ", " ") != "":
-                               out_a_js.write('['+`word`+', 0, ' + linePart + ', '+`linePartC`+', 0], ')
+                               out_a_js.write('['+`word`+', ' + linePart + ', '+`linePartC`+'], ')
                                linePartC+=1
                            if outputType == 'color':
                                if float(linePart) == 0:

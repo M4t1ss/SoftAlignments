@@ -68,7 +68,7 @@ foreach($dataDirs as $directory){
 <?php include($targets); ?>; 
 var target = [targets[<?php echo $sentence;?>]];
 var source = [sources[<?php echo $sentence;?>]];
-var sales_data=alignments[<?php echo $sentence;?>];
+var alignment_data=alignments[<?php echo $sentence;?>];
 
 var width = 2200, height = 690, margin ={b:0, t:60, l:-20, r:0};
 var c = "area1";
@@ -81,7 +81,7 @@ var svg = d3.select("#area1")
 	.attr("transform","translate("+ margin.l+","+margin.t+")");
 
 var data = [ 
-	{data:bP.partData(sales_data,0,0,target,source), id:'SalesAttempts', header:["Channel","State", "Sales Attempts"]}
+	{data:bP.partData(alignment_data,target,source), id:'SubWordAlignments'}
 ];
 
 bP.draw(data, svg);

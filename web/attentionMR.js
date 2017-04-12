@@ -6,20 +6,17 @@
 	var c1=[-130, 40], c2=[-50, 100], c3=[-10, 140]; //Column positions of labels.
 	var colors =["#3366CC", "#DC3912",  "#FF9900","#109618", "#990099", "#0099C6"];
 	
-	bP.partData = function(data,p,p1,target,source){
+	bP.partData = function(data,target,source){
 		var sData={};
-		sData.keys=[
-                          source[p],target[p1]
-		];
-		sData.data = [	sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 10; }); }),//source[p],
-				sData.keys[1].map( function(d){ return sData.keys[1].map( function(v){ return 10; }); }),
-				sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 0; });}) 
+		sData.keys=[source[0],target[0]];
+		sData.data = [	
+			sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 10; }); }),//source[p],
+			sData.keys[1].map( function(d){ return sData.keys[1].map( function(v){ return 10; }); }),
+			sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 0; });}) 
 		];
 		data.forEach(function(d){ 
-			if((d[1] == p1) && (d[4] == p)){ 
-				if(sData.data[2][d[3]] != undefined){
-					sData.data[2][d[3]][d[0]] = d[2];
-				}
+			if(sData.data[2][d[2]] != undefined){
+				sData.data[2][d[2]][d[0]] = d[1];
 			}
 		});
 		return sData;
