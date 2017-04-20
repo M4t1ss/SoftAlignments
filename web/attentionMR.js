@@ -89,7 +89,6 @@
 			calculatePosition1( data.data[0].map(function(d){ return d3.sum(d);}), 0, height, buffMargin, minHeight,0),
 			calculatePosition1( data.data[1].map(function(d){ return d3.sum(d);}), 0, height, buffMargin, minHeight,1)
 		];
-		vis.subBars = [[],[]];
 		vis.edges = [];
 		vis.mainBars[0].forEach(function(pos,i){
 			 vis.mainBars[1].forEach(function(bar, j){
@@ -109,14 +108,7 @@
 		return vis;
 	}
 	
-	function arcTween(a) {
-		var i = d3.interpolate(this._current, a);
-		this._current = i(0);
-		return function(t) {
-			return edgePolygon(i(t));
-		};
-	}
-	
+	//draws top or bottom rows of text
 	function drawPart(data, id, p){
 		
 		size_coef=1;
@@ -125,8 +117,7 @@
 		}
 		
 		d3.select("#"+id).append("g").attr("class","part"+p)
-			.attr("transform","translate( 0," +( p*(bb+b))+")"); //+( p*(bb+b))+",0)");
-		d3.select("#"+id).select(".part"+p).append("g").attr("class","subbars");
+			.attr("transform","translate( 0," +( p*(bb+b))+")");
 		d3.select("#"+id).select(".part"+p).append("g").attr("class","mainbars");
 		
 	    var me = "0em";
@@ -134,12 +125,6 @@
                         .selectAll(".mainbar").data(data.mainBars[p])
                         .enter();
 			
-		bar.append("rect").attr("class","mainbar")//"subbar")
-			.attr("x", function(d){ return d.middle})
-                        .attr("y",p)
-			.attr("width",function(d){ return d.h})
-			.attr("height",b)
-			.style("fill","None");
 		bar.append("text")
         	.attr("x", function(d) {return d.middle/size_coef;})
 			.attr("dy", function(d){ 
@@ -184,70 +169,6 @@
 			.style("stroke", function(d) {return color(d.va);});
 	}	
 	
-	function drawHeader(header, id){
-		d3.select("#"+id).append("g").attr("class","header").append("text").text(header[2])
-			.style("font-size","20").attr("x",108).attr("y",-20).style("text-anchor","middle")
-			.style("font-weight","bold");
-		
-		[0,1].forEach(function(d){
-			var h = d3.select("#"+id).select(".part"+d).append("g").attr("class","header");
-			
-			h.append("text").text(header[d]).attr("x", (c1[d]-5))
-				.attr("y", -5).style("fill","grey");
-			
-			h.append("text").text("Count").attr("x", (c2[d]-10))
-				.attr("y", -5).style("fill","grey");
-			
-			h.append("line").attr("x1",c1[d]-10).attr("y1", -2)
-				.attr("x2",c3[d]+10).attr("y2", -2).style("stroke","black")
-				.style("stroke-width","1").style("shape-rendering","crispEdges");
-		});
-	}
-	
-	function edgePolygon(d){
-		return [0, d.y1, bb, d.y2, bb, d.y2+d.h2, 0, d.y1+d.h1].join(" ");
-	}	
-	
-	function transitionPart(data, id, p){
-		var mainbar = d3.select("#"+id).select(".part"+p).select(".mainbars")
-			.selectAll(".mainbar").data(data.mainBars[p]);
-		
-		mainbar.select(".mainrect").transition().duration(500)
-			.attr("y",function(d){ return d.middle-d.height/2;})
-			.attr("height",function(d){ return d.height;});
-			
-		mainbar.select(".barlabel").transition().duration(500)
-			.attr("y",function(d){ return d.middle+5;});
-			
-		mainbar.select(".barvalue").transition().duration(500)
-			.attr("y",function(d){ return d.middle+5;}).text(function(d,i){ return d.value ;});
-			
-		mainbar.select(".barpercent").transition().duration(500)
-			.attr("y",function(d){ return d.middle+5;})
-			.text(function(d,i){ return "( "+Math.round(100*d.percent)+"%)" ;});
-			
-		d3.select("#"+id).select(".part"+p).select(".subbars")
-			.selectAll(".subbar").data(data.subBars[p])
-			.transition().duration(500)
-			.attr("y",function(d){ return d.y}).attr("height",function(d){ return d.h});
-	}
-	
-	function transitionEdges(data, id){
-		d3.select("#"+id).append("g").attr("class","edges")
-			.attr("transform","translate("+ b+",0)");
-
-		d3.select("#"+id).select(".edges").selectAll(".edge").data(data.edges)
-			.transition().duration(500)
-			.attrTween("points", arcTween)
-			.style("opacity",function(d){ return (d.h1 ==0 || d.h2 == 0 ? 0 : 0.5);});	
-	}
-	
-	function transition(data, id){
-		transitionPart(data, id, 0);
-		transitionPart(data, id, 1);
-		transitionEdges(data, id);
-	}
-	
 	bP.draw = function(data, svg){
 		data.forEach(function(biP,s){
 			svg.append("g")
@@ -260,43 +181,6 @@
 			drawEdges(visData, biP.id);
 		});	
 	}
-	
-	bP.selectSegment = function(data, m, s){
-		data.forEach(function(k){
-			var newdata =  {keys:[], data:[]};	
-				
-			newdata.keys = k.data.keys.map( function(d){ return d;});
-			
-			newdata.data[m] = k.data.data[m].map( function(d){ return d;});
-			
-			newdata.data[1-m] = k.data.data[1-m]
-				.map( function(v){ return v.map(function(d, i){ return (s==i ? d : 0);}); });
-			
-			transition(visualize(newdata), k.id);
-				
-			var selectedBar = d3.select("#"+k.id).select(".part"+m).select(".mainbars")
-				.selectAll(".mainbar").filter(function(d,i){ return (i==s);});
-			
-			selectedBar.select(".mainrect").style("stroke-opacity",1);			
-			selectedBar.select(".barlabel").style('font-weight','bold');
-			selectedBar.select(".barvalue").style('font-weight','bold');
-			selectedBar.select(".barpercent").style('font-weight','bold');
-		});
-	}	
-	
-	bP.deSelectSegment = function(data, m, s){
-		data.forEach(function(k){
-			transition(visualize(k.data), k.id);
-			
-			var selectedBar = d3.select("#"+k.id).select(".part"+m).select(".mainbars")
-				.selectAll(".mainbar").filter(function(d,i){ return (i==s);});
-			
-			selectedBar.select(".mainrect").style("stroke-opacity",0);			
-			selectedBar.select(".barlabel").style('font-weight','normal');
-			selectedBar.select(".barvalue").style('font-weight','normal');
-			selectedBar.select(".barpercent").style('font-weight','normal');
-		});		
-	}
-	
+		
 	this.bP = bP;
 }();
