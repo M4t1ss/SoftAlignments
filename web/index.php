@@ -36,7 +36,7 @@ $count = getLineCount($alignments)-3;
 	<![endif]-->
 	<style>
 		body{width:98%;}
-		svg text{font-size:10px;}
+		svg text{font-size:6px;}
 		rect{shape-rendering:crispEdges;}
 	</style>
 </head>

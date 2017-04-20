@@ -99,7 +99,7 @@
 				sBar.y1 = pos.middle;
 				sBar.y2 = bar.middle;
 				sBar.h1 =1;//bar.y;
-				sBar.h2 = 180;
+				sBar.h2 = 160;
 				sBar.va = data.data[2][i][j];
 				vis.edges.push(sBar);	
 				
@@ -118,6 +118,12 @@
 	}
 	
 	function drawPart(data, id, p){
+		
+		size_coef=1;
+		if (Math.max(data.keys[0].length, data.keys[1].length) > 35){
+			size_coef = 0.028571429 * Math.max(data.keys[0].length, data.keys[1].length)
+		}
+		
 		d3.select("#"+id).append("g").attr("class","part"+p)
 			.attr("transform","translate( 0," +( p*(bb+b))+")"); //+( p*(bb+b))+",0)");
 		d3.select("#"+id).select(".part"+p).append("g").attr("class","subbars");
@@ -135,15 +141,15 @@
 			.attr("height",b)
 			.style("fill","None");
 		bar.append("text")
-        	.attr("x", function(d) {return d.middle;})
+        	.attr("x", function(d) {return d.middle/size_coef;})
 			.attr("dy", function(d){ 
 				if (d.p == 1) {
-					return "0.5em";
+					return "-2.5em";
 				} else {
 					return "-0.5em";
 				}
 			})//"1.35em")
-			.attr("dx", "3em")
+			.attr("dx", "5em")
 			.text(function(d,i) { return data.keys[p][i];})
 			.attr("text-anchor", function(d){ 
 				if (d.p == 1) {
@@ -157,14 +163,20 @@
 		}
 	
 	function drawEdges(data, id){
+		
+		size_coef=1;
+		if (Math.max(data.keys[0].length, data.keys[1].length) > 35){
+			size_coef = 0.028571429 * Math.max(data.keys[0].length, data.keys[1].length)
+		}
+		
 		var color = d3.interpolateLab("#FBCEB1","#E34234");
 		d3.select("#"+id).append("g").attr("class","edges").attr("transform","translate("+ b+",0)");
 
 		d3.select("#"+id).select(".edges").selectAll(".edge")
 			.data(data.edges).enter().append("line").attr("class","edge")
-			.attr("x1", function(d) {return d.y1;})     // x position of the first end of the line
+			.attr("x1", function(d) {return d.y1/size_coef;})     // x position of the first end of the line
 			.attr("y1", function(d) {return d.h1;})      // y position of the first end of the line
-			.attr("x2", function(d) {return d.y2;})     // x position of the second end of the line
+			.attr("x2", function(d) {return d.y2/size_coef;})     // x position of the second end of the line
 			.attr("y2", function(d) {return d.h2;})
 			.style("stroke-width", function(d) { //console.log(d); 
 				return d.va * 2; 
