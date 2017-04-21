@@ -75,7 +75,7 @@ var c = "area1";
 var svg = d3.select("#area1")
 	.append("svg")
    .attr("preserveAspectRatio", "xMinYMin meet")
-   .attr("viewBox", "0 0 600 400")
+   .attr("viewBox", "0 0 600 250")
    .classed("svg-content-responsive", true)
 	.append("g")
 	.attr("transform","translate("+ margin.l+","+margin.t+")");
