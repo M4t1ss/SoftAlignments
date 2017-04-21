@@ -19,8 +19,6 @@
 				sData.data[2][d[0]][d[2]] = d[1];
 			}
 		});
-		console.log(data);
-		console.log(sData);
 		return sData;
 	}
 	
@@ -114,8 +112,8 @@
 	function drawPart(data, id, p){
 		
 		size_coef=1;
-		if (Math.max(data.keys[0].length, data.keys[1].length) > 35){
-			size_coef = 0.028571429 * Math.max(data.keys[0].length, data.keys[1].length)
+		if (Math.max(data.keys[0].length, data.keys[1].length) > 33){
+			size_coef = 0.03 * Math.max(data.keys[0].length, data.keys[1].length)
 		}
 		
 		d3.select("#"+id).append("g").attr("class","part"+p)
@@ -128,15 +126,6 @@
                         .enter();
 			
 		bar.append("text")
-        	.attr("x", function(d) {return d.middle/size_coef;})
-			.attr("dy", function(d){ 
-				if (d.p == 1) {
-					return "-2.5em";
-				} else {
-					return "-0.5em";
-				}
-			})//"1.35em")
-			.attr("dx", "5em")
 			.text(function(d,i) { return data.keys[p][i];})
 			.attr("text-anchor", function(d){ 
 				if (d.p == 1) {
@@ -145,15 +134,19 @@
 					return "end";
 				}
 			})
-			.attr("style", "writing-mode: vertical-lr;")
+			.attr("transform", function(d) {
+				var y = (d.p == 1 ? "-15" : "-2");
+				return "translate("+(d.middle/size_coef+30)+","+y+")rotate(45)";
+				
+			})
 			.attr("fill","black");
 		}
 	
 	function drawEdges(data, id){
 		
 		size_coef=1;
-		if (Math.max(data.keys[0].length, data.keys[1].length) > 35){
-			size_coef = 0.028571429 * Math.max(data.keys[0].length, data.keys[1].length)
+		if (Math.max(data.keys[0].length, data.keys[1].length) > 33){
+			size_coef = 0.03 * Math.max(data.keys[0].length, data.keys[1].length)
 		}
 		
 		var color = d3.interpolateLab("#FBCEB1","#E34234");
@@ -165,9 +158,9 @@
 			.attr("y1", function(d) {return d.h1;})      // y position of the first end of the line
 			.attr("x2", function(d) {return d.y2/size_coef;})     // x position of the second end of the line
 			.attr("y2", function(d) {return d.h2;})
-			.style("stroke-width", function(d) { //console.log(d); 
+			.style("stroke-width", function(d) {
 				return d.va * 2; 
-			})//function(d) { //console.log(d); return d.value * 2; })
+			})
 			.style("stroke", function(d) {return color(d.va);});
 	}	
 	
@@ -175,7 +168,7 @@
 		data.forEach(function(biP,s){
 			svg.append("g")
 				.attr("id", biP.id)
-				.attr("transform","translate( 0, " + (0)+")");//+ (550*s)+",0)");
+				.attr("transform","translate( 0, " + (0)+")");
 				
 			var visData = visualize(biP.data);
 			drawPart(visData, biP.id, 0);
