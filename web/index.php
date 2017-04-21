@@ -81,7 +81,7 @@ var svg = d3.select("#area1")
 	.attr("transform","translate("+ margin.l+","+margin.t+")");
 
 var data = [ 
-	{data:bP.partData(alignment_data,target,source), id:'SubWordAlignments'}
+	{data:bP.partData(alignment_data,source,target), id:'SubWordAlignments'}
 ];
 
 bP.draw(data, svg);

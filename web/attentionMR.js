@@ -6,7 +6,7 @@
 	var c1=[-130, 40], c2=[-50, 100], c3=[-10, 140]; //Column positions of labels.
 	var colors =["#3366CC", "#DC3912",  "#FF9900","#109618", "#990099", "#0099C6"];
 	
-	bP.partData = function(data,target,source){
+	bP.partData = function(data,source,target){
 		var sData={};
 		sData.keys=[source[0],target[0]];
 		sData.data = [	
@@ -16,9 +16,11 @@
 		];
 		data.forEach(function(d){ 
 			if(sData.data[2][d[2]] != undefined){
-				sData.data[2][d[2]][d[0]] = d[1];
+				sData.data[2][d[0]][d[2]] = d[1];
 			}
 		});
+		console.log(data);
+		console.log(sData);
 		return sData;
 	}
 	

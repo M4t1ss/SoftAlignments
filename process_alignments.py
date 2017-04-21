@@ -6,7 +6,7 @@ import string
 
 def main(argv):
    try:
-      opts, args = getopt.getopt(argv,"hi:o:s:t:")
+      opts, args = getopt.getopt(argv,"hi:o:s:t:f:")
    except getopt.GetoptError:
       print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
       print 'outputType can be block or color'
@@ -24,6 +24,8 @@ def main(argv):
          sourcefile = arg
       elif opt == '-t':
          targetfile = arg
+      elif opt == '-f':
+         from_system = arg
    try:
      inputfile
    except NameError:
@@ -38,43 +40,47 @@ def main(argv):
      print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
      print 'outputType can be block or color'
      sys.exit()
-   try:
-     sourcefile
-   except NameError:
-     print "Provide an source sentence file!"
-     print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
-     print 'outputType can be block or color'
-     sys.exit()
-   try:
-     targetfile
-   except NameError:
-     print "Provide an target sentence file!"
-     print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
-     print 'outputType can be block or color'
-     sys.exit()
+   if from_system == 'NeuralMonkey':
+       try:
+         sourcefile
+       except NameError:
+         print "Provide an source sentence file!"
+         print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
+         print 'outputType can be block or color'
+         sys.exit()
+       try:
+         targetfile
+       except NameError:
+         print "Provide an target sentence file!"
+         print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
+         print 'outputType can be block or color'
+         sys.exit()
    if outputType != 'color' and outputType != 'block' and outputType != 'block2':
      print "Provide an output type!"
      print 'outputType must be block or color'
      sys.exit()
 
-   data = np.load(inputfile)
+   if from_system == 'NeuralMonkey':
+       data = np.load(inputfile)
 
-   # Read source and target sentences
-   sourcelines = [line.rstrip('\n') for line in open(sourcefile)]
-   targetlines = [line.rstrip('\n') for line in open(targetfile)]
+       # Read source and target sentences
+       sourcelines = [line.rstrip('\n') for line in open(sourcefile)]
+       targetlines = [line.rstrip('\n') for line in open(targetfile)]
 
-   with file(inputfile + '.txt', 'w') as outfile:
-       for data_slice in data:
+       with file(inputfile + '.txt', 'w') as outfile:
+           for data_slice in data:
 
-           # values in left-justified columns 7 characters in width
-           # with 2 decimal places.  
-           np.savetxt(outfile, data_slice, fmt='%-7.2f')
+               # values in left-justified columns 7 characters in width
+               # with 2 decimal places.  
+               np.savetxt(outfile, data_slice, fmt='%-7.2f')
 
-           # a break to indicate different sentences...
-           outfile.write('\n')
-		
-		
-   with open(inputfile + '.txt') as infile:
+               # a break to indicate different sentences...
+               outfile.write('\n')
+   
+   if from_system == 'NeuralMonkey':
+        inputfile = inputfile + '.txt'
+            
+   with open(inputfile) as infile:
         with open(inputfile + '.' + outputType +'.txt', 'w') as outfile:
             with open(inputfile + '.ali.js', 'w') as out_a_js:
                 out_a_js.write('var alignments = [\n')
@@ -82,12 +88,30 @@ def main(argv):
                 word = 0
                 wasNew = True
                 atEnd = False
-                stokens = sourcelines[sent].split(' ')
-                ttokens = targetlines[sent].split(' ')
+                if from_system == 'Nematus':
+                    sourcelines = []
+                    targetlines = []
+                if from_system == 'NeuralMonkey':
+                    stokens = sourcelines[sent].split(' ')
+                    ttokens = targetlines[sent].split(' ')
 
                 #height
                 for line in infile:
                    if wasNew:
+                      if from_system == 'Nematus':
+                           lineparts = line.split(' ||| ')
+                           sourceline = lineparts[1]
+                           targetline = lineparts[3]
+                           sourcelines.append(sourceline + ' <EOS>')
+                           targetlines.append(targetline + ' <EOS>')
+                           stokens = sourceline.split(' ')
+                           ttokens = targetline.split(' ')
+                           stokens.append('<EOS>')
+                           ttokens.append('<EOS>')
+                           out_a_js.write('[')
+                           wasNew = False
+                           continue
+                      elif from_system == 'NeuralMonkey':
                        out_a_js.write('[')
                        wasNew = False
                    if line != '\n' and line != '\r\n':
@@ -244,9 +268,10 @@ def main(argv):
                        
                        # write target sentences
                        sent+=1
-                       if len(sourcelines) >= sent+1 and len(targetlines) >= sent+1:
-                           stokens = sourcelines[sent].split(' ')
-                           ttokens = targetlines[sent].split(' ')
+                       if from_system == 'NeuralMonkey':
+                           if len(sourcelines) >= sent+1 and len(targetlines) >= sent+1:
+                               stokens = sourcelines[sent].split(' ')
+                               ttokens = targetlines[sent].split(' ')
                        word = 0
                        wasNew = True
                        out_a_js.write('], \n')

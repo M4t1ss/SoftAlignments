@@ -12,20 +12,33 @@ Soft alignment visualisations tools for command line and web. Parts of the web v
 		- *.ali.js
   
   - Visualize
-    - in the command line as shaded blocks
+    - in the command line as shaded blocks. Example with Neural Monkey alignments (source and target subword unit files are required)
     ```sh
-    python2 process_alignments.py -i test_data/alignments.npy -o color -s test_data/test.src.en.bpe -t test.out.lv.bpe
+    python2 process_alignments.py -i test_data/alignments_neural_monkey.npy -o color -s test_data/test.src.en.bpe -t test.out.lv.bpe -f NeuralMonkey
+    ```
+    - the same with Nematus alignments (source and target subword units are in the same file)
+    ```sh
+    python2 process_alignments.py -i test_data/alignments_nematus.txt -o color -f Nematus
     ```
 	- in a text file as Unicode block elements
     ```sh
-    python2 process_alignments.py -i test_data/alignments.npy -o block -s test_data/test.src.en.bpe -t test.out.lv.bpe
+    python2 process_alignments.py -i test_data/alignments_neural_monkey.npy -o block -s test_data/test.src.en.bpe -t test.out.lv.bpe -f NeuralMonkey
     ```
 	or
     ```sh
-    python2 process_alignments.py -i test_data/alignments.npy -o block2 -s test_data/test.src.en.bpe -t test.out.lv.bpe
+    python2 process_alignments.py -i test_data/alignments_neural_monkey.npy -o block2 -s test_data/test.src.en.bpe -t test.out.lv.bpe -f NeuralMonkey
     ```
 	- in the browser as links between words (demo [here](http://lielakeda.lv/other/NLP/alignments/?s=19))
 
+Parameters for process_alignments.py:
+
+| Option | Description                   | Required 			  | Possible Values 		  |
+|:------:|:------------------------------|:----------------------:|:-------------------------:|
+| -i     | input alignment file			 | yes     				  | Path to file			  |
+| -o     | output alignment matrix type	 | yes      			  | 'color', 'block', 'block2'|
+| -s     | source sentence subword units | Only for Neural Monkey | Path to file			  |
+| -t     | target sentence subword units | Only for Neural Monkey | Path to file			  |
+| -f     | Where are the alignments from | yes      			  | 'NeuralMonkey', 'Nematus' |
 
 Screenshots:
   - Block
