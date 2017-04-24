@@ -12,6 +12,9 @@ if (!isset($_GET['s'])){
 	$sentence = 0;
 }else{
 	$sentence = $_GET['s'];
+	if(isset($_GET['changeNum'])){
+		$sentence--;
+	}
 }
 if (!isset($_GET['directory'])){
 	$dataDir = $dataDirs[0];
@@ -42,22 +45,26 @@ $count = getLineCount($alignments)-3;
 </head>
 <body>
 <b>Neural MT alignment visualization</b> <small>(forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nematus utils</a>)</small><br/>
-<div style="display:block;position:absolute; width:90%; text-align:center;">Data directory:
+<div style="display:block;position:absolute; width:90%; text-align:center;">
 <form action="?">
-<select name="directory">
-<?php 
-foreach($dataDirs as $directory){
-	$selected = $dataDir==$directory?" SELECTED":"";
-	echo "<option value='$directory'$selected>$directory</option>";
-}
-?>
-</select>
-<button type="submit">show</button>
+	Data directory: <select name="directory" onchange="this.form.submit()">
+	<?php 
+	foreach($dataDirs as $directory){
+		$selected = $dataDir==$directory?" SELECTED":"";
+		echo "<option value='$directory'$selected>$directory</option>";
+	}
+	?>
+	</select>
 </form>
 </div> 
-<br/>
 <a href="?s=<?php echo $sentence>0?$sentence-1:$count-1;?>&directory=<?php echo $dataDir; ?>">< previous</a>
-<a style="position:absolute; width:90%; text-align:center;display:block;">Showing sentence <?php echo $sentence+1; ?><a>
+<div style="position:absolute; width:90%; text-align:center; display:block; padding-top:6px;">
+	<form action="?" method="GET">
+		Showing sentence <input name="s" value="<?php echo $sentence+1; ?>" type="text" style="width:18px; height:14px;"/>. <input type="submit" value="Change"/>
+		<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
+		<input type="hidden" name="changeNum" value="True" />
+	</form>
+</div>
 <a href="?s=<?php echo $sentence<$count-1?$sentence+1:0;?>&directory=<?php echo $dataDir; ?>" style="float:right;"> next ></a>
 <div id="area1"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -88,7 +95,6 @@ bP.draw(data, svg);
 </script>
 </body>
 <?php
-
 
 function getLineCount($fileName){
 	$linecount = 0;
