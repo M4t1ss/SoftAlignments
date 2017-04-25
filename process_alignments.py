@@ -3,6 +3,7 @@
 import sys, getopt
 import numpy as np
 import string
+import os
 
 def main(argv):
    try:
@@ -14,7 +15,7 @@ def main(argv):
    for opt, arg in opts:
       if opt == '-h':
          print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
-         print 'outputType can be block or color'
+         print 'outputType can be web, block, block2, color'
          sys.exit()
       elif opt == '-i':
          inputfile = arg
@@ -30,35 +31,39 @@ def main(argv):
      inputfile
    except NameError:
      print "Provide an input file!"
-     print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
-     print 'outputType can be block or color'
+     print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
+     print 'output_type can be web (default), block, block2 or color'
+     print 'from_system can be Nematus or NeuralMonkey (default)'
      sys.exit()
+   try:
+     from_system
+   except NameError:
+     from_system = 'NeuralMonkey'
    try:
      outputType
    except NameError:
-     print "Provide an output type!"
-     print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
-     print 'outputType can be block or color'
-     sys.exit()
+     # Set output type to 'web' by default
+     outputType = 'web'
    if from_system == 'NeuralMonkey':
        try:
          sourcefile
        except NameError:
          print "Provide an source sentence file!"
-         print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
-         print 'outputType can be block or color'
+         print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
+         print 'output_type can be web (default), block, block2 or color'
+         print 'from_system can be Nematus or NeuralMonkey (default)'
          sys.exit()
        try:
          targetfile
        except NameError:
          print "Provide an target sentence file!"
-         print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file>'
-         print 'outputType can be block or color'
+         print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
+         print 'output_type can be web (default), block, block2 or color'
+         print 'from_system can be Nematus or NeuralMonkey (default)'
          sys.exit()
    if outputType != 'color' and outputType != 'block' and outputType != 'block2':
-     print "Provide an output type!"
-     print 'outputType must be block or color'
-     sys.exit()
+     # Set output type to 'web' by default
+     outputType = 'web'
 
    if from_system == 'NeuralMonkey':
        data = np.load(inputfile)
@@ -78,12 +83,14 @@ def main(argv):
                outfile.write('\n')
    
    if from_system == 'NeuralMonkey':
+        inputfileName = inputfile
         inputfile = inputfile + '.txt'
             
    with open(inputfile) as infile:
-        with open(inputfile + '.' + outputType +'.txt', 'w') as outfile:
-            with open(inputfile + '.ali.js', 'w') as out_a_js:
-                out_a_js.write('var alignments = [\n')
+        with open(inputfileName + '.' + outputType +'.txt', 'w') as outfile:
+            with open(inputfileName + '.ali.js', 'w') as out_a_js:
+                if outputType == 'web':
+                    out_a_js.write('var alignments = [\n')
                 sent = 0
                 word = 0
                 wasNew = True
@@ -108,11 +115,13 @@ def main(argv):
                            ttokens = targetline.split(' ')
                            stokens.append('<EOS>')
                            ttokens.append('<EOS>')
-                           out_a_js.write('[')
+                           if outputType == 'web':
+                               out_a_js.write('[')
                            wasNew = False
                            continue
                       elif from_system == 'NeuralMonkey':
-                       out_a_js.write('[')
+                       if outputType == 'web':
+                           out_a_js.write('[')
                        wasNew = False
                    if line != '\n' and line != '\r\n':
                        if word > len(stokens)-1:
@@ -124,7 +133,8 @@ def main(argv):
                            if linePartC > len(ttokens)-1:
                                continue
                            if linePartC < len(lineParts) and linePart.replace("  ", " ").replace("  ", " ").replace("  ", " ") != "":
-                               out_a_js.write('['+`word`+', ' + linePart + ', '+`linePartC`+'], ')
+                               if outputType == 'web':
+                                   out_a_js.write('['+`word`+', ' + linePart + ', '+`linePartC`+'], ')
                                linePartC+=1
                            if outputType == 'color':
                                if float(linePart) == 0:
@@ -213,10 +223,11 @@ def main(argv):
                                    outfile.write('  ')
                                else:
                                    outfile.write('██')
-                       if word < len(stokens):
+                       if word < len(stokens) and outputType != 'web':
                            outfile.write(stokens[word])
                        word+=1
-                       outfile.write('\n')
+                       if outputType != 'web':
+                           outfile.write('\n')
                    else:
                        # write target sentences
                        #build 2d array
@@ -263,8 +274,9 @@ def main(argv):
                             tw+=1
 
                        #print 2d array
-                       for liline in outchars:
-                            outfile.write(''.join(liline) + '\n')
+                       if outputType != 'web':
+                           for liline in outchars:
+                                outfile.write(''.join(liline) + '\n')
                        
                        # write target sentences
                        sent+=1
@@ -274,25 +286,36 @@ def main(argv):
                                ttokens = targetlines[sent].split(' ')
                        word = 0
                        wasNew = True
-                       out_a_js.write('], \n')
-                       outfile.write('\n')
+                       if outputType == 'web':
+                           out_a_js.write('], \n')
+                       if outputType != 'web':
+                           outfile.write('\n')
                    if atEnd:
                        atEnd = False
                        continue
-                out_a_js.write('\n]')
+                if outputType == 'web':
+                    out_a_js.write('\n]')
    
 
-   with open(inputfile + '.src.js', 'w') as out_s_js:
-        out_s_js.write('var sources = [\n')
-        for line in sourcelines:
-            out_s_js.write('["'+ line.replace(' ','", "') +'"], \n')
-        out_s_js.write(']')
-   
-   with open(inputfile + '.trg.js', 'w') as out_t_js:
-        out_t_js.write('var targets = [\n')
-        for line in targetlines:
-            out_t_js.write('["'+ line.replace(' ','", "') +'"], \n')
-        out_t_js.write(']')
+   if outputType == 'web':
+       with open(inputfileName + '.src.js', 'w') as out_s_js:
+            out_s_js.write('var sources = [\n')
+            for line in sourcelines:
+                out_s_js.write('["'+ line.replace(' ','", "') +'"], \n')
+            out_s_js.write(']')
+       
+       with open(inputfileName + '.trg.js', 'w') as out_t_js:
+            out_t_js.write('var targets = [\n')
+            for line in targetlines:
+                out_t_js.write('["'+ line.replace(' ','", "') +'"], \n')
+            out_t_js.write(']')
+            
+   # Get rid of some junk
+   os.remove(inputfile)
+   if outputType == 'web':
+       os.remove(inputfileName + '.' + outputType + '.txt')
+   else:
+       os.remove(inputfileName + '.ali.js')
 
 if __name__ == "__main__":
    main(sys.argv[1:])

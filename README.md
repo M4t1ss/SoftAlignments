@@ -32,13 +32,13 @@ Soft alignment visualisations tools for command line and web. Parts of the web v
 
 Parameters for process_alignments.py:
 
-| Option | Description                   | Required 		 | Possible Values 			 |
-|:------:|:------------------------------|:-----------------:|:--------------------------|
-| -i     | input alignment file			 | yes     			 | Path to file			  	 |
-| -o     | output alignment matrix type	 | yes      		 | 'color', 'block', 'block2'|
-| -s     | source sentence subword units | For Neural Monkey | Path to file			  	 |
-| -t     | target sentence subword units | For Neural Monkey | Path to file			  	 |
-| -f     | Where are the alignments from | yes      		 | 'NeuralMonkey', 'Nematus' |
+| Option | Description                   | Required 		 | Possible Values 			 		| Default Value  |
+|:------:|:------------------------------|:-----------------:|:---------------------------------|:---------------|
+| -i     | input alignment file			 | yes     			 | Path to file						|				 |
+| -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'| 'web'			 |
+| -s     | source sentence subword units | For Neural Monkey | Path to file			  	 		|				 |
+| -t     | target sentence subword units | For Neural Monkey | Path to file			  	 		|				 |
+| -f     | Where are the alignments from | yes      		 | 'NeuralMonkey', 'Nematus' 		| 'NeuralMonkey' |
 
 Screenshots:
   - Block
