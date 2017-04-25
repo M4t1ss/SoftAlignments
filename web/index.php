@@ -9,12 +9,9 @@ foreach(glob('./data/*', GLOB_ONLYDIR) as $dir) {
 
 // What do we want to see?
 if (!isset($_GET['s'])){
-	$sentence = 0;
+	$sentence = 1;
 }else{
 	$sentence = $_GET['s'];
-	if(isset($_GET['changeNum'])){
-		$sentence--;
-	}
 }
 if (!isset($_GET['directory'])){
 	$dataDir = $dataDirs[0];
@@ -23,10 +20,26 @@ if (!isset($_GET['directory'])){
 }
 $dataFiles = cleanDirArray(scandir("./data/".$dataDir));
 
+//Get the data files
 $alignments = "./data/".$dataDir."/".array_pop(preg_grep("/\.ali\.js/", $dataFiles));
 $sources = "./data/".$dataDir."/".array_pop(preg_grep("/\.src\.js/", $dataFiles));
 $targets = "./data/".$dataDir."/".array_pop(preg_grep("/\.trg\.js/", $dataFiles));
 $count = getLineCount($alignments)-3;
+
+//Show only existing sentences
+$sentence=$sentence<1?1:$sentence;
+$sentence=$sentence>$count?$count:$sentence;
+
+//Load only the one line from each input file
+$f1 = new SplFileObject($alignments);
+$f2 = new SplFileObject($sources);
+$f3 = new SplFileObject($targets);
+
+//The line of the sentence
+$f1->seek($sentence);
+$f2->seek($sentence);
+$f3->seek($sentence);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,38 +58,35 @@ $count = getLineCount($alignments)-3;
 </head>
 <body>
 <b>Neural MT alignment visualization</b> <small>(forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nematus utils</a>)</small><br/>
-<div style="display:block;position:absolute; width:90%; text-align:center;">
-<form action="?">
-	Data directory: <select name="directory" onchange="this.form.submit()">
-	<?php 
-	foreach($dataDirs as $directory){
-		$selected = $dataDir==$directory?" SELECTED":"";
-		echo "<option value='$directory'$selected>$directory</option>";
-	}
-	?>
-	</select>
-</form>
-</div> 
-<a href="?s=<?php echo $sentence>0?$sentence-1:$count-1;?>&directory=<?php echo $dataDir; ?>">< previous</a>
-<div style="position:absolute; width:90%; text-align:center; display:block; padding-top:6px;">
-	<form action="?" method="GET">
-		Showing sentence <input name="s" value="<?php echo $sentence+1; ?>" type="text" style="width:18px; height:14px;"/>. <input type="submit" value="Change"/>
+<div style="text-align:center; display:block;">
+	<form action="?">
+		<span>Data directory: </span><select name="directory" onchange="this.form.submit()">
+		<?php 
+		foreach($dataDirs as $directory){
+			$selected = $dataDir==$directory?" SELECTED":"";
+			echo "<option value='$directory'$selected>$directory</option>";
+		}
+		?>
+		</select>
+	</form><br/>
+	<form action="?" method="GET" style="margin-top:-10px;">
+		Showing sentence <input name="s" value="<?php echo $sentence; ?>" type="text" style="width:35px; height:14px;"/>. <input type="submit" value="Change"/>
 		<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
 		<input type="hidden" name="changeNum" value="True" />
-	</form>
+	</form><br/>
+	<a style="display:inline; float:left;margin-top:-50px;" href="?s=<?php echo $sentence>1?$sentence-1:$count;?>&directory=<?php echo $dataDir; ?>">< previous</a>
+	<a style="display:inline; float:right;margin-top:-50px;" href="?s=<?php echo $sentence<$count?$sentence+1:1;?>&directory=<?php echo $dataDir; ?>"> next ></a>
 </div>
-<a href="?s=<?php echo $sentence<$count-1?$sentence+1:0;?>&directory=<?php echo $dataDir; ?>" style="float:right;"> next ></a>
 <div id="area1"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="attentionMR.js"></script>
 <script>
-<?php include($alignments); ?>; 
-<?php include($sources); ?>; 
-<?php include($targets); ?>; 
-var target = [targets[<?php echo $sentence;?>]];
-var source = [sources[<?php echo $sentence;?>]];
-var alignment_data=alignments[<?php echo $sentence;?>];
-
+<?php
+//Data for our selected sentence
+echo "var alignment_data = ".str_replace("], ],","] ];",$f1->current());
+echo "var source = [".str_replace("],","]];",$f2->current());
+echo "var target = [".str_replace("],","]];",$f3->current());
+?>
 var width = 2200, height = 690, margin ={b:0, t:60, l:-20, r:0};
 var c = "area1";
 var svg = d3.select("#area1")
