@@ -15,9 +15,7 @@
 			sData.keys[0].map( function(d){ return sData.keys[1].map( function(v){ return 0; });}) 
 		];
 		data.forEach(function(d){ 
-			if(sData.data[2][d[2]] != undefined){
-				sData.data[2][d[0]][d[2]] = d[1];
-			}
+			sData.data[2][d[0]][d[2]] = d[1];
 		});
 		return sData;
 	}
