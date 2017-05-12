@@ -40,6 +40,15 @@ $f1->seek($sentence);
 $f2->seek($sentence);
 $f3->seek($sentence);
 
+$source = str_replace('", "', ' ', $f2->current());
+$target = str_replace('", "', ' ', $f3->current());
+$source = str_replace('"],', '', $source);
+$target = str_replace('"],', '', $target);
+$source = str_replace('["', '', $source);
+$target = str_replace('["', '', $target);
+$source = str_replace('@@ ', '', $source);
+$target = str_replace('@@ ', '', $target);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +86,9 @@ $f3->seek($sentence);
 	<a style="display:inline; float:left;margin-top:-50px;" href="?s=<?php echo $sentence>1?$sentence-1:$count;?>&directory=<?php echo $dataDir; ?>">< previous</a>
 	<a style="display:inline; float:right;margin-top:-50px;" href="?s=<?php echo $sentence<$count?$sentence+1:1;?>&directory=<?php echo $dataDir; ?>"> next ></a>
 </div>
+<p style="text-align:center; margin-bottom:-70px;"><?php echo $source; ?></p>
 <div id="area1"></div>
+<p style="text-align:center; margin-top:-10px;"><?php echo $target; ?></p>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="attentionMR.js"></script>
 <script>
