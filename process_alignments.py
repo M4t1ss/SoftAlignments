@@ -310,7 +310,8 @@ def main(argv):
             out_t_js.write(']')
             
    # Get rid of some junk
-   os.remove(inputfile)
+   if from_system == 'NeuralMonkey':
+       os.remove(inputfile)
    if outputType == 'web':
        os.remove(inputfileName + '.' + outputType + '.txt')
    else:
