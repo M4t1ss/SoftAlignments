@@ -84,6 +84,9 @@ def main(argv):
    
    if from_system == 'Nematus':
         inputfileName = inputfile
+   elif from_system == 'NeuralMonkey':
+        inputfileName = inputfile
+        inputfile = inputfile + '.txt'
             
    with open(inputfile) as infile:
         with open(inputfileName + '.' + outputType +'.txt', 'w') as outfile:
@@ -106,8 +109,8 @@ def main(argv):
                    if wasNew:
                       if from_system == 'Nematus':
                            lineparts = line.split(' ||| ')
-                           sourceline = lineparts[1]
-                           targetline = lineparts[3]
+                           targetline = lineparts[1]
+                           sourceline = lineparts[3]
                            sourcelines.append(sourceline + ' <EOS>')
                            targetlines.append(targetline + ' <EOS>')
                            stokens = sourceline.split(' ')
@@ -123,17 +126,23 @@ def main(argv):
                            out_a_js.write('[')
                        wasNew = False
                    if line != '\n' and line != '\r\n':
-                       if word > len(stokens)-1:
+                       if from_system == 'NeuralMonkey' and word > len(stokens)-1:
+                           continue
+                       if from_system == 'Nematus' and word > len(ttokens)-1:
                            continue
                        lineParts = line.split()
                        linePartC=0
                        #width
                        for linePart in lineParts:
-                           if linePartC > len(ttokens)-1:
+                           if from_system == 'NeuralMonkey' and linePartC > len(ttokens)-1:
+                               continue
+                           if from_system == 'Nematus' and linePartC > len(stokens)-1:
                                continue
                            if linePartC < len(lineParts) and linePart.replace("  ", " ").replace("  ", " ").replace("  ", " ") != "":
-                               if outputType == 'web':
+                               if from_system == 'NeuralMonkey' and outputType == 'web':
                                    out_a_js.write('['+`word`+', ' + linePart + ', '+`linePartC`+'], ')
+                               if from_system == 'Nematus' and outputType == 'web':
+                                   out_a_js.write('['+`linePartC`+', ' + linePart + ', '+`word`+'], ')
                                linePartC+=1
                            if outputType == 'color':
                                if float(linePart) == 0:
