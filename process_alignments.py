@@ -82,9 +82,8 @@ def main(argv):
                # a break to indicate different sentences...
                outfile.write('\n')
    
-   if from_system == 'NeuralMonkey':
+   if from_system == 'Nematus':
         inputfileName = inputfile
-        inputfile = inputfile + '.txt'
             
    with open(inputfile) as infile:
         with open(inputfileName + '.' + outputType +'.txt', 'w') as outfile:
