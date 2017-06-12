@@ -125,8 +125,6 @@ def main(argv):
                         stokens = targetline.split(' ')
                         stokens.append('<EOS>')
                         ttokens.append('<EOS>')
-                        print stokens
-                        print ttokens
                         if outputType == 'web':
                             out_a_js.write('[')
                         wasNew = False
@@ -327,8 +325,8 @@ def main(argv):
     if from_system == 'NeuralMonkey':
         os.remove(inputfile)
     if outputType == 'web':
-        webbrowser.open("http://127.0.0.1:666/?directory=" + foldername)
-        os.system("php -S 127.0.0.1:666 -t web")
+        webbrowser.open("http://127.0.0.1:6666/?directory=" + foldername)
+        os.system("php -S 127.0.0.1:6666 -t web")
     else:
         os.remove(folder + "/" + ntpath.basename(inputfileName) + '.ali.js')
 
