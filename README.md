@@ -1,21 +1,21 @@
 # NMT soft alignment visualizations
 Soft alignment visualizations tools for command line and web. Parts of the web version are borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
 
-Features
+Usage
 ---------
 
   - Train a neural MT system (like [Neural Monkey](https://github.com/ufal/neuralmonkey/) or [Nematus](https://github.com/rsennrich/nematus/))
   - Translate text and get word or subword level alignments
   - Visualize the alignments
     - in the command line standard output
-    - in a web browser
+    - in a web browser (PHP required)
 
 Requirements
 ---------
 
 * Python 2 or 3
 
-* PHP 5.4 or newer
+* PHP 5.4 or newer (for web visualization)
 
 How to get alignment files from NMT systems
 ---------
