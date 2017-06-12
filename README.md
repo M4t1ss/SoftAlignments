@@ -17,6 +17,34 @@ Requirements
 
 * PHP 5.4 or newer
 
+How to get alignment files from NMT systems
+---------
+
+* Nematus
+ * Run [**nematus/translate.py**](https://github.com/rsennrich/nematus/#using-a-trained-model) with the **--output_alignment** or **-a** parameter
+
+* Neural Monkey
+ * In the training.ini file add
+ 
+ ```sh
+ [alignment_saver]
+ class=runners.word_alignment_runner.WordAlignmentRunner
+ output_series="ali"
+ encoder=<encoder>
+ decoder=<decoder>
+ ```
+ 
+ and add __alignment_saver__ to the __runners__ in **main**
+ 
+ ```sh
+ runners=[<runner_greedy>, <alignment_saver>]
+ ```
+ 
+ * In the translation.ini file in **eval_data** add
+ ```sh
+ s_ali_out="out.alignment"
+ ```
+
 Examples
 ---------
 
