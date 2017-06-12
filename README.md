@@ -84,16 +84,8 @@ Parameters for process_alignments.py
 
 Screenshots
 ---------
+Color, Block, Block2  
+![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/screenshots/blockAlignments.PNG?raw=true) ![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/screenshots/block2.png?raw=true) ![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/screenshots/colorAlignments.PNG?raw=true)
 
-  - Block
-  
-![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/screenshots/blockAlignments.PNG?raw=true)
-  - Block2
-  
-![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/screenshots/block2.png?raw=true)
-  - Color
-  
-![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/screenshots/colorAlignments.PNG?raw=true)
-  - Web
-  
+Web
 ![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/screenshots/webAlignments.PNG?raw=true)
