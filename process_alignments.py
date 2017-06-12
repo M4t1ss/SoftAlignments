@@ -4,6 +4,9 @@ import sys, getopt
 import numpy as np
 import string
 import os
+import webbrowser
+from time import gmtime, strftime
+import ntpath
 
 def main(argv):
    try:
@@ -87,9 +90,13 @@ def main(argv):
    elif from_system == 'NeuralMonkey':
         inputfileName = inputfile
         inputfile = inputfile + '.txt'
+
+   foldername = ntpath.basename(inputfileName).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
+   folder = './web/data/' + foldername
+   os.mkdir(folder)
             
    with open(inputfile) as infile:
-        with open(inputfileName + '.ali.js', 'w') as out_a_js:
+        with open(folder + "/" + ntpath.basename(inputfileName) + '.ali.js', 'w') as out_a_js:
             if outputType == 'web':
                 out_a_js.write('var alignments = [\n')
             sent = 0
@@ -303,13 +310,13 @@ def main(argv):
    
 
    if outputType == 'web':
-       with open(inputfileName + '.src.js', 'w') as out_s_js:
+       with open(folder + "/" + ntpath.basename(inputfileName) + '.src.js', 'w') as out_s_js:
             out_s_js.write('var sources = [\n')
             for line in sourcelines:
                 out_s_js.write('["'+ line.replace(' ','", "') +'"], \n')
             out_s_js.write(']')
        
-       with open(inputfileName + '.trg.js', 'w') as out_t_js:
+       with open(folder + "/" + ntpath.basename(inputfileName) + '.trg.js', 'w') as out_t_js:
             out_t_js.write('var targets = [\n')
             for line in targetlines:
                 out_t_js.write('["'+ line.replace(' ','", "') +'"], \n')
@@ -318,8 +325,11 @@ def main(argv):
    # Get rid of some junk
    if from_system == 'NeuralMonkey':
        os.remove(inputfile)
+   if outputType == 'web':
+       webbrowser.open("http://127.0.0.1:666/?directory=" + foldername)
+       os.system("php -S 127.0.0.1:666 -t web")
    else:
-       os.remove(inputfileName + '.ali.js')
+       os.remove(folder + "/" + ntpath.basename(inputfileName) + '.ali.js')
 
 if __name__ == "__main__":
    main(sys.argv[1:])
