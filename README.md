@@ -51,16 +51,16 @@ Examples
 	-f NeuralMonkey
 	```
 	
-  or
-	
-	```sh
-	python process_alignments.py \
-	-i test_data/alignments_neural_monkey.npy \
-	-o block2 \
-	-s test_data/test.src.en.bpe \
-	-t test.out.lv.bpe \
-	-f NeuralMonkey
-	```
+	  or
+		
+		```sh
+		python process_alignments.py \
+		-i test_data/alignments_neural_monkey.npy \
+		-o block2 \
+		-s test_data/test.src.en.bpe \
+		-t test.out.lv.bpe \
+		-f NeuralMonkey
+		```
 	
   - in the browser as links between words (demo [here](http://lielakeda.lv/other/NLP/alignments/?s=19))
 	
