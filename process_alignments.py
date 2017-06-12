@@ -7,18 +7,19 @@ import os
 import webbrowser
 from time import gmtime, strftime
 import ntpath
+from io import open
 
 def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hi:o:s:t:f:")
     except getopt.GetoptError:
-        print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
-        print 'outputType can be block or color'
+        print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
+        print ('outputType can be block or color')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
-            print 'outputType can be web, block, block2, color'
+            print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
+            print ('outputType can be web, block, block2, color')
             sys.exit()
         elif opt == '-i':
             inputfile = arg
@@ -33,10 +34,10 @@ def main(argv):
     try:
         inputfile
     except NameError:
-        print "Provide an input file!"
-        print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
-        print 'output_type can be web (default), block, block2 or color'
-        print 'from_system can be Nematus or NeuralMonkey (default)'
+        print ('Provide an input file!')
+        print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
+        print ('output_type can be web (default), block, block2 or color')
+        print ('from_system can be Nematus or NeuralMonkey (default)')
         sys.exit()
     try:
         from_system
@@ -51,18 +52,18 @@ def main(argv):
         try:
             sourcefile
         except NameError:
-            print "Provide an source sentence file!"
-            print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
-            print 'output_type can be web (default), block, block2 or color'
-            print 'from_system can be Nematus or NeuralMonkey (default)'
+            print ('Provide an source sentence file!')
+            print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
+            print ('output_type can be web (default), block, block2 or color')
+            print ('from_system can be Nematus or NeuralMonkey (default)')
             sys.exit()
         try:
             targetfile
         except NameError:
-            print "Provide an target sentence file!"
-            print 'process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>'
-            print 'output_type can be web (default), block, block2 or color'
-            print 'from_system can be Nematus or NeuralMonkey (default)'
+            print ('Provide an target sentence file!')
+            print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
+            print ('output_type can be web (default), block, block2 or color')
+            print ('from_system can be Nematus or NeuralMonkey (default)')
             sys.exit()
     if outputType != 'color' and outputType != 'block' and outputType != 'block2':
         # Set output type to 'web' by default
@@ -72,17 +73,18 @@ def main(argv):
         data = np.load(inputfile)
 
         # Read source and target sentences
-        sourcelines = [line.rstrip('\n') for line in open(sourcefile)]
-        targetlines = [line.rstrip('\n') for line in open(targetfile)]
+        sourcelines = [line.rstrip('\n') for line in open(sourcefile, encoding='utf-8')]
+        targetlines = [line.rstrip('\n') for line in open(targetfile, encoding='utf-8')]
 
-        with file(inputfile + '.txt', 'w') as outfile:
+        with open(inputfile + '.txt', 'wb') as outfile:
             for data_slice in data:
                 # values in left-justified columns 7 characters in width
                 # with 2 decimal places.  
                 np.savetxt(outfile, data_slice, fmt='%-7.2f')
 
                 # a break to indicate different sentences...
-                outfile.write('\n')
+                newline = str(0) + "\n\n"
+                outfile.write(newline.encode('utf-8'))
    
     if from_system == 'Nematus':
         inputfileName = inputfile
@@ -100,7 +102,7 @@ def main(argv):
     with open(inputfile) as infile:
         with open(folder + "/" + ntpath.basename(inputfileName) + '.ali.js', 'w') as out_a_js:
             if outputType == 'web':
-                out_a_js.write('var alignments = [\n')
+                out_a_js.write(u'var alignments = [\n')
             sent = 0
             word = 0
             wasNew = True
@@ -126,12 +128,12 @@ def main(argv):
                         stokens.append('<EOS>')
                         ttokens.append('<EOS>')
                         if outputType == 'web':
-                            out_a_js.write('[')
+                            out_a_js.write(u'[')
                         wasNew = False
                         continue
                     elif from_system == 'NeuralMonkey':
                         if outputType == 'web':
-                            out_a_js.write('[')
+                            out_a_js.write(u'[')
                     wasNew = False
                 if line != '\n' and line != '\r\n':
                     if word > len(stokens)-1:
@@ -144,9 +146,9 @@ def main(argv):
                             continue
                         if linePartC < len(lineParts) and linePart.replace("  ", " ").replace("  ", " ").replace("  ", " ") != "":
                             if from_system == 'NeuralMonkey' and outputType == 'web':
-                                out_a_js.write('['+`word`+', ' + linePart + ', '+`linePartC`+'], ')
+                                out_a_js.write('['+repr(word)+', ' + linePart + ', '+repr(linePartC)+'], ')
                             if from_system == 'Nematus' and outputType == 'web':
-                                out_a_js.write('['+`linePartC`+', ' + linePart + ', '+`word`+'], ')
+                                out_a_js.write('['+repr(linePartC)+', ' + linePart + ', '+repr(word)+'], ')
                             linePartC+=1
                         if outputType == 'color':
                             if float(linePart) == 0:
@@ -250,7 +252,7 @@ def main(argv):
                     for tword in ttokens:
                         columns = len(ttokens)
                         # Some characters use multiple symbols. Need to decode and then encode...
-                        twchars = list(tword.decode("utf-8"))
+                        twchars = list(tword)
                         twlen = len(twchars)
                         xpos = tw * 2
                         emptyline = 0
@@ -274,9 +276,9 @@ def main(argv):
 
                         for charindex in range(0, twlen):
                             if xpos+charindex == len(outchars[emptyline]):
-                                outchars[emptyline].append(twchars[charindex].encode("utf-8"))
+                                outchars[emptyline].append(twchars[charindex])
                             else:
-                                outchars[emptyline][charindex] = twchars[charindex].encode("utf-8")
+                                outchars[emptyline][charindex] = twchars[charindex]
                                                          
                         if len(occupied_to) <= emptyline:
                             occupied_to.append(xpos+twlen+1)
@@ -299,34 +301,34 @@ def main(argv):
                     word = 0
                     wasNew = True
                     if outputType == 'web':
-                        out_a_js.write('], \n')
+                        out_a_js.write(u'], \n')
                     if outputType != 'web':
                         sys.stdout.write('\n')
                 if atEnd:
                     atEnd = False
                     continue
             if outputType == 'web':
-                out_a_js.write('\n]')
+                out_a_js.write(u'\n]')
    
     if outputType == 'web':
         with open(folder + "/" + ntpath.basename(inputfileName) + '.src.js', 'w') as out_s_js:
-            out_s_js.write('var sources = [\n')
+            out_s_js.write(u'var sources = [\n')
             for line in sourcelines:
                 out_s_js.write('["'+ line.replace(' ','", "') +'"], \n')
-            out_s_js.write(']')
+            out_s_js.write(u']')
        
         with open(folder + "/" + ntpath.basename(inputfileName) + '.trg.js', 'w') as out_t_js:
-            out_t_js.write('var targets = [\n')
+            out_t_js.write(u'var targets = [\n')
             for line in targetlines:
                 out_t_js.write('["'+ line.replace(' ','", "') +'"], \n')
-            out_t_js.write(']')
+            out_t_js.write(u']')
             
     # Get rid of some junk
     if from_system == 'NeuralMonkey':
         os.remove(inputfile)
     if outputType == 'web':
-        webbrowser.open("http://127.0.0.1:6666/?directory=" + foldername)
-        os.system("php -S 127.0.0.1:6666 -t web")
+        webbrowser.open("http://127.0.0.1:47155/?directory=" + foldername)
+        os.system("php -S 127.0.0.1:47155 -t web")
     else:
         os.remove(folder + "/" + ntpath.basename(inputfileName) + '.ali.js')
 
