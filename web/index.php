@@ -121,7 +121,7 @@ $target = str_replace('@@ ', '', $target);
       </ul>
       <ul class="nav navbar-nav navbar-right">
 		<li><p class="navbar-text">Data directory</p></li>
-        <li style="padding-top:8px;">
+        <li style="padding-top:8px; padding-right:5px;">
 			<form action="?">
 				<select class="selectpicker" data-live-search="true" name="directory" onchange="this.form.submit()">
 				<?php 

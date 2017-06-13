@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
+import thecode
 import sys, getopt
 import numpy as np
 import string
@@ -8,6 +9,135 @@ import webbrowser
 from time import gmtime, strftime
 import ntpath
 from io import open
+from io import StringIO
+
+def printColor(value):
+    if float(value) == 0:
+        sys.stdout.write('[48;5;232m[K  [m[K' )
+    elif float(value) > 0.00 and float(value) <= 0.04:
+        sys.stdout.write('[48;5;233m[K  [m[K' )
+    elif float(value) > 0.04 and float(value) <= 0.08:
+        sys.stdout.write('[48;5;234m[K  [m[K' )
+    elif float(value) > 0.08 and float(value) <= 0.13:
+        sys.stdout.write('[48;5;235m[K  [m[K' )
+    elif float(value) > 0.13 and float(value) <= 0.17:
+        sys.stdout.write('[48;5;236m[K  [m[K' )
+    elif float(value) > 0.17 and float(value) <= 0.21:
+        sys.stdout.write('[48;5;237m[K  [m[K' )
+    elif float(value) > 0.21 and float(value) <= 0.25:
+        sys.stdout.write('[48;5;238m[K  [m[K' )
+    elif float(value) > 0.25 and float(value) <= 0.29:
+        sys.stdout.write('[48;5;239m[K  [m[K' )
+    elif float(value) > 0.29 and float(value) <= 0.33:
+        sys.stdout.write('[48;5;240m[K  [m[K' )
+    elif float(value) > 0.33 and float(value) <= 0.38:
+        sys.stdout.write('[48;5;241m[K  [m[K' )
+    elif float(value) > 0.38 and float(value) <= 0.42:
+        sys.stdout.write('[48;5;242m[K  [m[K' )
+    elif float(value) > 0.42 and float(value) <= 0.46:
+        sys.stdout.write('[48;5;243m[K  [m[K' )
+    elif float(value) > 0.46 and float(value) <= 0.50:
+        sys.stdout.write('[48;5;244m[K  [m[K' )
+    elif float(value) > 0.50 and float(value) <= 0.54:
+        sys.stdout.write('[48;5;245m[K  [m[K' )
+    elif float(value) > 0.54 and float(value) <= 0.58:
+        sys.stdout.write('[48;5;246m[K  [m[K' )
+    elif float(value) > 0.58 and float(value) <= 0.63:
+        sys.stdout.write('[48;5;247m[K  [m[K' )
+    elif float(value) > 0.63 and float(value) <= 0.67:
+        sys.stdout.write('[48;5;248m[K  [m[K' )
+    elif float(value) > 0.67 and float(value) <= 0.71:
+        sys.stdout.write('[48;5;249m[K  [m[K' )
+    elif float(value) > 0.71 and float(value) <= 0.75:
+        sys.stdout.write('[48;5;250m[K  [m[K' )
+    elif float(value) > 0.75 and float(value) <= 0.79:
+        sys.stdout.write('[48;5;251m[K  [m[K' )
+    elif float(value) > 0.79 and float(value) <= 0.83:
+        sys.stdout.write('[48;5;252m[K  [m[K' )
+    elif float(value) > 0.83 and float(value) <= 0.88:
+        sys.stdout.write('[48;5;253m[K  [m[K' )
+    elif float(value) > 0.88 and float(value) <= 0.92:
+        sys.stdout.write('[48;5;254m[K  [m[K' )
+    elif float(value) > 0.92 and float(value) <= 0.96:
+        sys.stdout.write('[48;5;255m[K  [m[K' )
+    elif float(value) > 0.96 and float(value) <= 1:
+        sys.stdout.write('[48;5;255m[K  [m[K' )
+    else:
+        sys.stdout.write('[48;5;232m[K  [m[K' )
+
+def printBlock2(value):
+    if float(value) == 0:
+        sys.stdout.write('██')
+    elif float(value) > 0 and float(value) <= 0.125:
+        sys.stdout.write('▉▉')
+    elif float(value) > 0.125 and float(value) <= 0.250:
+        sys.stdout.write('▊▊')
+    elif float(value) > 0.250 and float(value) <= 0.375:
+        sys.stdout.write('▋▋')
+    elif float(value) > 0.375 and float(value) <= 0.500:
+        sys.stdout.write('▌▌')
+    elif float(value) > 0.500 and float(value) <= 0.625:
+        sys.stdout.write('▍▍')
+    elif float(value) > 0.625 and float(value) <= 0.750:
+        sys.stdout.write('▎▎')
+    elif float(value) > 0.750 and float(value) <= 0.875:
+        sys.stdout.write('▏▏')
+    elif float(value) > 0.875 and float(value) <= 1:
+        sys.stdout.write('  ')
+    else:
+        sys.stdout.write('██')
+        
+def printBlock(value):
+    if float(value) == 0:
+        sys.stdout.write('██')
+    elif float(value) > 0 and float(value) <= 0.25:
+        sys.stdout.write('▓▓')
+    elif float(value) > 0.25 and float(value) <= 0.5:
+        sys.stdout.write('▒▒')
+    elif float(value) > 0.5 and float(value) <= 0.75:
+        sys.stdout.write('░░')
+    elif float(value) > 0.75 and float(value) <= 1:
+        sys.stdout.write('  ')
+    else:
+        sys.stdout.write('██')
+        
+def readSnts(filename):
+    with open(filename, 'r', encoding='utf-8') as fh:
+        return [line.strip().split() for line in fh]
+
+def readNematus(filename):
+    with open(filename, 'r', encoding='utf-8') as fh:
+        alis = []
+        tgts = []
+        srcs = []
+        wasNew = True
+        aliTXT = ''
+        for line in fh:
+            if wasNew:
+                if len(aliTXT) > 0:
+                    c = StringIO(aliTXT)
+                    ali = np.loadtxt(c)
+                    ali = ali.transpose()
+                    alis.append(ali)
+                    aliTXT = ''
+                lineparts = line.split(' ||| ')
+                lineparts[1] += ' <EOS>'
+                lineparts[3] += ' <EOS>'
+                tgts.append(lineparts[1].strip().split())
+                srcs.append(lineparts[3].strip().split())
+                wasNew = False
+                continue
+            if line != '\n' and line != '\r\n':
+                aliTXT += line
+            else:
+                wasNew = True
+        if len(aliTXT) > 0:
+            c = StringIO(aliTXT)
+            ali = np.loadtxt(c)
+            ali = ali.transpose()
+            alis.append(ali)
+            aliTXT = ''
+    return srcs, tgts, alis
 
 def main(argv):
     try:
@@ -69,188 +199,72 @@ def main(argv):
         # Set output type to 'web' by default
         outputType = 'web'
 
-    if from_system == 'NeuralMonkey':
-        data = np.load(inputfile)
+    if from_system == "NeuralMonkey":
+        srcs = readSnts(sourcefile)
+        tgts = readSnts(targetfile)
+        alis = np.load(inputfile)
+    if from_system == "Nematus":
+        (srcs, tgts, alis) = readNematus(inputfile)
 
-        # Read source and target sentences
-        sourcelines = [line.rstrip('\n') for line in open(sourcefile, encoding='utf-8')]
-        targetlines = [line.rstrip('\n') for line in open(targetfile, encoding='utf-8')]
+    commonData = list(zip(srcs, tgts, alis))
 
-        with open(inputfile + '.txt', 'wb') as outfile:
-            for data_slice in data:
-                # values in left-justified columns 7 characters in width
-                # with 2 decimal places.  
-                np.savetxt(outfile, data_slice, fmt='%-7.2f')
-
-                # a break to indicate different sentences...
-                newline = str(0) + "\n\n"
-                outfile.write(newline.encode('utf-8'))
-   
-    if from_system == 'Nematus':
-        inputfileName = inputfile
-    elif from_system == 'NeuralMonkey':
-        inputfileName = inputfile
-        inputfile = inputfile + '.txt'
-
-    foldername = ntpath.basename(inputfileName).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
+    foldername = ntpath.basename(inputfile).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
     folder = './web/data/' + foldername
     try:
         os.stat(folder)
     except:
         os.mkdir(folder)
-            
-    with open(inputfile) as infile:
-        with open(folder + "/" + ntpath.basename(inputfileName) + '.ali.js', 'w') as out_a_js:
-            if outputType == 'web':
+        
+    with open(folder + "/" + ntpath.basename(inputfile) + '.ali.js', 'w', encoding='utf-8') as out_a_js:
+        with open(folder + "/" + ntpath.basename(inputfile) + '.src.js', 'w', encoding='utf-8') as out_s_js:
+            with open(folder + "/" + ntpath.basename(inputfile) + '.trg.js', 'w', encoding='utf-8') as out_t_js:
                 out_a_js.write(u'var alignments = [\n')
-            sent = 0
-            word = 0
-            wasNew = True
-            atEnd = False
-            if from_system == 'Nematus':
-                sourcelines = []
-                targetlines = []
-            if from_system == 'NeuralMonkey':
-                stokens = sourcelines[sent].split(' ')
-                ttokens = targetlines[sent].split(' ')
-
-            #height
-            for line in infile:
-                if wasNew:
-                    if from_system == 'Nematus':
-                        lineparts = line.split(' ||| ')
-                        targetline = lineparts[1]
-                        sourceline = lineparts[3]
-                        sourcelines.append(sourceline + ' <EOS>')
-                        targetlines.append(targetline + ' <EOS>')
-                        ttokens = sourceline.split(' ')
-                        stokens = targetline.split(' ')
-                        stokens.append('<EOS>')
-                        ttokens.append('<EOS>')
-                        if outputType == 'web':
-                            out_a_js.write(u'[')
-                        wasNew = False
-                        continue
-                    elif from_system == 'NeuralMonkey':
-                        if outputType == 'web':
-                            out_a_js.write(u'[')
-                    wasNew = False
-                if line != '\n' and line != '\r\n':
-                    if word > len(stokens)-1:
-                        continue
-                    lineParts = line.split()
-                    linePartC=0
-                    #width
-                    for linePart in lineParts:
-                        if linePartC > len(ttokens)-1:
-                            continue
-                        if linePartC < len(lineParts) and linePart.replace("  ", " ").replace("  ", " ").replace("  ", " ") != "":
-                            if from_system == 'NeuralMonkey' and outputType == 'web':
-                                out_a_js.write('['+repr(word)+', ' + linePart + ', '+repr(linePartC)+'], ')
-                            if from_system == 'Nematus' and outputType == 'web':
-                                out_a_js.write('['+repr(linePartC)+', ' + linePart + ', '+repr(word)+'], ')
+                out_s_js.write(u'var sources = [\n')
+                out_t_js.write(u'var targets = [\n')
+                for i in range(0, len(commonData)):
+                    (src, tgt, rawAli) = commonData[i]
+                        
+                    ssentence = " ".join(src)
+                    tsentence = " ".join(tgt)
+                    out_s_js.write('["'+ ssentence.replace(' ','", "') +'"], \n')
+                    out_t_js.write('["'+ tsentence.replace(' ','", "') +'"], \n')
+                    
+                    if outputType == 'web' and from_system == 'Nematus':
+                        rawAli = rawAli.transpose()
+                        ali = [l[:len(src)] for l in rawAli[:len(tgt)]]
+                    else:
+                        ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
+                    
+                    word = 0
+                    out_a_js.write(u'[')
+                    for ali_i in ali:
+                        linePartC=0
+                        for ali_j in ali_i:
+                            if from_system == 'Nematus':
+                                out_a_js.write(u'['+repr(linePartC)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(word)+u'], ')
+                            else:
+                                out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
                             linePartC+=1
-                        if outputType == 'color':
-                            if float(linePart) == 0:
-                                sys.stdout.write('[48;5;232m[K  [m[K' )
-                            elif float(linePart) > 0.00 and float(linePart) <= 0.04:
-                                sys.stdout.write('[48;5;233m[K  [m[K' )
-                            elif float(linePart) > 0.04 and float(linePart) <= 0.08:
-                                sys.stdout.write('[48;5;234m[K  [m[K' )
-                            elif float(linePart) > 0.08 and float(linePart) <= 0.13:
-                                sys.stdout.write('[48;5;235m[K  [m[K' )
-                            elif float(linePart) > 0.13 and float(linePart) <= 0.17:
-                                sys.stdout.write('[48;5;236m[K  [m[K' )
-                            elif float(linePart) > 0.17 and float(linePart) <= 0.21:
-                                sys.stdout.write('[48;5;237m[K  [m[K' )
-                            elif float(linePart) > 0.21 and float(linePart) <= 0.25:
-                                sys.stdout.write('[48;5;238m[K  [m[K' )
-                            elif float(linePart) > 0.25 and float(linePart) <= 0.29:
-                                sys.stdout.write('[48;5;239m[K  [m[K' )
-                            elif float(linePart) > 0.29 and float(linePart) <= 0.33:
-                                sys.stdout.write('[48;5;240m[K  [m[K' )
-                            elif float(linePart) > 0.33 and float(linePart) <= 0.38:
-                                sys.stdout.write('[48;5;241m[K  [m[K' )
-                            elif float(linePart) > 0.38 and float(linePart) <= 0.42:
-                                sys.stdout.write('[48;5;242m[K  [m[K' )
-                            elif float(linePart) > 0.42 and float(linePart) <= 0.46:
-                                sys.stdout.write('[48;5;243m[K  [m[K' )
-                            elif float(linePart) > 0.46 and float(linePart) <= 0.50:
-                                sys.stdout.write('[48;5;244m[K  [m[K' )
-                            elif float(linePart) > 0.50 and float(linePart) <= 0.54:
-                                sys.stdout.write('[48;5;245m[K  [m[K' )
-                            elif float(linePart) > 0.54 and float(linePart) <= 0.58:
-                                sys.stdout.write('[48;5;246m[K  [m[K' )
-                            elif float(linePart) > 0.58 and float(linePart) <= 0.63:
-                                sys.stdout.write('[48;5;247m[K  [m[K' )
-                            elif float(linePart) > 0.63 and float(linePart) <= 0.67:
-                                sys.stdout.write('[48;5;248m[K  [m[K' )
-                            elif float(linePart) > 0.67 and float(linePart) <= 0.71:
-                                sys.stdout.write('[48;5;249m[K  [m[K' )
-                            elif float(linePart) > 0.71 and float(linePart) <= 0.75:
-                                sys.stdout.write('[48;5;250m[K  [m[K' )
-                            elif float(linePart) > 0.75 and float(linePart) <= 0.79:
-                                sys.stdout.write('[48;5;251m[K  [m[K' )
-                            elif float(linePart) > 0.79 and float(linePart) <= 0.83:
-                                sys.stdout.write('[48;5;252m[K  [m[K' )
-                            elif float(linePart) > 0.83 and float(linePart) <= 0.88:
-                                sys.stdout.write('[48;5;253m[K  [m[K' )
-                            elif float(linePart) > 0.88 and float(linePart) <= 0.92:
-                                sys.stdout.write('[48;5;254m[K  [m[K' )
-                            elif float(linePart) > 0.92 and float(linePart) <= 0.96:
-                                sys.stdout.write('[48;5;255m[K  [m[K' )
-                            elif float(linePart) > 0.96 and float(linePart) <= 1:
-                                sys.stdout.write('[48;5;255m[K  [m[K' )
-                            else:
-                                sys.stdout.write('[48;5;232m[K  [m[K' )
-                        elif outputType == 'block':
-                            if float(linePart) == 0:
-                                sys.stdout.write('██')
-                            elif float(linePart) > 0 and float(linePart) <= 0.25:
-                                sys.stdout.write('▓▓')
-                            elif float(linePart) > 0.25 and float(linePart) <= 0.5:
-                                sys.stdout.write('▒▒')
-                            elif float(linePart) > 0.5 and float(linePart) <= 0.75:
-                                sys.stdout.write('░░')
-                            elif float(linePart) > 0.75 and float(linePart) <= 1:
-                                sys.stdout.write('  ')
-                            else:
-                                sys.stdout.write('██')
-                        elif outputType == 'block2':
-                            if float(linePart) == 0:
-                                sys.stdout.write('██')
-                            elif float(linePart) > 0 and float(linePart) <= 0.125:
-                                sys.stdout.write('▉▉')
-                            elif float(linePart) > 0.125 and float(linePart) <= 0.250:
-                                sys.stdout.write('▊▊')
-                            elif float(linePart) > 0.250 and float(linePart) <= 0.375:
-                                sys.stdout.write('▋▋')
-                            elif float(linePart) > 0.375 and float(linePart) <= 0.500:
-                                sys.stdout.write('▌▌')
-                            elif float(linePart) > 0.500 and float(linePart) <= 0.625:
-                                sys.stdout.write('▍▍')
-                            elif float(linePart) > 0.625 and float(linePart) <= 0.750:
-                                sys.stdout.write('▎▎')
-                            elif float(linePart) > 0.750 and float(linePart) <= 0.875:
-                                sys.stdout.write('▏▏')
-                            elif float(linePart) > 0.875 and float(linePart) <= 1:
-                                sys.stdout.write('  ')
-                            else:
-                                sys.stdout.write('██')
-                    if word < len(stokens) and outputType != 'web':
-                        sys.stdout.write(stokens[word])
-                    word+=1
-                    if outputType != 'web':
-                        sys.stdout.write('\n')
-                else:
+                            if outputType == 'color':
+                                printColor(ali_j)
+                            elif outputType == 'block':
+                                printBlock(ali_j)
+                            elif outputType == 'block2':
+                                printBlock2(ali_j)
+                        if outputType != 'web':
+                            sys.stdout.write(src[word])
+                        word+=1
+                        if outputType != 'web':
+                            sys.stdout.write('\n')
+                    
                     # write target sentences
                     #build 2d array
                     occupied_to = []
                     outchars = []
                     outchars.append([])
                     tw = 0
-                    for tword in ttokens:
-                        columns = len(ttokens)
+                    for tword in tgt:
+                        columns = len(tgt)
                         # Some characters use multiple symbols. Need to decode and then encode...
                         twchars = list(tword)
                         twlen = len(twchars)
@@ -293,45 +307,24 @@ def main(argv):
                             sys.stdout.write(''.join(liline) + '\n')
                    
                     # write target sentences
-                    sent+=1
-                    if from_system == 'NeuralMonkey':
-                        if len(sourcelines) >= sent+1 and len(targetlines) >= sent+1:
-                            stokens = sourcelines[sent].split(' ')
-                            ttokens = targetlines[sent].split(' ')
                     word = 0
                     wasNew = True
-                    if outputType == 'web':
-                        out_a_js.write(u'], \n')
+                    out_a_js.write(u'], \n')
                     if outputType != 'web':
                         sys.stdout.write('\n')
-                if atEnd:
-                    atEnd = False
-                    continue
-            if outputType == 'web':
                 out_a_js.write(u'\n]')
-   
-    if outputType == 'web':
-        with open(folder + "/" + ntpath.basename(inputfileName) + '.src.js', 'w') as out_s_js:
-            out_s_js.write(u'var sources = [\n')
-            for line in sourcelines:
-                out_s_js.write('["'+ line.replace(' ','", "') +'"], \n')
-            out_s_js.write(u']')
-       
-        with open(folder + "/" + ntpath.basename(inputfileName) + '.trg.js', 'w') as out_t_js:
-            out_t_js.write(u'var targets = [\n')
-            for line in targetlines:
-                out_t_js.write('["'+ line.replace(' ','", "') +'"], \n')
-            out_t_js.write(u']')
+                out_s_js.write(u']')
+                out_t_js.write(u']')
             
     # Get rid of some junk
-    if from_system == 'NeuralMonkey':
-        os.remove(inputfile)
     if outputType == 'web':
         webbrowser.open("http://127.0.0.1:47155/?directory=" + foldername)
         os.system("php -S 127.0.0.1:47155 -t web")
     else:
-        os.remove(folder + "/" + ntpath.basename(inputfileName) + '.ali.js')
+        os.remove(folder + "/" + ntpath.basename(inputfile) + '.ali.js')
+        os.remove(folder + "/" + ntpath.basename(inputfile) + '.src.js')
+        os.remove(folder + "/" + ntpath.basename(inputfile) + '.trg.js')
+        os.rmdir(folder)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-
