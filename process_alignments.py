@@ -11,6 +11,13 @@ import ntpath
 from io import open
 from io import StringIO
 
+def printHelp():
+    print ('process_alignments.py -i <input_file> [-o <output_type>] [-f <from_system>] [-s <source_sentence_file>] [-t <target_sentence_file>]')
+    print ('input_file is the file with alignment weights (required)')
+    print ('source_sentence_file and target_sentence_file are required only for NeuralMonkey')
+    print ('output_type can be web (default), block, block2 or color')
+    print ('from_system can be Nematus or NeuralMonkey (default)')
+
 def printColor(value):
     if float(value) == 0:
         sys.stdout.write('[48;5;232m[K  [m[K' )
@@ -143,13 +150,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hi:o:s:t:f:")
     except getopt.GetoptError:
-        print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
-        print ('outputType can be block or color')
+            printHelp()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
-            print ('outputType can be web, block, block2, color')
+            printHelp()
             sys.exit()
         elif opt == '-i':
             inputfile = arg
@@ -165,9 +170,7 @@ def main(argv):
         inputfile
     except NameError:
         print ('Provide an input file!')
-        print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
-        print ('output_type can be web (default), block, block2 or color')
-        print ('from_system can be Nematus or NeuralMonkey (default)')
+        printHelp()
         sys.exit()
     try:
         from_system
@@ -183,17 +186,13 @@ def main(argv):
             sourcefile
         except NameError:
             print ('Provide an source sentence file!')
-            print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
-            print ('output_type can be web (default), block, block2 or color')
-            print ('from_system can be Nematus or NeuralMonkey (default)')
+            printHelp()
             sys.exit()
         try:
             targetfile
         except NameError:
             print ('Provide an target sentence file!')
-            print ('process_alignments.py -i <input_file> -o <output_type> -s <source_sentence_file> -t <target_sentence_file> -f <from_system>')
-            print ('output_type can be web (default), block, block2 or color')
-            print ('from_system can be Nematus or NeuralMonkey (default)')
+            printHelp()
             sys.exit()
     if outputType != 'color' and outputType != 'block' and outputType != 'block2':
         # Set output type to 'web' by default
