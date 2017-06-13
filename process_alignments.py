@@ -6,10 +6,11 @@ import numpy as np
 import string
 import os
 import webbrowser
-from time import gmtime, strftime
+import math
 import ntpath
-from io import open
-from io import StringIO
+from time import gmtime, strftime
+from io import open, StringIO
+from imp import reload
 
 def printHelp():
     print ('process_alignments.py -i <input_file> [-o <output_type>] [-f <from_system>] [-s <source_sentence_file>] [-t <target_sentence_file>]')
@@ -19,94 +20,49 @@ def printHelp():
     print ('from_system can be Nematus or NeuralMonkey (default)')
 
 def printColor(value):
-    if float(value) == 0:
-        sys.stdout.write('[48;5;232m[K  [m[K' )
-    elif float(value) > 0.00 and float(value) <= 0.04:
-        sys.stdout.write('[48;5;233m[K  [m[K' )
-    elif float(value) > 0.04 and float(value) <= 0.08:
-        sys.stdout.write('[48;5;234m[K  [m[K' )
-    elif float(value) > 0.08 and float(value) <= 0.13:
-        sys.stdout.write('[48;5;235m[K  [m[K' )
-    elif float(value) > 0.13 and float(value) <= 0.17:
-        sys.stdout.write('[48;5;236m[K  [m[K' )
-    elif float(value) > 0.17 and float(value) <= 0.21:
-        sys.stdout.write('[48;5;237m[K  [m[K' )
-    elif float(value) > 0.21 and float(value) <= 0.25:
-        sys.stdout.write('[48;5;238m[K  [m[K' )
-    elif float(value) > 0.25 and float(value) <= 0.29:
-        sys.stdout.write('[48;5;239m[K  [m[K' )
-    elif float(value) > 0.29 and float(value) <= 0.33:
-        sys.stdout.write('[48;5;240m[K  [m[K' )
-    elif float(value) > 0.33 and float(value) <= 0.38:
-        sys.stdout.write('[48;5;241m[K  [m[K' )
-    elif float(value) > 0.38 and float(value) <= 0.42:
-        sys.stdout.write('[48;5;242m[K  [m[K' )
-    elif float(value) > 0.42 and float(value) <= 0.46:
-        sys.stdout.write('[48;5;243m[K  [m[K' )
-    elif float(value) > 0.46 and float(value) <= 0.50:
-        sys.stdout.write('[48;5;244m[K  [m[K' )
-    elif float(value) > 0.50 and float(value) <= 0.54:
-        sys.stdout.write('[48;5;245m[K  [m[K' )
-    elif float(value) > 0.54 and float(value) <= 0.58:
-        sys.stdout.write('[48;5;246m[K  [m[K' )
-    elif float(value) > 0.58 and float(value) <= 0.63:
-        sys.stdout.write('[48;5;247m[K  [m[K' )
-    elif float(value) > 0.63 and float(value) <= 0.67:
-        sys.stdout.write('[48;5;248m[K  [m[K' )
-    elif float(value) > 0.67 and float(value) <= 0.71:
-        sys.stdout.write('[48;5;249m[K  [m[K' )
-    elif float(value) > 0.71 and float(value) <= 0.75:
-        sys.stdout.write('[48;5;250m[K  [m[K' )
-    elif float(value) > 0.75 and float(value) <= 0.79:
-        sys.stdout.write('[48;5;251m[K  [m[K' )
-    elif float(value) > 0.79 and float(value) <= 0.83:
-        sys.stdout.write('[48;5;252m[K  [m[K' )
-    elif float(value) > 0.83 and float(value) <= 0.88:
-        sys.stdout.write('[48;5;253m[K  [m[K' )
-    elif float(value) > 0.88 and float(value) <= 0.92:
-        sys.stdout.write('[48;5;254m[K  [m[K' )
-    elif float(value) > 0.92 and float(value) <= 0.96:
-        sys.stdout.write('[48;5;255m[K  [m[K' )
-    elif float(value) > 0.96 and float(value) <= 1:
-        sys.stdout.write('[48;5;255m[K  [m[K' )
-    else:
-        sys.stdout.write('[48;5;232m[K  [m[K' )
+    colors = [
+        '[48;5;232m[K  [m[K',
+        '[48;5;233m[K  [m[K',
+        '[48;5;234m[K  [m[K',
+        '[48;5;235m[K  [m[K',
+        '[48;5;236m[K  [m[K',
+        '[48;5;237m[K  [m[K',
+        '[48;5;238m[K  [m[K',
+        '[48;5;239m[K  [m[K',
+        '[48;5;240m[K  [m[K',
+        '[48;5;240m[K  [m[K',
+        '[48;5;241m[K  [m[K',
+        '[48;5;242m[K  [m[K',
+        '[48;5;243m[K  [m[K',
+        '[48;5;244m[K  [m[K',
+        '[48;5;245m[K  [m[K',
+        '[48;5;246m[K  [m[K',
+        '[48;5;247m[K  [m[K',
+        '[48;5;248m[K  [m[K',
+        '[48;5;249m[K  [m[K',
+        '[48;5;250m[K  [m[K',
+        '[48;5;251m[K  [m[K',
+        '[48;5;252m[K  [m[K',
+        '[48;5;253m[K  [m[K',
+        '[48;5;254m[K  [m[K',
+        '[48;5;255m[K  [m[K',
+        '[48;5;255m[K  [m[K',
+    ]
+    num = int(math.floor((value-0.01)*25))
+    if num<0: num = 0
+    sys.stdout.write(colors[num])
 
 def printBlock2(value):
-    if float(value) == 0:
-        sys.stdout.write('██')
-    elif float(value) > 0 and float(value) <= 0.125:
-        sys.stdout.write('▉▉')
-    elif float(value) > 0.125 and float(value) <= 0.250:
-        sys.stdout.write('▊▊')
-    elif float(value) > 0.250 and float(value) <= 0.375:
-        sys.stdout.write('▋▋')
-    elif float(value) > 0.375 and float(value) <= 0.500:
-        sys.stdout.write('▌▌')
-    elif float(value) > 0.500 and float(value) <= 0.625:
-        sys.stdout.write('▍▍')
-    elif float(value) > 0.625 and float(value) <= 0.750:
-        sys.stdout.write('▎▎')
-    elif float(value) > 0.750 and float(value) <= 0.875:
-        sys.stdout.write('▏▏')
-    elif float(value) > 0.875 and float(value) <= 1:
-        sys.stdout.write('  ')
-    else:
-        sys.stdout.write('██')
+    blocks2 = ['██', '▉▉', '▊▊', '▋▋', '▌▌', '▍▍', '▎▎', '▏▏', '  ',]
+    num = int(math.floor((value-0.01)*8))
+    if num<0: num = 0
+    sys.stdout.write(blocks2[num])
         
 def printBlock(value):
-    if float(value) == 0:
-        sys.stdout.write('██')
-    elif float(value) > 0 and float(value) <= 0.25:
-        sys.stdout.write('▓▓')
-    elif float(value) > 0.25 and float(value) <= 0.5:
-        sys.stdout.write('▒▒')
-    elif float(value) > 0.5 and float(value) <= 0.75:
-        sys.stdout.write('░░')
-    elif float(value) > 0.75 and float(value) <= 1:
-        sys.stdout.write('  ')
-    else:
-        sys.stdout.write('██')
+    blocks = ['██', '▓▓', '▒▒', '░░', '  ',]
+    num = int(math.floor((value-0.01)*4))
+    if num<0: num = 0
+    sys.stdout.write(blocks[num])
         
 def readSnts(filename):
     with open(filename, 'r', encoding='utf-8') as fh:
@@ -315,4 +271,7 @@ def main(argv):
         os.rmdir(folder)
 
 if __name__ == "__main__":
+    if sys.version[0] == '2':
+        reload(sys)
+        sys.setdefaultencoding('utf-8')
     main(sys.argv[1:])
