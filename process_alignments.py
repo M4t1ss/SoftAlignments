@@ -150,7 +150,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hi:o:s:t:f:")
     except getopt.GetoptError:
-            printHelp()
+        printHelp()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
@@ -222,27 +222,18 @@ def main(argv):
                 out_t_js.write(u'var targets = [\n')
                 for i in range(0, len(commonData)):
                     (src, tgt, rawAli) = commonData[i]
-                        
-                    ssentence = " ".join(src)
-                    tsentence = " ".join(tgt)
-                    out_s_js.write('["'+ ssentence.replace(' ','", "') +'"], \n')
-                    out_t_js.write('["'+ tsentence.replace(' ','", "') +'"], \n')
                     
-                    if outputType == 'web' and from_system == 'Nematus':
-                        rawAli = rawAli.transpose()
-                        ali = [l[:len(src)] for l in rawAli[:len(tgt)]]
-                    else:
-                        ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
+                    out_s_js.write('["'+ " ".join(src).replace(' ','", "') +'"], \n')
+                    out_t_js.write('["'+ " ".join(tgt).replace(' ','", "') +'"], \n')
+                    
+                    ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
                     
                     word = 0
                     out_a_js.write(u'[')
                     for ali_i in ali:
                         linePartC=0
                         for ali_j in ali_i:
-                            if from_system == 'Nematus':
-                                out_a_js.write(u'['+repr(linePartC)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(word)+u'], ')
-                            else:
-                                out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
+                            out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
                             linePartC+=1
                             if outputType == 'color':
                                 printColor(ali_j)
@@ -292,12 +283,11 @@ def main(argv):
                                 outchars[emptyline].append(twchars[charindex])
                             else:
                                 outchars[emptyline][charindex] = twchars[charindex]
-                                                         
+                        
                         if len(occupied_to) <= emptyline:
                             occupied_to.append(xpos+twlen+1)
                         else:
                             occupied_to[emptyline]=xpos+twlen+1;
-                   
                         tw+=1
 
                     #print 2d array
@@ -307,7 +297,6 @@ def main(argv):
                    
                     # write target sentences
                     word = 0
-                    wasNew = True
                     out_a_js.write(u'], \n')
                     if outputType != 'web':
                         sys.stdout.write('\n')
