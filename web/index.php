@@ -61,6 +61,7 @@ $target = str_replace('@@ ', '', $target);
 	<![endif]-->
 	<style>
 		body{width:98%;}
+		svg{position: relative; z-index: -1;}
 		svg text{font-size:6px;}
 		rect{shape-rendering:crispEdges;}
 	</style>
