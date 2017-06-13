@@ -63,33 +63,87 @@ $target = str_replace('@@ ', '', $target);
 		body{width:98%;}
 		svg{position: relative; z-index: -1;}
 		svg text{font-size:6px;}
+		p{font-size:16px;}
 		rect{shape-rendering:crispEdges;}
+		
+		@media (min-width: 768px) {
+		  .navbar-nav.navbar-center {
+			position: absolute;
+			left: 50%;
+			transform: translatex(-50%);
+		  }
+		}
 	</style>
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="bootstrap/select/bootstrap-select.min.css">
+	<script src="bootstrap/js/jquery-3.2.1.slim.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/select/bootstrap-select.min.js"></script>
 </head>
 <body>
-<b>Neural MT alignment visualization</b> <small>(forked from <a href="https://github.com/rsennrich/nematus/tree/master/utils">Nematus utils</a>)</small><br/>
-<div style="text-align:center; display:block;">
-	<form action="?">
-		<span>Data directory: </span><select name="directory" onchange="this.form.submit()">
-		<?php 
-		foreach($dataDirs as $directory){
-			$selected = $dataDir==$directory?" SELECTED":"";
-			echo "<option value='$directory'$selected>$directory</option>";
-		}
-		?>
-		</select>
-	</form><br/>
-	<form action="?" method="GET" style="margin-top:-10px;">
-		Showing sentence <input name="s" value="<?php echo $sentence; ?>" type="text" style="width:35px; height:14px;"/>. <input type="submit" value="Change"/>
-		<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
-		<input type="hidden" name="changeNum" value="True" />
-	</form><br/>
-	<a style="display:inline; float:left;margin-top:-50px;" href="?s=<?php echo $sentence>1?$sentence-1:$count;?>&directory=<?php echo $dataDir; ?>">< previous</a>
-	<a style="display:inline; float:right;margin-top:-50px;" href="?s=<?php echo $sentence<$count?$sentence+1:1;?>&directory=<?php echo $dataDir; ?>"> next ></a>
-</div>
-<p style="text-align:center; margin-bottom:-70px;"><?php echo $source; ?></p>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">NMT alignment visualization</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-center">
+		<li>
+			<a href="?s=<?php echo $sentence>1?$sentence-1:$count;?>&directory=<?php echo $dataDir; ?>">
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+			</a>
+		</li>
+		<li><p class="navbar-text">Showing sentence</p></li>
+        <li>
+			<form class="navbar-form" action="?" method="GET">
+				<input class="form-control" style="width:75px;" name="s" value="<?php echo $sentence; ?>" type="text" /> 
+				<button class="btn btn-default" type="submit">
+					<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+				</button>
+				<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
+				<input type="hidden" name="changeNum" value="True" />
+			</form>
+		</li>
+		<li>
+			<a href="?s=<?php echo $sentence<$count?$sentence+1:1;?>&directory=<?php echo $dataDir; ?>">
+				<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+			</a>
+		</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+		<li><p class="navbar-text">Data directory</p></li>
+        <li style="padding-top:8px;">
+			<form action="?">
+				<select class="selectpicker" data-live-search="true" name="directory" onchange="this.form.submit()">
+				<?php 
+				foreach($dataDirs as $directory){
+					$selected = $dataDir==$directory?" SELECTED":"";
+					echo "<option value='$directory'$selected>$directory</option>";
+				}
+				?>
+				</select>
+			</form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br/>
+<br/>
+<br/>
+<br/>
+<p style="text-align:center; margin-bottom:-70px;"><span class="label label-success">Source</span> <span class="label label-default"><?php echo $source; ?></span></p>
 <div id="area1"></div>
-<p style="text-align:center; margin-top:-10px;"><?php echo $target; ?></p>
+<p style="text-align:center; margin-top:-5px;"><span class="label label-warning">Translation</span> <span class="label label-default"><?php echo $target; ?></span></p>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="attentionMR.js"></script>
 <script>
