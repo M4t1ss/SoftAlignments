@@ -91,7 +91,7 @@ $target = str_replace('@@ ', '', $target);
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">NMT alignment visualization</a>
+      <a class="navbar-brand" href="#">NMT attention alignments</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -102,11 +102,10 @@ $target = str_replace('@@ ', '', $target);
 				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 			</a>
 		</li>
-		<li><p class="navbar-text">Showing sentence</p></li>
         <li>
 			<form class="navbar-form" action="?" method="GET">
-				<input class="form-control" style="width:75px;" name="s" value="<?php echo $sentence; ?>" type="text" /> 
-				<button class="btn btn-default" type="submit">
+				<input class="form-control" style="width:75px; display:inline;" name="s" value="<?php echo $sentence; ?>" type="text" /> 
+				<button style="display:inline;" class="btn btn-default" type="submit">
 					<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 				</button>
 				<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
@@ -120,7 +119,6 @@ $target = str_replace('@@ ', '', $target);
 		</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-		<li><p class="navbar-text">Data directory</p></li>
         <li style="padding-top:8px; padding-right:5px;">
 			<form action="?">
 				<select class="selectpicker" data-live-search="true" name="directory" onchange="this.form.submit()">
