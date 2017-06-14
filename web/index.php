@@ -78,11 +78,11 @@ $confidence = round($scores[3] * 100, 2);
 		  }
 		}
 	</style>
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="bootstrap/select/bootstrap-select.min.css">
-	<script src="bootstrap/js/jquery-3.2.1.slim.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="bootstrap/select/bootstrap-select.min.js"></script>
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/select/bootstrap-select.min.css">
+	<script src="scripts/js/jquery-3.2.1.slim.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<script src="scripts/select/bootstrap-select.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -108,6 +108,9 @@ $confidence = round($scores[3] * 100, 2);
 		</li>
         <li>
 			<form class="navbar-form" action="?" method="GET">
+				<button id="save" style="display:inline;" class="btn btn-default">
+					<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+				</button>
 				<input class="form-control" style="width:75px; display:inline;" name="s" value="<?php echo $sentence; ?>" type="text" /> 
 				<button style="display:inline;" class="btn btn-default" type="submit">
 					<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
@@ -147,7 +150,7 @@ $confidence = round($scores[3] * 100, 2);
 	</p>
 </div>
 <div class="row">
-	<div id="area1"></div>
+	<div id="svg"></div>
 </div>
 <div class="row" style="margin-left:5px;">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -189,8 +192,9 @@ $confidence = round($scores[3] * 100, 2);
 		</div>
 	</div>
 </div>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="attentionMR.js"></script>
+<script src="scripts/d3.v3.min.js"></script>
+<script src="scripts/attentionMR.js"></script>
+<script src="scripts/saveSvgAsPng.js"></script>
 <script>
 <?php
 //Data for our selected sentence
@@ -199,11 +203,11 @@ echo "var source = [".str_replace("],","]];",$f2->current());
 echo "var target = [".str_replace("],","]];",$f3->current());
 ?>
 var width = 2200, height = 600, margin ={b:0, t:40, l:-10, r:0};
-var c = "area1";
-var svg = d3.select("#area1")
+var svg = d3.select("#svg")
 	.append("svg")
 	.attr("preserveAspectRatio", "xMinYMin meet")
 	.attr("viewBox", "0 0 620 235")
+	.attr("id", "ali")
 	.classed("svg-content-responsive", true)
 	.append("g")
 	.attr("transform","translate("+ margin.l+","+margin.t+")");
@@ -213,6 +217,10 @@ var data = [
 ];
 
 bP.draw(data, svg);
+
+d3.select("#save").on("click", function(){
+  saveSvgAsPng(document.getElementById("ali"), "alignments_"+Date.now()+".png", {scale: 3, backgroundColor: '#FFFFFF'});
+});
 </script>
 </body>
 <?php
