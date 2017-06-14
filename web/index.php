@@ -108,7 +108,7 @@ $confidence = round($scores[3] * 100, 2);
 		</li>
         <li>
 			<form class="navbar-form" action="?" method="GET">
-				<button id="save" style="display:inline;" class="btn btn-default">
+				<button type="reset" id="save" style="display:inline;" class="btn btn-default">
 					<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
 				</button>
 				<input class="form-control" style="width:75px; display:inline;" name="s" value="<?php echo $sentence; ?>" type="text" /> 

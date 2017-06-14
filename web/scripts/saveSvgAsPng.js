@@ -74,7 +74,7 @@
     // asynchronously
     var fontsQueue = [];
     var sheets = document.styleSheets;
-    for (var i = 0; i < sheets.length; i++) {
+    for (var i = 0; i < 1; i++) {
       try {
         var rules = sheets[i].cssRules;
       } catch (e) {
