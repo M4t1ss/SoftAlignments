@@ -144,7 +144,7 @@ $confidence = round($scores[3] * 100, 2);
 </nav>
 <div style="height:55px;display:block;"></div>
 <div class="row" style="margin-left:5px;">
-	<p style="margin-left:20px;">
+	<p style="margin-left:15px;">
 		<span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Source</span> 
 		<span class="label label-danger"><?php echo $source; ?></span>
 	</p>
