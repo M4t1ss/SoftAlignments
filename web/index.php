@@ -24,6 +24,7 @@ $dataFiles = cleanDirArray(scandir("./data/".$dataDir));
 $alignments = "./data/".$dataDir."/".array_pop(preg_grep("/\.ali\.js/", $dataFiles));
 $sources = "./data/".$dataDir."/".array_pop(preg_grep("/\.src\.js/", $dataFiles));
 $targets = "./data/".$dataDir."/".array_pop(preg_grep("/\.trg\.js/", $dataFiles));
+$confidences = "./data/".$dataDir."/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
 $count = getLineCount($alignments)-3;
 
 //Show only existing sentences
@@ -34,20 +35,21 @@ $sentence=$sentence>$count?$count:$sentence;
 $f1 = new SplFileObject($alignments);
 $f2 = new SplFileObject($sources);
 $f3 = new SplFileObject($targets);
+$f4 = new SplFileObject($confidences);
 
 //The line of the sentence
 $f1->seek($sentence);
 $f2->seek($sentence);
 $f3->seek($sentence);
+$f4->seek($sentence);
 
-$source = str_replace('", "', ' ', $f2->current());
-$target = str_replace('", "', ' ', $f3->current());
-$source = str_replace('"],', '', $source);
-$target = str_replace('"],', '', $target);
-$source = str_replace('["', '', $source);
-$target = str_replace('["', '', $target);
-$source = str_replace('@@ ', '', $source);
-$target = str_replace('@@ ', '', $target);
+$scores 	= explode(", ", str_replace("]", "", str_replace("[", "", $f4->current())));
+$source 	= getJSvalue($f2->current());
+$target 	= getJSvalue($f3->current());
+$CDP 		= round($scores[0] * 100, 2);
+$APout 		= round($scores[1] * 100, 2);
+$APin 		= round($scores[2] * 100, 2);
+$confidence = round($scores[3] * 100, 2);
 
 ?>
 <!DOCTYPE html>
@@ -65,6 +67,7 @@ $target = str_replace('@@ ', '', $target);
 		svg text{font-size:6px;}
 		p{font-size:16px;}
 		rect{shape-rendering:crispEdges;}
+		br{clear:both;}
 		
 		@media (min-width: 768px) {
 		  .navbar-nav.navbar-center {
@@ -139,9 +142,49 @@ $target = str_replace('@@ ', '', $target);
 <br/>
 <br/>
 <br/>
-<p style="text-align:center; margin-bottom:-70px;"><span class="label label-success">Source</span> <span class="label label-default"><?php echo $source; ?></span></p>
+<p style="margin-bottom:-70px;margin-left:20px;">
+	<span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Source</span> 
+	<span class="label label-danger"><?php echo $source; ?></span>
+</p>
 <div id="area1"></div>
-<p style="text-align:center; margin-top:-5px;"><span class="label label-warning">Translation</span> <span class="label label-default"><?php echo $target; ?></span></p>
+<p style="margin-top:-5px;margin-left:20px;">
+	<span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Translation</span> 
+	<span class="label label-danger"><?php echo $target; ?></span>
+</p>
+<div class="row" style="margin-left:5px;">
+	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">Confidence</span> 
+		<div class="progress" style="width:50%; float:left;">
+			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $confidence; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $confidence; ?>%;">
+				<?php echo $confidence; ?>%
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">CDP</span> 
+		<div class="progress" style="width:50%; float:left;">
+			<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo $CDP; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $CDP; ?>%;">
+				<?php echo $CDP; ?>%
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">APout</span> 
+		<div class="progress" style="width:50%; float:left;">
+			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $APout; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APout; ?>%;">
+				<?php echo $APout; ?>%
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">APin</span> 
+		<div class="progress" style="width:50%; float:left;">
+			<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo $APin; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APin; ?>%;">
+				<?php echo $APin; ?>%
+			</div>
+		</div>
+	</div>
+</div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="attentionMR.js"></script>
 <script>
@@ -155,9 +198,9 @@ var width = 2200, height = 690, margin ={b:0, t:60, l:-20, r:0};
 var c = "area1";
 var svg = d3.select("#area1")
 	.append("svg")
-   .attr("preserveAspectRatio", "xMinYMin meet")
-   .attr("viewBox", "0 0 600 250")
-   .classed("svg-content-responsive", true)
+	.attr("preserveAspectRatio", "xMinYMin meet")
+	.attr("viewBox", "0 0 600 250")
+	.classed("svg-content-responsive", true)
 	.append("g")
 	.attr("transform","translate("+ margin.l+","+margin.t+")");
 
@@ -185,4 +228,8 @@ function cleanDirArray($data){
 	array_shift($data);
 	array_shift($data);
 	return $data;
+}
+
+function getJSvalue($string){
+	return str_replace('@@ ', '', str_replace('["', '', str_replace('"],', '', str_replace('", "', ' ', $string))));
 }

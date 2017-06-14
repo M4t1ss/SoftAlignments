@@ -161,7 +161,7 @@ def main(argv):
     if from_system == "Nematus":
         (srcs, tgts, alis) = readNematus(inputfile)
 
-    commonData = list(zip(srcs, tgts, alis))
+    data = list(zip(srcs, tgts, alis))
 
     foldername = ntpath.basename(inputfile).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
     folder = './web/data/' + foldername
@@ -173,92 +173,100 @@ def main(argv):
     with open(folder + "/" + ntpath.basename(inputfile) + '.ali.js', 'w', encoding='utf-8') as out_a_js:
         with open(folder + "/" + ntpath.basename(inputfile) + '.src.js', 'w', encoding='utf-8') as out_s_js:
             with open(folder + "/" + ntpath.basename(inputfile) + '.trg.js', 'w', encoding='utf-8') as out_t_js:
-                out_a_js.write(u'var alignments = [\n')
-                out_s_js.write(u'var sources = [\n')
-                out_t_js.write(u'var targets = [\n')
-                for i in range(0, len(commonData)):
-                    (src, tgt, rawAli) = commonData[i]
-                    
-                    out_s_js.write('["'+ " ".join(src).replace(' ','", "') +'"], \n')
-                    out_t_js.write('["'+ " ".join(tgt).replace(' ','", "') +'"], \n')
-                    
-                    ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
-                    
-                    word = 0
-                    out_a_js.write(u'[')
-                    for ali_i in ali:
-                        linePartC=0
-                        for ali_j in ali_i:
-                            out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
-                            linePartC+=1
-                            if outputType == 'color':
-                                printColor(ali_j)
-                            elif outputType == 'block':
-                                printBlock(ali_j)
-                            elif outputType == 'block2':
-                                printBlock2(ali_j)
+                with open(folder + "/" + ntpath.basename(inputfile) + '.con.js', 'w', encoding='utf-8') as out_c_js:
+                    out_a_js.write(u'var alignments = [\n')
+                    out_s_js.write(u'var sources = [\n')
+                    out_t_js.write(u'var targets = [\n')
+                    out_c_js.write(u'var confidences = [\n')
+                    for i in range(0, len(data)):
+                        (src, tgt, rawAli) = data[i]
+                        ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
+                        #Get the confidence metrics
+                        CDP = math.pow(math.e, -0.05 * math.pow(thecode.getCP(ali), 2))
+                        APout = math.pow(math.e, -0.05 * math.pow(thecode.getEnt(ali), 2))
+                        APin = math.pow(math.e, -0.05 * math.pow(thecode.getRevEnt(ali), 2))
+                        Total = math.pow(math.e, -0.05 * math.pow((thecode.getCP(ali) + thecode.getEnt(ali) + thecode.getRevEnt(ali)), 2))
+                        
+                        out_s_js.write('["'+ " ".join(src).replace(' ','", "') +'"], \n')
+                        out_t_js.write('["'+ " ".join(tgt).replace(' ','", "') +'"], \n')
+                        out_c_js.write(u'['+ repr(CDP) + u', '+ repr(APout) + u', '+ repr(APin) + u', '+ repr(Total) + u'], \n')
+                        
+                        word = 0
+                        out_a_js.write(u'[')
+                        for ali_i in ali:
+                            linePartC=0
+                            for ali_j in ali_i:
+                                out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
+                                linePartC+=1
+                                if outputType == 'color':
+                                    printColor(ali_j)
+                                elif outputType == 'block':
+                                    printBlock(ali_j)
+                                elif outputType == 'block2':
+                                    printBlock2(ali_j)
+                            if outputType != 'web':
+                                sys.stdout.write(src[word])
+                            word+=1
+                            if outputType != 'web':
+                                sys.stdout.write('\n')
+                        
+                        # write target sentences
+                        #build 2d array
+                        occupied_to = []
+                        outchars = []
+                        outchars.append([])
+                        tw = 0
+                        for tword in tgt:
+                            columns = len(tgt)
+                            # Some characters use multiple symbols. Need to decode and then encode...
+                            twchars = list(tword)
+                            twlen = len(twchars)
+                            xpos = tw * 2
+                            emptyline = 0
+                            
+                            for el in range(0, len(occupied_to)):
+                                # if occupied, move to a new line!
+                                if occupied_to[el] < xpos:
+                                    emptyline = el
+                                    if len(outchars) < emptyline+1:
+                                        # add a new row
+                                        outchars.append([])
+                                    break
+                                if el == len(occupied_to)-1:
+                                    emptyline=el+1
+                                    if len(outchars) < emptyline+1:
+                                        outchars.append([])
+                                     
+                            for column in range(0, xpos):
+                                if len(outchars[emptyline]) <= column:
+                                    outchars[emptyline].append(' ')
+
+                            for charindex in range(0, twlen):
+                                if xpos+charindex == len(outchars[emptyline]):
+                                    outchars[emptyline].append(twchars[charindex])
+                                else:
+                                    outchars[emptyline][charindex] = twchars[charindex]
+                            
+                            if len(occupied_to) <= emptyline:
+                                occupied_to.append(xpos+twlen+1)
+                            else:
+                                occupied_to[emptyline]=xpos+twlen+1;
+                            tw+=1
+
+                        #print 2d array
                         if outputType != 'web':
-                            sys.stdout.write(src[word])
-                        word+=1
+                            for liline in outchars:
+                                sys.stdout.write(''.join(liline) + '\n')
+                       
+                        # write target sentences
+                        word = 0
+                        out_a_js.write(u'], \n')
                         if outputType != 'web':
                             sys.stdout.write('\n')
-                    
-                    # write target sentences
-                    #build 2d array
-                    occupied_to = []
-                    outchars = []
-                    outchars.append([])
-                    tw = 0
-                    for tword in tgt:
-                        columns = len(tgt)
-                        # Some characters use multiple symbols. Need to decode and then encode...
-                        twchars = list(tword)
-                        twlen = len(twchars)
-                        xpos = tw * 2
-                        emptyline = 0
-                        
-                        for el in range(0, len(occupied_to)):
-                            # if occupied, move to a new line!
-                            if occupied_to[el] < xpos:
-                                emptyline = el
-                                if len(outchars) < emptyline+1:
-                                    # add a new row
-                                    outchars.append([])
-                                break
-                            if el == len(occupied_to)-1:
-                                emptyline=el+1
-                                if len(outchars) < emptyline+1:
-                                    outchars.append([])
-                                 
-                        for column in range(0, xpos):
-                            if len(outchars[emptyline]) <= column:
-                                outchars[emptyline].append(' ')
-
-                        for charindex in range(0, twlen):
-                            if xpos+charindex == len(outchars[emptyline]):
-                                outchars[emptyline].append(twchars[charindex])
-                            else:
-                                outchars[emptyline][charindex] = twchars[charindex]
-                        
-                        if len(occupied_to) <= emptyline:
-                            occupied_to.append(xpos+twlen+1)
-                        else:
-                            occupied_to[emptyline]=xpos+twlen+1;
-                        tw+=1
-
-                    #print 2d array
-                    if outputType != 'web':
-                        for liline in outchars:
-                            sys.stdout.write(''.join(liline) + '\n')
-                   
-                    # write target sentences
-                    word = 0
-                    out_a_js.write(u'], \n')
-                    if outputType != 'web':
-                        sys.stdout.write('\n')
-                out_a_js.write(u'\n]')
-                out_s_js.write(u']')
-                out_t_js.write(u']')
+                    out_a_js.write(u'\n]')
+                    out_s_js.write(u']')
+                    out_t_js.write(u']')
+                    out_c_js.write(u']')
             
     # Get rid of some junk
     if outputType == 'web':
@@ -268,6 +276,7 @@ def main(argv):
         os.remove(folder + "/" + ntpath.basename(inputfile) + '.ali.js')
         os.remove(folder + "/" + ntpath.basename(inputfile) + '.src.js')
         os.remove(folder + "/" + ntpath.basename(inputfile) + '.trg.js')
+        os.remove(folder + "/" + ntpath.basename(inputfile) + '.con.js')
         os.rmdir(folder)
 
 if __name__ == "__main__":
