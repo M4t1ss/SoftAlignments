@@ -68,6 +68,7 @@ $confidence = round($scores[3] * 100, 2);
 		p{font-size:16px;}
 		rect{shape-rendering:crispEdges;}
 		br{clear:both;}
+		.pr{margin-bottom:10px !important;}
 		
 		@media (min-width: 768px) {
 		  .navbar-nav.navbar-center {
@@ -138,23 +139,26 @@ $confidence = round($scores[3] * 100, 2);
     </div>
   </div>
 </nav>
-<br/>
-<br/>
-<br/>
-<br/>
-<p style="margin-bottom:-70px;margin-left:20px;">
-	<span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Source</span> 
-	<span class="label label-danger"><?php echo $source; ?></span>
-</p>
-<div id="area1"></div>
-<p style="margin-top:-5px;margin-left:20px;">
-	<span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Translation</span> 
-	<span class="label label-danger"><?php echo $target; ?></span>
-</p>
+<div style="height:55px;display:block;"></div>
 <div class="row" style="margin-left:5px;">
+	<p style="margin-left:20px;">
+		<span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Source</span> 
+		<span class="label label-danger"><?php echo $source; ?></span>
+	</p>
+</div>
+<div class="row">
+	<div id="area1"></div>
+</div>
+<div class="row" style="margin-left:5px;">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">Translation</span> 
+		<div style="width:50%; float:left;" class="pr">
+			<span class="label label-danger" style="padding:4px;"><?php echo $target; ?></span>
+		</div>
+	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">Confidence</span> 
-		<div class="progress" style="width:50%; float:left;">
+		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $confidence; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $confidence; ?>%;">
 				<?php echo $confidence; ?>%
 			</div>
@@ -162,7 +166,7 @@ $confidence = round($scores[3] * 100, 2);
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">CDP</span> 
-		<div class="progress" style="width:50%; float:left;">
+		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo $CDP; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $CDP; ?>%;">
 				<?php echo $CDP; ?>%
 			</div>
@@ -170,7 +174,7 @@ $confidence = round($scores[3] * 100, 2);
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">APout</span> 
-		<div class="progress" style="width:50%; float:left;">
+		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $APout; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APout; ?>%;">
 				<?php echo $APout; ?>%
 			</div>
@@ -178,7 +182,7 @@ $confidence = round($scores[3] * 100, 2);
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">APin</span> 
-		<div class="progress" style="width:50%; float:left;">
+		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo $APin; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APin; ?>%;">
 				<?php echo $APin; ?>%
 			</div>
@@ -194,12 +198,12 @@ echo "var alignment_data = ".str_replace("], ],","] ];",$f1->current());
 echo "var source = [".str_replace("],","]];",$f2->current());
 echo "var target = [".str_replace("],","]];",$f3->current());
 ?>
-var width = 2200, height = 690, margin ={b:0, t:60, l:-20, r:0};
+var width = 2200, height = 600, margin ={b:0, t:40, l:-10, r:0};
 var c = "area1";
 var svg = d3.select("#area1")
 	.append("svg")
 	.attr("preserveAspectRatio", "xMinYMin meet")
-	.attr("viewBox", "0 0 600 250")
+	.attr("viewBox", "0 0 620 235")
 	.classed("svg-content-responsive", true)
 	.append("g")
 	.attr("transform","translate("+ margin.l+","+margin.t+")");
