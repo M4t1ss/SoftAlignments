@@ -182,7 +182,7 @@ def main(argv):
                         (src, tgt, rawAli) = data[i]
                         ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
                         #Get the confidence metrics
-                        CDP = math.pow(math.e, -0.05 * math.pow(thecode.getCP(ali), 2))
+                        CDP = math.pow(math.e, -1 * math.pow(thecode.getCP(ali), 2))
                         APout = math.pow(math.e, -0.05 * math.pow(thecode.getEnt(ali), 2))
                         APin = math.pow(math.e, -0.05 * math.pow(thecode.getRevEnt(ali), 2))
                         Total = math.pow(math.e, -0.05 * math.pow((thecode.getCP(ali) + thecode.getEnt(ali) + thecode.getRevEnt(ali)), 2))

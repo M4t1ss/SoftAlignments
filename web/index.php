@@ -1,5 +1,6 @@
 <?php 
 header('Content-Type: text/html; charset=utf-8');
+include('functions.php');
 
 // Get a list of directories in ./data
 // And remove first two (. and ..)
@@ -32,56 +33,37 @@ $sentence=$sentence<1?1:$sentence;
 $sentence=$sentence>$count?$count:$sentence;
 
 //Load only the one line from each input file
-$f1 = new SplFileObject($alignments);
-$f2 = new SplFileObject($sources);
-$f3 = new SplFileObject($targets);
-$f4 = new SplFileObject($confidences);
+$f1 = gotoLine($alignments, $sentence);
+$f2 = gotoLine($sources, $sentence);
+$f3 = gotoLine($targets, $sentence);
+$f4 = gotoLine($confidences, $sentence);
 
-//The line of the sentence
-$f1->seek($sentence);
-$f2->seek($sentence);
-$f3->seek($sentence);
-$f4->seek($sentence);
-
-$scores 	= explode(", ", str_replace("]", "", str_replace("[", "", $f4->current())));
 $source 	= getJSvalue($f2->current());
 $target 	= getJSvalue($f3->current());
-$CDP 		= round($scores[0] * 100, 2);
-$APout 		= round($scores[1] * 100, 2);
-$APin 		= round($scores[2] * 100, 2);
-$confidence = round($scores[3] * 100, 2);
+$CDP 		= getScores($f4->current(), 0);
+$APout 		= getScores($f4->current(), 1);
+$APin 		= getScores($f4->current(), 2);
+$confidence = getScores($f4->current(), 3);
+
+$allConfidences = getAllConfidences($f4, $count);
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="description" content="Soft Alignment Visualization">
+	<meta name="description" content="NMT Attention Alignments">
 	<meta name="author" content="Matīss Rikters">
-	<title>Soft Alignment Visualization</title>
+	<title>NMT Attention Alignments</title>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<style>
-		body{width:98%;}
-		svg{position: relative; z-index: -1;}
-		svg text{font-size:6px;}
-		p{font-size:16px;}
-		rect{shape-rendering:crispEdges;}
-		br{clear:both;}
-		.pr{margin-bottom:10px !important;}
-		
-		@media (min-width: 768px) {
-		  .navbar-nav.navbar-center {
-			position: absolute;
-			left: 50%;
-			transform: translatex(-50%);
-		  }
-		}
-	</style>
+	<link rel="stylesheet" href="scripts/css/main.css">
 	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
 	<link rel="stylesheet" href="scripts/select/bootstrap-select.min.css">
+	<link rel='stylesheet' href='scripts/css/perfect-scrollbar.min.css' />
 	<script src="scripts/js/jquery-3.2.1.slim.min.js"></script>
 	<script src="scripts/js/bootstrap.min.js"></script>
+	<script src="scripts/js/perfect-scrollbar.jquery.min.js"></script>
 	<script src="scripts/select/bootstrap-select.min.js"></script>
 </head>
 <body>
@@ -95,7 +77,7 @@ $confidence = round($scores[3] * 100, 2);
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">NMT attention alignments</a>
+      <a class="navbar-brand" href="#">NMT Attention Alignments</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -154,13 +136,13 @@ $confidence = round($scores[3] * 100, 2);
 </div>
 <div class="row" style="margin-left:5px;">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">Translation</span> 
+		<span class="label label-default myLabel" style="cursor:default;">Translation</span> 
 		<div style="width:50%; float:left;" class="pr">
 			<span class="label label-danger" style="padding:4px;"><?php echo $target; ?></span>
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">Confidence</span> 
+		<span data-toggle="collapse" data-target="#c1" class="label label-default myLabel">Confidence</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $confidence; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $confidence; ?>%;">
 				<?php echo $confidence; ?>%
@@ -168,7 +150,7 @@ $confidence = round($scores[3] * 100, 2);
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">CDP</span> 
+		<span data-toggle="collapse" data-target="#c2" class="label label-default myLabel">CDP</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo $CDP; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $CDP; ?>%;">
 				<?php echo $CDP; ?>%
@@ -176,7 +158,7 @@ $confidence = round($scores[3] * 100, 2);
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">APout</span> 
+		<span data-toggle="collapse" data-target="#c3" class="label label-default myLabel">APout</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $APout; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APout; ?>%;">
 				<?php echo $APout; ?>%
@@ -184,12 +166,72 @@ $confidence = round($scores[3] * 100, 2);
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span class="label label-default" style="width: 100px;display: inline-block;float:left; padding:4px; vertical-align:middle;margin-right:5px;">APin</span> 
+		<span data-toggle="collapse" data-target="#c4" class="label label-default myLabel">APin</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo $APin; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APin; ?>%;">
 				<?php echo $APin; ?>%
 			</div>
 		</div>
+	</div>
+</div>
+<div id="c1" class="row collapse">
+	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+		<?php
+			foreach($allConfidences as $key => $sentenceConfidences){
+				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - Confidence '.$sentenceConfidences[3].'">
+						<div class="progress progress-bar-vertical">
+							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$sentenceConfidences[3].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[3].'%;">
+								<span class="sr-only">'.$sentenceConfidences[3].'% Complete</span>
+							</div>
+						</div>
+					 </a>';
+			}
+		?>
+	</div>
+</div>
+<div id="c2" class="row collapse">
+	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+		<?php
+			foreach($allConfidences as $key => $sentenceConfidences){
+				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - CDP '.$sentenceConfidences[0].'">
+						<div class="progress progress-bar-vertical">
+							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="'.$sentenceConfidences[0].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[0].'%;">
+								<span class="sr-only">'.$sentenceConfidences[0].'% Complete</span>
+							</div>
+						</div>
+					 </a>';
+			}
+		?>
+	</div>
+</div>
+<div id="c3" class="row collapse">
+	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+		<?php
+			foreach($allConfidences as $key => $sentenceConfidences){
+				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - APout '.$sentenceConfidences[1].'">
+						<div class="progress progress-bar-vertical">
+							<div class="progress-bar" role="progressbar" aria-valuenow="'.$sentenceConfidences[1].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[1].'%;">
+								<span class="sr-only">'.$sentenceConfidences[1].'% Complete</span>
+							</div>
+						</div>
+					 </a>';
+			}
+		?>
+	</div>
+</div>
+<div id="c4" class="row collapse">
+	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+		<?php
+			foreach($allConfidences as $key => $sentenceConfidences){
+				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - APin '.$sentenceConfidences[2].'">
+						<div class="progress progress-bar-vertical">
+							<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'.$sentenceConfidences[2].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[2].'%;">
+								<span class="sr-only">'.$sentenceConfidences[2].'% Complete</span>
+							</div>
+						</div>
+					 </a>';
+			}
+		?>
 	</div>
 </div>
 <script src="scripts/d3.v3.min.js"></script>
@@ -221,27 +263,23 @@ bP.draw(data, svg);
 d3.select("#save").on("click", function(){
   saveSvgAsPng(document.getElementById("ali"), "alignments_"+Date.now()+".png", {scale: 3, backgroundColor: '#FFFFFF'});
 });
+
+$('#c1').perfectScrollbar({
+  suppressScrollY: true,
+  useBothWheelAxes: true
+});
+$('#c2').perfectScrollbar({
+  suppressScrollY: true,
+  useBothWheelAxes: true
+});
+$('#c3').perfectScrollbar({
+  suppressScrollY: true,
+  useBothWheelAxes: true
+});
+$('#c4').perfectScrollbar({
+  suppressScrollY: true,
+  useBothWheelAxes: true
+});
 </script>
 </body>
-<?php
-
-function getLineCount($fileName){
-	$linecount = 0;
-	$handle = fopen($fileName, "r");
-	while(!feof($handle)){
-	  $line = fgets($handle);
-	  $linecount++;
-	}
-	fclose($handle);
-	return $linecount;
-}
-
-function cleanDirArray($data){
-	array_shift($data);
-	array_shift($data);
-	return $data;
-}
-
-function getJSvalue($string){
-	return str_replace('@@ ', '', str_replace('["', '', str_replace('"],', '', str_replace('", "', ' ', $string))));
-}
+</html>
