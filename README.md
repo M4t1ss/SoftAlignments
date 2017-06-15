@@ -1,5 +1,5 @@
-# NMT soft alignment visualizations
-Soft alignment visualizations tools for command line and web. Parts of the web version are borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
+# NMT attention alignment visualizations
+An attention alignment visualization tool for command line and web. A part of the web version was borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
 
 Usage
 ---------
