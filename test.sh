@@ -28,11 +28,4 @@ python process_alignments.py \
 -t test_data/test.out.lv.bpe \
 -f NeuralMonkey
 
-python process_alignments.py \
--i test_data/alignments_nematus.txt \
--o web \
--f Nematus
-
-rm -rf web/data/*
-
 echo Tests OK.
