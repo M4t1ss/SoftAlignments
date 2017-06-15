@@ -1,5 +1,9 @@
 # NMT Attention Alignment Visualizations
-An attention alignment visualization tool for command line and web. A part of the web version was borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
+An attention alignment visualization tool for command line and web. 
+
+A part of the web version was borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
+
+[![Build Status](https://travis-ci.org/M4t1ss/SoftAlignments.svg?branch=master)](https://travis-ci.org/M4t1ss/SoftAlignments)
 
 Usage
 ---------
