@@ -1,4 +1,4 @@
-# NMT attention alignment visualizations
+# NMT Attention Alignment Visualizations
 An attention alignment visualization tool for command line and web. A part of the web version was borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
 
 Usage
@@ -55,7 +55,7 @@ Examples
 	-i test_data/alignments_neural_monkey.npy \
 	-o color \
 	-s test_data/test.src.en.bpe \
-	-t test.out.lv.bpe \
+	-t test_data/test.out.lv.bpe \
 	-f NeuralMonkey
 	```
 	
@@ -75,7 +75,7 @@ Examples
 	-i test_data/alignments_neural_monkey.npy \
 	-o block \
 	-s test_data/test.src.en.bpe \
-	-t test.out.lv.bpe \
+	-t test_data/test.out.lv.bpe \
 	-f NeuralMonkey
 	```
 	
@@ -86,7 +86,7 @@ Examples
 		-i test_data/alignments_neural_monkey.npy \
 		-o block2 \
 		-s test_data/test.src.en.bpe \
-		-t test.out.lv.bpe \
+		-t test_data/test.out.lv.bpe \
 		-f NeuralMonkey
 		```
 	
