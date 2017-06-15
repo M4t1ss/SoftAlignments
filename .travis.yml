@@ -13,4 +13,5 @@ python:
 install:
   - pip install numpy
 
-script: test.sh
+script: 
+  - python process_alignments.py -i test_data/alignments_neural_monkey.npy -o color -s test_data/test.src.en.bpe -t test_data/test.out.lv.bpe -f NeuralMonkey
