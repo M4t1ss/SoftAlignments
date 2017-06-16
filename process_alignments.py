@@ -11,7 +11,10 @@ import ntpath
 from time import gmtime, strftime
 from io import open, StringIO
 from imp import reload
-from itertools import izip
+try:
+    from itertools import izip
+except ImportError:
+    izip = zip
 
 def printHelp():
     print ('process_alignments.py -i <input_file> [-o <output_type>] [-f <from_system>] [-s <source_sentence_file>] [-t <target_sentence_file>]')
