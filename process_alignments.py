@@ -11,6 +11,7 @@ import ntpath
 from time import gmtime, strftime
 from io import open, StringIO
 from imp import reload
+from itertools import izip
 
 def printHelp():
     print ('process_alignments.py -i <input_file> [-o <output_type>] [-f <from_system>] [-s <source_sentence_file>] [-t <target_sentence_file>]')
@@ -66,7 +67,7 @@ def printBlock(value):
         
 def readSnts(filename):
     with open(filename, 'r', encoding='utf-8') as fh:
-        return [line.strip().split() for line in fh]
+        return [escape(line).strip().split() for line in fh]
 
 def readNematus(filename):
     with open(filename, 'r', encoding='utf-8') as fh:
@@ -86,8 +87,8 @@ def readNematus(filename):
                 lineparts = line.split(' ||| ')
                 lineparts[1] += ' <EOS>'
                 lineparts[3] += ' <EOS>'
-                tgts.append(lineparts[1].strip().split())
-                srcs.append(lineparts[3].strip().split())
+                tgts.append(escape(lineparts[1]).strip().split())
+                srcs.append(escape(lineparts[3]).strip().split())
                 wasNew = False
                 continue
             if line != '\n' and line != '\r\n':
@@ -100,6 +101,34 @@ def readNematus(filename):
             ali = ali.transpose()
             alis.append(ali)
             aliTXT = ''
+    return srcs, tgts, alis
+    
+def escape(string):
+    return string.replace('"','&quot;').replace("'","&apos;")
+    
+def readAmu(in_file, src_file):
+    with open(src_file, 'r', encoding='utf-8') as fi:
+        with open(in_file, 'r', encoding='utf-8') as fh:
+            alis = []
+            tgts = []
+            srcs = []
+            aliTXT = ''
+            for src_line, out_line in izip(fi, fh):
+                lineparts = out_line.split(' ||| ')
+                lineparts[0] += ' <EOS>'
+                src_line = src_line.strip() + ' <EOS>'
+                tgts.append(escape(lineparts[0]).strip().split())
+                srcs.append(escape(src_line).split())
+                #alignment weights
+                weightparts = lineparts[1].split(') | (')
+                for weightpart in weightparts:
+                    aliTXT += weightpart.replace('(','') + '\n'
+                if len(aliTXT) > 0:
+                    c = StringIO(aliTXT.replace(' ) | ',''))
+                    ali = np.loadtxt(c)
+                    ali = ali.transpose()
+                    alis.append(ali)
+                    aliTXT = ''
     return srcs, tgts, alis
 
 def main(argv):
@@ -137,19 +166,20 @@ def main(argv):
     except NameError:
         # Set output type to 'web' by default
         outputType = 'web'
-    if from_system == 'NeuralMonkey':
+    if from_system == 'NeuralMonkey' or from_system == 'AmuNMT':
         try:
             sourcefile
         except NameError:
-            print ('Provide an source sentence file!')
+            print ('Provide a source sentence file!')
             printHelp()
             sys.exit()
-        try:
-            targetfile
-        except NameError:
-            print ('Provide an target sentence file!')
-            printHelp()
-            sys.exit()
+        if from_system == 'NeuralMonkey':
+            try:
+                targetfile
+            except NameError:
+                print ('Provide a target sentence file!')
+                printHelp()
+                sys.exit()
     if outputType != 'color' and outputType != 'block' and outputType != 'block2':
         # Set output type to 'web' by default
         outputType = 'web'
@@ -160,6 +190,8 @@ def main(argv):
         alis = np.load(inputfile)
     if from_system == "Nematus":
         (srcs, tgts, alis) = readNematus(inputfile)
+    if from_system == "AmuNMT":
+        (srcs, tgts, alis) = readAmu(inputfile, sourcefile)
 
     data = list(zip(srcs, tgts, alis))
 
