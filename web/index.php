@@ -22,10 +22,11 @@ if (!isset($_GET['directory'])){
 $dataFiles = cleanDirArray(scandir("./data/".$dataDir));
 
 //Get the data files
-$alignments = "./data/".$dataDir."/".array_pop(preg_grep("/\.ali\.js/", $dataFiles));
-$sources = "./data/".$dataDir."/".array_pop(preg_grep("/\.src\.js/", $dataFiles));
-$targets = "./data/".$dataDir."/".array_pop(preg_grep("/\.trg\.js/", $dataFiles));
-$confidences = "./data/".$dataDir."/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
+$alignments 			= "./data/".$dataDir."/".array_pop(preg_grep("/\.ali\.js/", $dataFiles));
+$sources 				= "./data/".$dataDir."/".array_pop(preg_grep("/\.src\.js/", $dataFiles));
+$targets 				= "./data/".$dataDir."/".array_pop(preg_grep("/\.trg\.js/", $dataFiles));
+$confidences 			= "./data/".$dataDir."/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
+$subword_confidences 	= "./data/".$dataDir."/".array_pop(preg_grep("/\.sc\.js/", $dataFiles));
 $count = getLineCount($alignments)-3;
 
 //Show only existing sentences
@@ -37,6 +38,7 @@ $f1 = gotoLine($alignments, $sentence);
 $f2 = gotoLine($sources, $sentence);
 $f3 = gotoLine($targets, $sentence);
 $f4 = gotoLine($confidences, $sentence);
+$f5 = gotoLine($subword_confidences, $sentence);
 
 $source 	= getJSvalue($f2->current());
 $target 	= getJSvalue($f3->current());
@@ -46,6 +48,9 @@ $APin 		= getScores($f4->current(), 2);
 $confidence = getScores($f4->current(), 3);
 $length		= getScores($f4->current(), 4);
 
+$subword_scores = explode("], [",str_replace("], ],","",str_replace("[[","",trim($f5->current()))));
+$ssw = explode(", ",$subword_scores[0]);
+$tsw = explode(", ",$subword_scores[1]);
 $allConfidences = getAllConfidences($f4, $count);
 
 ?>
@@ -129,7 +134,13 @@ $allConfidences = getAllConfidences($f4, $count);
 <div class="row" style="margin-left:5px;">
 	<p style="margin-left:15px;">
 		<span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Source</span> 
-		<span class="label label-danger"><?php echo $source; ?></span>
+		<span class="label label-danger" style="cursor:help;"><?php 
+		$sc=0;
+		foreach(getSWvalue($f2->current()) as $sourceToken){
+			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="bottom" title="Confidence: '.round($ssw[$sc]*100,2).'%">'.$sourceToken.'</span> ');
+			$sc++;
+		}
+		?></span>
 	</p>
 </div>
 <div class="row">
@@ -139,7 +150,13 @@ $allConfidences = getAllConfidences($f4, $count);
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<span data-toggle="collapse" data-target="#c5" class="label label-default myLabel">Translation</span> 
 		<div style="width:50%; float:left;" class="pr">
-			<span class="label label-danger" style="padding:4px;"><?php echo $target; ?></span>
+		<span class="label label-danger" style="cursor:help;padding:4px;"><?php 
+		$sc=0;
+		foreach(getSWvalue($f3->current()) as $targetToken){
+			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="top" title="Confidence: '.round($tsw[$sc]*100,2).'%">'.$targetToken.'</span> ');
+			$sc++;
+		}
+		?></span>
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
@@ -283,6 +300,9 @@ d3.select("#save").on("click", function(){
 $('#c1,#c2,#c3,#c4,#c5').perfectScrollbar({
   suppressScrollY: true,
   useBothWheelAxes: true
+});
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 </body>

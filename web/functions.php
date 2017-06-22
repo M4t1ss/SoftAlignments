@@ -21,6 +21,10 @@ function getJSvalue($string){
 	return str_replace('@@ ', '', str_replace('["', '', str_replace('"],', '', str_replace('", "', ' ', $string))));
 }
 
+function getSWvalue($string){
+	return explode('", "', str_replace('asc@@', '', str_replace('["', '', str_replace('"],', '', trim($string)))));
+}
+
 function gotoLine($fileName, $sentence){
 	$file = new SplFileObject($fileName);
 	$file->seek($sentence);
