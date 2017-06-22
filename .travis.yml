@@ -9,6 +9,9 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
+  
+before_install:
+ - chmod +x test_data/tests/test.sh
 
 install:
   - pip install numpy
