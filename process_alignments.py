@@ -136,7 +136,7 @@ def readAmu(in_file, src_file):
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv,"hi:o:s:t:f:")
+        opts, args = getopt.getopt(argv,"hi:o:s:t:f:n:")
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
@@ -154,6 +154,8 @@ def main(argv):
             targetfile = arg
         elif opt == '-f':
             from_system = arg
+        elif opt == '-n':
+            num = arg
     try:
         inputfile
     except NameError:
@@ -164,6 +166,10 @@ def main(argv):
         from_system
     except NameError:
         from_system = 'NeuralMonkey'
+    try:
+        num
+    except NameError:
+        num = -1
     try:
         outputType
     except NameError:
@@ -213,6 +219,9 @@ def main(argv):
                     out_s_js.write(u'var sources = [\n')
                     out_t_js.write(u'var targets = [\n')
                     out_c_js.write(u'var confidences = [\n')
+                    num = int(num) - 1
+                    if num > -1 and (num < len(data)):
+                        data = [data[num]]
                     for i in range(0, len(data)):
                         (src, tgt, rawAli) = data[i]
                         ali = [l[:len(tgt)] for l in rawAli[:len(src)]]

@@ -17,8 +17,10 @@ script:
   - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o color
   - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block
   - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block2
+  - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -n 4
   - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey
   - python process_alignments.py -i test_data/nematus/alignments.txt -f Nematus -o color
   - python process_alignments.py -i test_data/nematus/alignments.txt -f Nematus
   - python process_alignments.py -i test_data/amunmt/amu.out.en -s test_data/amunmt/amu.src.de -f AmuNMT -o color
   - python process_alignments.py -i test_data/amunmt/amu.out.en -s test_data/amunmt/amu.src.de -f AmuNMT
+  - python process_alignments.py -i test_data/amunmt/amu.out.en -s test_data/amunmt/amu.src.de -f AmuNMT -n 2

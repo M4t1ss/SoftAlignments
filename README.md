@@ -113,6 +113,7 @@ Parameters for process_alignments.py
 | -s     | source sentence subword units | For Neural Monkey | Path to file			  	 		|				 |
 | -t     | target sentence subword units | For Neural Monkey | Path to file			  	 		|				 |
 | -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus' 		| 'NeuralMonkey' |
+| -n     | Number of a specific sentence | No     	 		 | Integer 							| -1 (show all)	 |
 
 Screenshots
 ---------
