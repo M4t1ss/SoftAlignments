@@ -226,14 +226,18 @@ def main(argv):
                         (src, tgt, rawAli) = data[i]
                         ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
                         #Get the confidence metrics
+                        # e^(-1(x^2))
                         CDP = math.pow(math.e, -1 * math.pow(thecode.getCP(ali), 2))
+                        # e^(-0.05(x^2))
                         APout = math.pow(math.e, -0.05 * math.pow(thecode.getEnt(ali), 2))
                         APin = math.pow(math.e, -0.05 * math.pow(thecode.getRevEnt(ali), 2))
                         Total = math.pow(math.e, -0.05 * math.pow((thecode.getCP(ali) + thecode.getEnt(ali) + thecode.getRevEnt(ali)), 2))
+                        # 1-e^(-0.0001(x^2))
+                        Len = 1-math.pow(math.e, -0.0001 * math.pow(len(" ".join(src)), 2))
                         
                         out_s_js.write('["'+ " ".join(src).replace(' ','", "') +'"], \n')
                         out_t_js.write('["'+ " ".join(tgt).replace(' ','", "') +'"], \n')
-                        out_c_js.write(u'['+ repr(CDP) + u', '+ repr(APout) + u', '+ repr(APin) + u', '+ repr(Total) + u'], \n')
+                        out_c_js.write(u'['+ repr(CDP) + u', '+ repr(APout) + u', '+ repr(APin) + u', '+ repr(Total) + u', '+ repr(Len) + u'], \n')
                         
                         word = 0
                         out_a_js.write(u'[')

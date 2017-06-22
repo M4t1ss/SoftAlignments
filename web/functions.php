@@ -33,10 +33,11 @@ function getScores($string, $score_num = NULL){
 	$APout 		= round($scores[1] * 100, 2);
 	$APin 		= round($scores[2] * 100, 2);
 	$confidence = round($scores[3] * 100, 2);
-	if($score_num!==null){
+	$length 	= round($scores[4] * 100, 2);
+	if($score_num!==null && $score_num < count($scores)){
 		return round($scores[$score_num] * 100, 2);
 	}else{
-		return array($CDP, $APout, $APin, $confidence);
+		return array($CDP, $APout, $APin, $confidence, $length);
 	}
 }
 

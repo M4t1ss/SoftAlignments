@@ -31,7 +31,7 @@ br{clear:both;}
   transition: height 0.6s ease;
 }
 
-#c1, #c2, #c3, #c4 {
+#c1, #c2, #c3, #c4, #c5 {
 	position: relative;
 	height: 100%;
 	margin-left:20px;
