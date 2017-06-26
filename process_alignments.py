@@ -238,18 +238,23 @@ def main(argv):
                             
                             
                             #Get the confidence metrics
+                            CDP = round(thecode.getCP(ali), 10)
+                            APout = round(thecode.getEnt(ali), 10)
+                            APin = round(thecode.getRevEnt(ali), 10)
+                            Total = round(CDP + APout + APin, 10)
                             # e^(-1(x^2))
-                            CDP = math.pow(math.e, -1 * math.pow(thecode.getCP(ali), 2))
+                            CDP_pr = round(math.pow(math.e, -1 * math.pow(CDP, 2)) * 100, 2)
                             # e^(-0.05(x^2))
-                            APout = math.pow(math.e, -0.05 * math.pow(thecode.getEnt(ali), 2))
-                            APin = math.pow(math.e, -0.05 * math.pow(thecode.getRevEnt(ali), 2))
-                            Total = math.pow(math.e, -0.05 * math.pow((thecode.getCP(ali) + thecode.getEnt(ali) + thecode.getRevEnt(ali)), 2))
+                            APout_pr = round(math.pow(math.e, -0.05 * math.pow(APout, 2)) * 100, 2)
+                            APin_pr = round(math.pow(math.e, -0.05 * math.pow(APin, 2)) * 100, 2)
+                            Total_pr = round(math.pow(math.e, -0.05 * math.pow(Total, 2)) * 100, 2)
                             # 1-e^(-0.0001(x^2))
-                            Len = 1-math.pow(math.e, -0.0001 * math.pow(len(" ".join(src)), 2))
+                            Len = round((1-math.pow(math.e, -0.0001 * math.pow(len(" ".join(src)), 2))) * 100, 2)
                             
                             out_s_js.write('["'+ " ".join(src).replace(' ','", "') +'"], \n')
                             out_t_js.write('["'+ " ".join(tgt).replace(' ','", "') +'"], \n')
-                            out_c_js.write(u'['+ repr(CDP) + u', '+ repr(APout) + u', '+ repr(APin) + u', '+ repr(Total) + u', '+ repr(Len) + u'], \n')
+                            out_c_js.write(u'['+ repr(CDP_pr) + u', '+ repr(APout_pr) + u', '+ repr(APin_pr) + u', '+ repr(Total_pr) 
+                                + u', '+ repr(Len) + u', '+ repr(len(" ".join(src))) + u'], \n')
                             out_sc_js.write(u'[[' + ", ".join(srcTotal) + u'], ' + u'[' + ", ".join(trgTotal) + u'], ' + u'], \n')
                             
                             word = 0
@@ -318,6 +323,11 @@ def main(argv):
                             if outputType != 'web':
                                 for liline in outchars:
                                     sys.stdout.write(''.join(liline) + '\n')
+                                # print scores
+                                sys.stdout.write('\nCoverage Deviation Penalty: \t\t' + repr(CDP) + ' (' + repr(CDP_pr) + '%)' + '\n')
+                                sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(APin) + ' (' + repr(APin_pr) + '%)' + '\n')
+                                sys.stdout.write('Output Absentmindedness Penalty: \t' + repr(APout) + ' (' + repr(APout_pr) + '%)' + '\n')
+                                sys.stdout.write('Confidence: \t\t\t\t' + repr(Total) + ' (' + repr(Total_pr) + '%)' + '\n')
                            
                             # write target sentences
                             word = 0

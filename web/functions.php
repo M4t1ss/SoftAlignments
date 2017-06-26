@@ -33,15 +33,16 @@ function gotoLine($fileName, $sentence){
 
 function getScores($string, $score_num = NULL){
 	$scores 	= explode(", ", str_replace("]", "", str_replace("[", "", $string)));
-	$CDP 		= round($scores[0] * 100, 2);
-	$APout 		= round($scores[1] * 100, 2);
-	$APin 		= round($scores[2] * 100, 2);
-	$confidence = round($scores[3] * 100, 2);
-	$length 	= round($scores[4] * 100, 2);
+	$CDP 		= $scores[0];
+	$APout 		= $scores[1];
+	$APin 		= $scores[2];
+	$confidence = $scores[3];
+	$length_pr 	= $scores[4];
+	$length 	= $scores[5];
 	if($score_num!==null && $score_num < count($scores)){
-		return round($scores[$score_num] * 100, 2);
+		return $scores[$score_num];
 	}else{
-		return array($CDP, $APout, $APin, $confidence, $length);
+		return array($CDP, $APout, $APin, $confidence, $length_pr, $length);
 	}
 }
 

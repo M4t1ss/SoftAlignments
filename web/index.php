@@ -46,7 +46,6 @@ $CDP 		= getScores($f4->current(), 0);
 $APout 		= getScores($f4->current(), 1);
 $APin 		= getScores($f4->current(), 2);
 $confidence = getScores($f4->current(), 3);
-$length		= getScores($f4->current(), 4);
 
 $subword_scores = explode("], [",str_replace("], ],","",str_replace("[[","",trim($f5->current()))));
 $ssw = explode(", ",$subword_scores[0]);
@@ -196,7 +195,7 @@ $allConfidences = getAllConfidences($f4, $count);
 	<div style="width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $sentenceConfidences){
-				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - Length '.$sentenceConfidences[4].'%">
+				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - Length '.$sentenceConfidences[5].' symbols">
 						<div class="progress progress-bar-vertical">
 							<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$sentenceConfidences[4].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[4].'%;">
 								<span class="sr-only">'.$sentenceConfidences[4].'% Complete</span>
