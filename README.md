@@ -49,6 +49,12 @@ How to get alignment files from NMT systems
 	s_ali_out="out.alignment"
 	```
 
+* [AmuNMT](https://github.com/barvins/amunmt)
+	* In the config.yml file add
+	```sh
+	return-alignment: yes
+	```
+	
 Examples
 ---------
 
@@ -106,14 +112,14 @@ Examples
 Parameters for process_alignments.py
 ---------
 
-| Option | Description                   | Required 		 | Possible Values 			 		| Default Value  |
-|:------:|:------------------------------|:-----------------:|:---------------------------------|:---------------|
-| -i     | input alignment file			 | yes     			 | Path to file						|				 |
-| -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'| 'web'			 |
-| -s     | source sentence subword units | For Neural Monkey | Path to file			  	 		|				 |
-| -t     | target sentence subword units | For Neural Monkey | Path to file			  	 		|				 |
-| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus' 		| 'NeuralMonkey' |
-| -n     | Number of a specific sentence | No     	 		 | Integer 							| -1 (show all)	 |
+| Option | Description                   | Required 		 | Possible Values 			 			| Default Value  |
+|:------:|:------------------------------|:-----------------:|:-------------------------------------|:---------------|
+| -i     | input alignment file			 | yes     			 | Path to file							|				 |
+| -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'	| 'web'			 |
+| -s     | source sentence subword units | For Neural Monkey | Path to file			  	 			|				 |
+| -t     | target sentence subword units | For Neural Monkey | Path to file			  	 			|				 |
+| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'AmuNMT' 	| 'NeuralMonkey' |
+| -n     | Number of a specific sentence | No     	 		 | Integer 								| -1 (show all)	 |
 
 Screenshots
 ---------
