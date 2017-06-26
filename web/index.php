@@ -136,7 +136,7 @@ $allConfidences = getAllConfidences($f4, $count);
 		<span class="label label-danger" style="cursor:help;"><?php 
 		$sc=0;
 		foreach(getSWvalue($f2->current()) as $sourceToken){
-			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="bottom" title="Confidence: '.round($ssw[$sc]*100,2).'%">'.$sourceToken.'</span> ');
+			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="bottom" title="Confidence: '.round($ssw[$sc]*100,2).'%">'.htmlspecialchars($sourceToken).'</span> ');
 			$sc++;
 		}
 		?></span>
@@ -152,7 +152,7 @@ $allConfidences = getAllConfidences($f4, $count);
 		<span class="label label-danger" style="cursor:help;padding:4px;"><?php 
 		$sc=0;
 		foreach(getSWvalue($f3->current()) as $targetToken){
-			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="top" title="Confidence: '.round($tsw[$sc]*100,2).'%">'.$targetToken.'</span> ');
+			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="top" title="Confidence: '.round($tsw[$sc]*100,2).'%">'.htmlspecialchars($targetToken).'</span> ');
 			$sc++;
 		}
 		?></span>
