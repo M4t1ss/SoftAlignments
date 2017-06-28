@@ -15,3 +15,8 @@ Mēs   ,   jūs   ,   tas   īga   atīvā
     ām  ka    zina      noder@@
                               inform@@
 
+Coverage Deviation Penalty: 		-0.6465703546 (65.83%)
+Input Absentmindedness Penalty: 	-1.5023303943 (89.33%)
+Output Absentmindedness Penalty: 	-1.9890754175 (82.05%)
+Confidence: 				-4.1379761664 (42.48%)
+
