@@ -62,10 +62,10 @@ Examples
 	
 	```sh
 	python process_alignments.py \
-	-i test_data/alignments_neural_monkey.npy \
+	-i test_data/neuralmonkey/alignments.npy  \
 	-o color \
-	-s test_data/test.src.en.bpe \
-	-t test_data/test.out.lv.bpe \
+	-s test_data/neuralmonkey/src.en.bpe \
+	-t test_data/neuralmonkey/out.lv.bpe \
 	-f NeuralMonkey
 	```
 	
@@ -73,7 +73,7 @@ Examples
 	
 	```sh
 	python process_alignments.py \
-	-i test_data/alignments_nematus.txt \
+	-i test_data/nematus/alignments.txt \
 	-o color \
 	-f Nematus
 	```
@@ -82,29 +82,30 @@ Examples
 	
 	```sh
 	python process_alignments.py \
-	-i test_data/alignments_neural_monkey.npy \
+	-i test_data/neuralmonkey/alignments.npy  \
 	-o block \
-	-s test_data/test.src.en.bpe \
-	-t test_data/test.out.lv.bpe \
+	-s test_data/neuralmonkey/src.en.bpe \
+	-t test_data/neuralmonkey/out.lv.bpe \
 	-f NeuralMonkey
 	```
 	
 	  or
 		
 		python process_alignments.py \
-		-i test_data/alignments_neural_monkey.npy \
+		-i test_data/neuralmonkey/alignments.npy  \
 		-o block2 \
-		-s test_data/test.src.en.bpe \
-		-t test_data/test.out.lv.bpe \
+		-s test_data/neuralmonkey/src.en.bpe \
+		-t test_data/neuralmonkey/out.lv.bpe \
 		-f NeuralMonkey
 	
   - in the browser as links between words (demo [here](http://lielakeda.lv/other/NLP/alignments/?s=19))
 	
 	```sh
 	python process_alignments.py \
-	-i test_data/alignments_nematus.txt \
+	-i test_data/amunmt/amu.out.en \
+	-s test_data/amunmt/amu.src.de \
 	-o web \
-	-f Nematus
+	-f AmuNMT
 	```
 
 Parameters for process_alignments.py
