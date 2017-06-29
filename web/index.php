@@ -192,10 +192,12 @@ $allConfidences = getAllConfidences($f4, $count);
 	</div>
 </div>
 <div id="c5" class="row collapse">
-	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="mySort('length', 2)"></span>
+	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="mySort('length', 1)"></span>
+	<div id="length" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $sentenceConfidences){
-				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - Length '.$sentenceConfidences[5].' symbols">
+				echo '<a id="le-'.($key+1).'-'.($sentenceConfidences[4]).'" href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - Length '.$sentenceConfidences[5].' symbols">
 						<div class="progress progress-bar-vertical">
 							<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$sentenceConfidences[4].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[4].'%;">
 								<span class="sr-only">'.$sentenceConfidences[4].'% Complete</span>
@@ -207,10 +209,12 @@ $allConfidences = getAllConfidences($f4, $count);
 	</div>
 </div>
 <div id="c1" class="row collapse">
-	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="mySort('confidence', 2)"></span>
+	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="mySort('confidence', 1)"></span>
+	<div id="confidence" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $sentenceConfidences){
-				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - Confidence '.$sentenceConfidences[3].'%">
+				echo '<a id="co-'.($key+1).'-'.($sentenceConfidences[3]).'" href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - Confidence '.$sentenceConfidences[3].'%">
 						<div class="progress progress-bar-vertical">
 							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$sentenceConfidences[3].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[3].'%;">
 								<span class="sr-only">'.$sentenceConfidences[3].'% Complete</span>
@@ -222,10 +226,12 @@ $allConfidences = getAllConfidences($f4, $count);
 	</div>
 </div>
 <div id="c2" class="row collapse">
-	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="mySort('cdp', 2)"></span>
+	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="mySort('cdp', 1)"></span>
+	<div id="cdp" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $sentenceConfidences){
-				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - CDP '.$sentenceConfidences[0].'%">
+				echo '<a id="cd-'.($key+1).'-'.($sentenceConfidences[0]).'" href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - CDP '.$sentenceConfidences[0].'%">
 						<div class="progress progress-bar-vertical">
 							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="'.$sentenceConfidences[0].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[0].'%;">
 								<span class="sr-only">'.$sentenceConfidences[0].'% Complete</span>
@@ -237,10 +243,12 @@ $allConfidences = getAllConfidences($f4, $count);
 	</div>
 </div>
 <div id="c3" class="row collapse">
-	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="mySort('apout', 2)"></span>
+	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="mySort('apout', 1)"></span>
+	<div id="apout" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $sentenceConfidences){
-				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - APout '.$sentenceConfidences[1].'%">
+				echo '<a id="ao-'.($key+1).'-'.($sentenceConfidences[1]).'" href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - APout '.$sentenceConfidences[1].'%">
 						<div class="progress progress-bar-vertical">
 							<div class="progress-bar" role="progressbar" aria-valuenow="'.$sentenceConfidences[1].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[1].'%;">
 								<span class="sr-only">'.$sentenceConfidences[1].'% Complete</span>
@@ -252,10 +260,12 @@ $allConfidences = getAllConfidences($f4, $count);
 	</div>
 </div>
 <div id="c4" class="row collapse">
-	<div style="width:<?php echo count($allConfidences)*7;?>px;">
+	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="mySort('apin', 2)"></span>
+	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="mySort('apin', 1)"></span>
+	<div id="apin" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $sentenceConfidences){
-				echo '<a href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - APin '.$sentenceConfidences[2].'%">
+				echo '<a id="ai-'.($key+1).'-'.($sentenceConfidences[2]).'" href="?s='.($key+1).'&directory='.$dataDir.'" title="Sentence '.($key+1).' - APin '.$sentenceConfidences[2].'%">
 						<div class="progress progress-bar-vertical">
 							<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'.$sentenceConfidences[2].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$sentenceConfidences[2].'%;">
 								<span class="sr-only">'.$sentenceConfidences[2].'% Complete</span>

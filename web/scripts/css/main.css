@@ -48,3 +48,9 @@ br{clear:both;}
 	vertical-align:middle;
 	margin-right:5px;
 }
+
+span.sort{
+	cursor: pointer; cursor: hand;
+	top:auto;
+	position:absolute;
+}

@@ -177,3 +177,30 @@
 		
 	this.bP = bP;
 }();
+
+var sorts = {'length':true,'confidence':true,'apin':true,'apout':true};
+
+function mySort(ParentID, SortBy){
+	var toSort = document.getElementById(ParentID).children;
+	var check = document.getElementById(ParentID).children;
+	toSort = Array.prototype.slice.call(toSort, 0);
+	check = toSort.slice(0);
+
+	toSort.sort(function(a, b) {
+		var aord = +a.id.split('-')[SortBy];
+		var bord = +b.id.split('-')[SortBy];
+		if(window.sorts[ParentID]){
+			return aord - bord;
+		}else{
+			return bord - aord;
+		}
+	});
+
+	var parent = document.getElementById(ParentID);
+	parent.innerHTML = "";
+
+	for(var i = 0, l = toSort.length; i < l; i++) {
+		parent.appendChild(toSort[i]);
+	}
+	window.sorts[ParentID] = !window.sorts[ParentID];
+}
