@@ -181,31 +181,38 @@
 var sortBy = getCookie('sortBy');
 var sortOrder = getCookie('sortOrder');
 
-if(sortBy == "") sortBy = 'length';
+if(sortBy == "") sortBy = 1;
 if(sortOrder == "") sortOrder = 'ASC';
 
-sortAll(sortBy, sortOrder)
+$(document).ready(function(){
+	sortAll(sortBy, sortOrder, false);
+}) 
 
-console.log(sortBy,sortOrder)
-
-function sortAll(SortBy, order = ""){
+function sortAll(SortBy, order = "", reorder = true){
+	if(order == ""){
+		order = getCookie('sortOrder');
+		if(order == "") 
+			order = "ASC";
+	}
+	if(reorder && SortBy == getCookie('sortBy'))
+		if(order == "ASC") 
+			order = "DESC";
+		else
+			order = "ASC";
+	
 	mySort('length', SortBy, order);
 	mySort('confidence', SortBy, order);
 	mySort('apin', SortBy, order);
 	mySort('apout', SortBy, order);
 	mySort('cdp', SortBy, order);
+	
+	setCookie('sortBy', SortBy, 1);
+	setCookie('sortOrder', order, 1);
 }
 
 function mySort(ParentID, SortBy, order = ""){
 	var toSort = document.getElementById(ParentID).children;
 	toSort = Array.prototype.slice.call(toSort, 0);
-	if(order == ""){
-		order = getCookie('sortOrder');
-		if(order == "ASC") 
-			order = "DESC";
-		else
-			order = "ASC";
-	}
 
 	toSort.sort(function(a, b) {
 		var aord = +a.id.split('-')[SortBy];
@@ -223,9 +230,6 @@ function mySort(ParentID, SortBy, order = ""){
 	for(var i = 0, l = toSort.length; i < l; i++) {
 		parent.appendChild(toSort[i]);
 	}
-	
-	setCookie('sortBy', SortBy, 1);
-	setCookie('sortOrder', order, 1);
 }
 
 function setCookie(cname, cvalue, exdays) {
