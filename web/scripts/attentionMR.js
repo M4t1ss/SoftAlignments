@@ -178,18 +178,39 @@
 	this.bP = bP;
 }();
 
-var sorts = {'length':true,'confidence':true,'apin':true,'apout':true};
+var sortBy = getCookie('sortBy');
+var sortOrder = getCookie('sortOrder');
 
-function mySort(ParentID, SortBy){
+if(sortBy == "") sortBy = 'length';
+if(sortOrder == "") sortOrder = 'ASC';
+
+sortAll(sortBy, sortOrder)
+
+console.log(sortBy,sortOrder)
+
+function sortAll(SortBy, order = ""){
+	mySort('length', SortBy, order);
+	mySort('confidence', SortBy, order);
+	mySort('apin', SortBy, order);
+	mySort('apout', SortBy, order);
+	mySort('cdp', SortBy, order);
+}
+
+function mySort(ParentID, SortBy, order = ""){
 	var toSort = document.getElementById(ParentID).children;
-	var check = document.getElementById(ParentID).children;
 	toSort = Array.prototype.slice.call(toSort, 0);
-	check = toSort.slice(0);
+	if(order == ""){
+		order = getCookie('sortOrder');
+		if(order == "ASC") 
+			order = "DESC";
+		else
+			order = "ASC";
+	}
 
 	toSort.sort(function(a, b) {
 		var aord = +a.id.split('-')[SortBy];
 		var bord = +b.id.split('-')[SortBy];
-		if(window.sorts[ParentID]){
+		if(order == "ASC"){
 			return aord - bord;
 		}else{
 			return bord - aord;
@@ -202,5 +223,30 @@ function mySort(ParentID, SortBy){
 	for(var i = 0, l = toSort.length; i < l; i++) {
 		parent.appendChild(toSort[i]);
 	}
-	window.sorts[ParentID] = !window.sorts[ParentID];
+	
+	setCookie('sortBy', SortBy, 1);
+	setCookie('sortOrder', order, 1);
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
