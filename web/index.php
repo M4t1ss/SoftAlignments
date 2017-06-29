@@ -115,7 +115,7 @@ $allConfidences = getAllConfidences($f4, $count);
       <ul class="nav navbar-nav navbar-right">
         <li style="padding-top:8px; padding-right:5px;">
 			<form action="?">
-				<select class="selectpicker" data-live-search="true" name="directory" onchange="this.form.submit()">
+				<select class="selectpicker" data-live-search="true" name="directory" onchange="setCookie('sortBy', '', 1);setCookie('sortOrder', '', 1);this.form.submit()">
 				<?php 
 				foreach($dataDirs as $directory){
 					$selected = $dataDir==$directory?" SELECTED":"";
