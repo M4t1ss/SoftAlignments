@@ -180,6 +180,12 @@
 
 var sortBy = getCookie('sortBy');
 var sortOrder = getCookie('sortOrder');
+var hide = getCookie('hide');
+var show = getCookie('show');
+if (hide == '' || show == ''){
+    hide = 'matrix';
+    show = 'svg';
+}
 
 if(sortBy == "") sortBy = 1;
 if(sortOrder == "") sortOrder = 'ASC';
@@ -253,4 +259,90 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+var sentence = [];
+
+function loadAlignment(name, line) {
+    if (!sentence) sentence = {};
+    var maxRow = null, maxCol = null;
+    
+    line.forEach(function(alignment) {
+        if (!alignment) return;
+        var x = alignment[0];
+        var y = alignment[2];
+        if (!sentence[x]) sentence[x] = {};
+        if (!sentence[x][y]) sentence[x][y] = {};
+        if (!sentence[x][y][name]) sentence[x][y][name] = {};
+        sentence[x][y][name] = true;
+        sentence[x][y]['weight'] = alignment[1];
+        if (!sentence.maxRow || x > sentence.maxRow) sentence.maxRow = x;
+        if (!sentence.maxCol || y > sentence.maxCol) sentence.maxCol = y;
+    });
+}
+
+function loadText(name, line) {
+    if (!sentence) sentence = {};
+    if (!sentence.tokens) sentence.tokens = {};
+    sentence.tokens[name] = line;
+}
+
+function render(M_sources, M_targets, M_alignments) {
+    loadText('src', M_sources[0]);
+    loadText('trg', M_targets[0]);
+    loadAlignment('sym', M_alignments);
+    
+	$('#matrix table').remove();
+	$table = $('<table/>');
+	$tr = $('<tr class="top"><th>&nbsp;</th></tr>');
+	for (var c = 0; c <= sentence.maxCol; c++) {
+		$tr.append($('<th/>').attr('data-col', c).text(sentence.tokens.trg[c]));
+	}
+	$table.append($tr);
+	for (var r = 0; r <= sentence.maxRow; r++) {
+		$tr = $('<tr/>');
+		$tr.append($('<th class="left"/>').text(sentence.tokens.src[r]));
+		for (var c = 0; c <= sentence.maxCol; c++) {
+			$td = $('<td/>');
+            $td.attr('data-col', c);
+            $td.attr('data-row', r);
+			if (sentence[r] && sentence[r][c] && sentence[r][c]) {
+				for (var key in sentence[r][c]) {
+					if (sentence[r][c][key]) {
+						$td.css("background-color", lighten("FFFFFF", sentence[r][c]['weight'] * -1));
+                        
+					}
+				}
+			}
+            $td.hover(function() { $('table [data-col=' + $(this).attr('data-col') + ']').addClass('hover'); }, 
+                      function() { $('table [data-col=' + $(this).attr('data-col') + ']').removeClass('hover'); });
+			$tr.append($td);
+		}
+		$table.append($tr);
+	}
+	$('#matrix').append($table);
+}
+
+function hideShow(hide,show){
+    $("#"+hide).hide();
+    $("#"+show).show();
+	setCookie('hide', hide, 1);
+	setCookie('show', show, 1);
+}
+
+function lighten(color, luminosity) {
+
+	color = new String(color).replace(/[^0-9a-f]/gi, '');
+	if (color.length < 6) {
+		color = color[0]+ color[0]+ color[1]+ color[1]+ color[2]+ color[2];
+	}
+	luminosity = luminosity || 0;
+
+	var newColor = "#", c, i, black = 0, white = 255;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(color.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(black, c + (luminosity * white)), white)).toString(16);
+		newColor += ("00"+c).substr(c.length);
+	}
+	return newColor; 
 }

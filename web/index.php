@@ -95,13 +95,23 @@ $allConfidences = getAllConfidences($f4, $count);
 		</li>
         <li>
 			<form class="navbar-form" action="?" method="GET">
-				<button type="reset" id="save" style="display:inline;" class="btn btn-default">
-					<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-				</button>
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-default active" id="svgBut">
+                    <input type="radio" name="type" value="svg" autocomplete="off" checked><span class="glyphicon glyphicon-random" aria-hidden="true"></span>
+                  </label>
+                  <label class="btn btn-default" id="matBut">
+                    <input type="radio" name="type" value="matrix" autocomplete="off"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                  </label>
+                </div>
 				<input class="form-control" style="width:75px; display:inline;" name="s" value="<?php echo $sentence; ?>" type="text" /> 
-				<button style="display:inline;" class="btn btn-default" type="submit">
-					<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-				</button>
+                <div class="btn-group" role="group">
+                    <button style="display:inline;" class="btn btn-default" type="submit">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    </button>
+                    <button type="reset" id="save" style="display:inline;" class="btn btn-default">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                    </button>
+                </div>
 				<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
 				<input type="hidden" name="changeNum" value="True" />
 			</form>
@@ -144,6 +154,7 @@ $allConfidences = getAllConfidences($f4, $count);
 </div>
 <div class="row">
 	<div id="svg"></div>
+    <div id="matrix"></div>
 </div>
 <div class="row" style="margin-left:5px;">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -317,6 +328,23 @@ $('#c1,#c2,#c3,#c4,#c5').perfectScrollbar({
 });
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+    render(source,target,alignment_data);
+    
+    hideShow(hide,show);
+    if(hide == 'matrix'){
+        $('#svgBut').button('toggle')
+    }else{
+        $('#matBut').button('toggle')
+    }
+    
+    $('input[type=radio][name=type]').change(function() {
+        if (this.value == 'svg') {
+            hideShow('matrix','svg');
+        }
+        else if (this.value == 'matrix') {
+            hideShow('svg','matrix');
+        }
+    });
 });
 </script>
 </body>

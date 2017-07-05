@@ -54,3 +54,35 @@ span.sort{
 	top:auto;
 	position:absolute;
 }
+
+
+table { margin: 50px auto; }
+
+tr:hover td, td.hover, tr:hover th, th.hover { border: 0.1px solid DarkOrange; }
+
+tr:hover th, th.hover { color: DarkOrange; }
+
+td { border: 1px solid black; background: #eee; width: 16px; height: 16px; }
+
+th {
+	font-size: 14px;
+	font-weight: normal;
+	font-family: Arial;
+	text-align: right;
+    border: 0.1px solid #000;
+}
+
+tr.top th { 
+	-webkit-transform: rotate(-45deg);
+	text-align: left;
+	max-width: 16px; 
+	max-height: 16px; 
+    border: 0;
+    padding-bottom: 3px;
+}
+
+th.left { 
+    border: 0.1px solid #FFF !important;
+    border-right: 0.1px solid #000;
+    padding-right: 3px;
+}
