@@ -56,8 +56,19 @@ span.sort{
 }
 
 
-table { margin: 50px auto; }
-#matrixtable { background-color: white; height:130%; }
+table { 
+    margin: 30px auto; 
+    line-height:1;
+}
+
+#matrix {
+    background-color: white;
+    display: table;
+    margin: auto auto;
+    text-align: center;
+    padding-right: 30px;
+    padding-left: 10px;
+}
 
 tr:hover td, td.hover, tr:hover th, th.hover { border: 0.1px solid DarkOrange; }
 
@@ -77,9 +88,11 @@ tr.top th {
 	-webkit-transform: rotate(-45deg);
 	text-align: left;
 	max-width: 16px; 
+	min-width: 16px; 
 	max-height: 16px; 
     border: 0;
-    padding-bottom: 3px;
+    bottom:0px;
+    padding-bottom: 10px;
 }
 
 th.left { 

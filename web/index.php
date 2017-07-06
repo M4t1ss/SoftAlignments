@@ -309,7 +309,7 @@ if(hide == 'matrix'){
 }else{
     $('#matBut').button('toggle');
     render(source,target,alignment_data);
-    html2canvas($("#matrixtable"), {
+    html2canvas($("#matrix"), {
         onrendered: function (canvas) {
                 getCanvas = canvas;
         }
@@ -359,7 +359,7 @@ $(document).ready(function(){
         else if (this.value == 'matrix') {
             render(source,target,alignment_data);
             hideShow('svg','matrix');
-            html2canvas($("#matrixtable"), {
+            html2canvas($("#matrix"), {
                 onrendered: function (canvas) {
                         getCanvas = canvas;
                 }

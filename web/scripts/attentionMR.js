@@ -293,7 +293,7 @@ function render(M_sources, M_targets, M_alignments) {
     loadAlignment('sym', M_alignments);
     
 	$('#matrix table').remove();
-	$table = $('<table id="matrixtable"/>');
+	$table = $('<table/>');
 	$tr = $('<tr class="top"><th>&nbsp;</th></tr>');
 	for (var c = 0; c <= sentence.maxCol; c++) {
 		$tr.append($('<th/>').attr('data-col', c).text(sentence.tokens.trg[c]));
