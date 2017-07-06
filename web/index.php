@@ -70,6 +70,9 @@ $allConfidences = getAllConfidences($f4, $count);
 	<script src="scripts/js/bootstrap.min.js"></script>
 	<script src="scripts/js/perfect-scrollbar.jquery.min.js"></script>
 	<script src="scripts/select/bootstrap-select.min.js"></script>
+    <script src="scripts/attentionMR.js"></script>
+    <script src="scripts/d3.v3.min.js"></script>
+    <script src="scripts/saveSvgAsPng.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -292,16 +295,21 @@ $allConfidences = getAllConfidences($f4, $count);
 		?>
 	</div>
 </div>
-<script src="scripts/d3.v3.min.js"></script>
-<script src="scripts/attentionMR.js"></script>
-<script src="scripts/saveSvgAsPng.js"></script>
-<script>
+<script type="text/javascript">
 <?php
 //Data for our selected sentence
 echo "var alignment_data = ".str_replace("], ],","] ];",$f1->current());
 echo "var source = [".str_replace("],","]];",$f2->current());
 echo "var target = [".str_replace("],","]];",$f3->current());
 ?>
+hideShow(hide,show);
+if(hide == 'matrix'){
+    $('#svgBut').button('toggle');
+}else{
+    $('#matBut').button('toggle');
+    render(source,target,alignment_data);
+}
+    
 var width = 2200, height = 600, margin ={b:0, t:40, l:-10, r:0};
 var svg = d3.select("#svg")
 	.append("svg")
@@ -328,20 +336,13 @@ $('#c1,#c2,#c3,#c4,#c5').perfectScrollbar({
 });
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
-    render(source,target,alignment_data);
-    
-    hideShow(hide,show);
-    if(hide == 'matrix'){
-        $('#svgBut').button('toggle')
-    }else{
-        $('#matBut').button('toggle')
-    }
     
     $('input[type=radio][name=type]').change(function() {
         if (this.value == 'svg') {
             hideShow('matrix','svg');
         }
         else if (this.value == 'matrix') {
+            render(source,target,alignment_data);
             hideShow('svg','matrix');
         }
     });
