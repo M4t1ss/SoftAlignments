@@ -73,6 +73,7 @@ $allConfidences = getAllConfidences($f4, $count);
     <script src="scripts/attentionMR.js"></script>
     <script src="scripts/d3.v3.min.js"></script>
     <script src="scripts/saveSvgAsPng.js"></script>
+    <script src="scripts/js/html2canvas.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -111,9 +112,9 @@ $allConfidences = getAllConfidences($f4, $count);
                     <button style="display:inline;" class="btn btn-default" type="submit">
                         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     </button>
-                    <button type="reset" id="save" style="display:inline;" class="btn btn-default">
+                    <a type="reset" id="save" style="display:inline;" class="btn btn-default">
                         <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                    </button>
+                    </a>
                 </div>
 				<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
 				<input type="hidden" name="changeNum" value="True" />
@@ -308,6 +309,11 @@ if(hide == 'matrix'){
 }else{
     $('#matBut').button('toggle');
     render(source,target,alignment_data);
+    html2canvas($("#matrixtable"), {
+        onrendered: function (canvas) {
+                getCanvas = canvas;
+        }
+    });
 }
     
 var width = 2200, height = 600, margin ={b:0, t:40, l:-10, r:0};
@@ -326,8 +332,17 @@ var data = [
 
 bP.draw(data, svg);
 
+var getCanvas; // global variable
+
 d3.select("#save").on("click", function(){
-  saveSvgAsPng(document.getElementById("ali"), "alignments_"+Date.now()+".png", {scale: 3, backgroundColor: '#FFFFFF'});
+    console.log(hide);
+    if(hide == 'matrix'){
+        saveSvgAsPng(document.getElementById("ali"), "alignments_"+Date.now()+".png", {scale: 3, backgroundColor: '#FFFFFF'});
+    }else{
+        var imgageData = getCanvas.toDataURL("image/png");
+        var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+        $("#save").attr("download", "matrix_"+Date.now()+".png").attr("href", newData);
+    }
 });
 
 $('#c1,#c2,#c3,#c4,#c5').perfectScrollbar({
@@ -344,6 +359,11 @@ $(document).ready(function(){
         else if (this.value == 'matrix') {
             render(source,target,alignment_data);
             hideShow('svg','matrix');
+            html2canvas($("#matrixtable"), {
+                onrendered: function (canvas) {
+                        getCanvas = canvas;
+                }
+            });
         }
     });
 });

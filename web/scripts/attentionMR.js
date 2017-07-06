@@ -293,7 +293,7 @@ function render(M_sources, M_targets, M_alignments) {
     loadAlignment('sym', M_alignments);
     
 	$('#matrix table').remove();
-	$table = $('<table/>');
+	$table = $('<table id="matrixtable"/>');
 	$tr = $('<tr class="top"><th>&nbsp;</th></tr>');
 	for (var c = 0; c <= sentence.maxCol; c++) {
 		$tr.append($('<th/>').attr('data-col', c).text(sentence.tokens.trg[c]));
@@ -323,11 +323,13 @@ function render(M_sources, M_targets, M_alignments) {
 	$('#matrix').append($table);
 }
 
-function hideShow(hide,show){
-    $("#"+hide).hide();
-    $("#"+show).show();
-	setCookie('hide', hide, 1);
-	setCookie('show', show, 1);
+function hideShow(m_hide,m_show){
+    $("#"+m_hide).hide();
+    $("#"+m_show).show();
+	setCookie('hide', m_hide, 1);
+	setCookie('show', m_show, 1);
+    hide = m_hide;
+    show = m_show;
 }
 
 function lighten(color, luminosity) {

@@ -57,6 +57,7 @@ span.sort{
 
 
 table { margin: 50px auto; }
+#matrixtable { background-color: white; height:130%; }
 
 tr:hover td, td.hover, tr:hover th, th.hover { border: 0.1px solid DarkOrange; }
 
