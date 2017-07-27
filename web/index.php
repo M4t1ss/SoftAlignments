@@ -162,7 +162,7 @@ $allConfidences = getAllConfidences($f4, $count);
 </div>
 <div class="row" style="margin-left:5px;">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<span data-toggle="collapse" data-target="#c5" class="label label-default myLabel">Translation</span> 
+		<span data-toggle="collapse" data-target="#c5" class="label label-default myLabel" onclick="toggleChart('c5')">Translation</span> 
 		<div style="width:50%; float:left;" class="pr">
 		<span class="label label-danger" style="cursor:help;padding:4px;"><?php 
 		$sc=0;
@@ -174,7 +174,7 @@ $allConfidences = getAllConfidences($f4, $count);
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c1" class="label label-default myLabel">Confidence</span> 
+		<span data-toggle="collapse" data-target="#c1" class="label label-default myLabel" onclick="toggleChart('c1')">Confidence</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $confidence; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $confidence; ?>%;">
 				<?php echo $confidence; ?>%
@@ -182,7 +182,7 @@ $allConfidences = getAllConfidences($f4, $count);
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c2" class="label label-default myLabel">CDP</span> 
+		<span data-toggle="collapse" data-target="#c2" class="label label-default myLabel" onclick="toggleChart('c2')">CDP</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo $CDP; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $CDP; ?>%;">
 				<?php echo $CDP; ?>%
@@ -190,7 +190,7 @@ $allConfidences = getAllConfidences($f4, $count);
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c3" class="label label-default myLabel">APout</span> 
+		<span data-toggle="collapse" data-target="#c3" class="label label-default myLabel" onclick="toggleChart('c3')">APout</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $APout; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APout; ?>%;">
 				<?php echo $APout; ?>%
@@ -198,7 +198,7 @@ $allConfidences = getAllConfidences($f4, $count);
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c4" class="label label-default myLabel">APin</span> 
+		<span data-toggle="collapse" data-target="#c4" class="label label-default myLabel" onclick="toggleChart('c4')">APin</span> 
 		<div class="progress pr" style="width:50%; float:left;">
 			<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo $APin; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APin; ?>%;">
 				<?php echo $APin; ?>%

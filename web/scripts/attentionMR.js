@@ -178,6 +178,11 @@
 	this.bP = bP;
 }();
 
+
+function toggleChart(chart){
+	setCookie(chart, getCookie(chart)*-1, 1);
+}
+
 var sortBy = getCookie('sortBy');
 var sortOrder = getCookie('sortOrder');
 var hide = getCookie('hide');
@@ -192,6 +197,39 @@ if(sortOrder == "") sortOrder = 'ASC';
 
 $(document).ready(function(){
 	sortAll(sortBy, sortOrder, false);
+	
+	var c1 = getCookie('c1');
+	var c2 = getCookie('c2');
+	var c3 = getCookie('c3');
+	var c4 = getCookie('c4');
+	var c5 = getCookie('c5');
+	
+	if(c1 == 1){
+		$('#c1').collapse("show");
+	}else{
+		setCookie('c1', -1, 1);
+	}
+	if(c2 == 1){
+		$('#c2').collapse("show");
+	}else{
+		setCookie('c2', -1, 1);
+	}
+	if(c3 == 1){
+		$('#c3').collapse("show");
+	}else{
+		setCookie('c3', -1, 1);
+	}
+	if(c4 == 1){
+		$('#c4').collapse("show");
+	}else{
+		setCookie('c4', -1, 1);
+	}
+	if(c5 == 1){
+		$('#c5').collapse("show");
+	}else{
+		setCookie('c5', -1, 1);
+	}
+
 }) 
 
 function sortAll(SortBy, order = "", reorder = true){
