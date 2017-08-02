@@ -19,7 +19,7 @@ if (!isset($_GET['directory'])){
 }else{
 	$dataDir = $_GET['directory'];
 }
-if(!file_exists("./data/".$dataDir)){
+if(!file_exists("./data/".$dataDir) || strlen($dataDir) < 1){
 	die("Experiment directory not found!");
 }
 $dataFiles = cleanDirArray(scandir("./data/".$dataDir));
