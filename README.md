@@ -64,11 +64,12 @@ Matīss Rikters, Mark Fishel, Ondřej Bojar (2017). "[Visualizing Neural Machine
 
 ```
 @inproceedings{Rikters-EtAl2017PBML,
-	author = {Rikters, Matīss and Fishel, Mark Bojar, Ond\v{r}ej},
+	author = {Rikters, Matīss and Fishel, Mark and Bojar, Ond\v{r}ej},
 	journal={The Prague Bulletin of Mathematical Linguistics},
-	volume={107},
-	pages = {6--10},
+	volume={109},
+	pages = {1--12},
 	title = {{Visualizing Neural Machine Translation Attention and Confidence}},
+	address={Lisbon, Portugal},
 	year = {2017}
 }
 ```
