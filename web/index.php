@@ -1,4 +1,6 @@
 <?php 
+// Report simple running errors
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 header('Content-Type: text/html; charset=utf-8');
 include('functions.php');
 
