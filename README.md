@@ -55,6 +55,9 @@ How to get alignment files from NMT systems
 	return-alignment: yes
 	```
 	
+* OpenNMT
+	Use [assets/OpenNMT/translate.lua](https://github.com/M4t1ss/sAliViz/blob/master/assets/OpenNMT/translate.lua) to translate with the `-attention` parameter to save attentions to a file
+
 Publications
 ---------
 
@@ -130,19 +133,19 @@ Examples
 Parameters for process_alignments.py
 ---------
 
-| Option | Description                   | Required 		 | Possible Values 			 			| Default Value  |
-|:------:|:------------------------------|:-----------------:|:-------------------------------------|:---------------|
-| -i     | input alignment file			 | yes     			 | Path to file							|				 |
-| -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'	| 'web'			 |
-| -s     | source sentence subword units | For Neural Monkey | Path to file			  	 			|				 |
-| -t     | target sentence subword units | For Neural Monkey | Path to file			  	 			|				 |
-| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'AmuNMT' 	| 'NeuralMonkey' |
-| -n     | Number of a specific sentence | No     	 		 | Integer 								| -1 (show all)	 |
+| Option | Description                   | Required 		 | Possible Values 			 						| Default Value  |
+|:------:|:------------------------------|:-----------------:|:-------------------------------------------------|:---------------|
+| -i     | input alignment file			 | yes     			 | Path to file										|				 |
+| -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'				| 'web'			 |
+| -s     | source sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
+| -t     | target sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
+| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'AmuNMT', 'OpenNMT' 	| 'NeuralMonkey' |
+| -n     | Number of a specific sentence | No     	 		 | Integer 											| -1 (show all)	 |
 
 Screenshots
 ---------
 Color, Block, Block2  
-![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/colorAlignments.PNG?raw=true) ![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/blockAlignments.PNG?raw=true) ![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/block2.png?raw=true) 
+![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/Screenshots/colorAlignments.PNG?raw=true) ![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/Screenshots/blockAlignments.PNG?raw=true) ![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/Screenshots/block2.png?raw=true) 
 
 Web
-![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/webAlignments.PNG?raw=true)
+![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/Screenshots/webAlignments.PNG?raw=true)

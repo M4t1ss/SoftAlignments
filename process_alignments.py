@@ -21,7 +21,7 @@ def printHelp():
     print ('input_file is the file with alignment weights (required)')
     print ('source_sentence_file and target_sentence_file are required only for NeuralMonkey')
     print ('output_type can be web (default), block, block2 or color')
-    print ('from_system can be Nematus or NeuralMonkey (default)')
+    print ('from_system can be Nematus, AmuNMT, OpenNMT or NeuralMonkey (default)')
 
 def printColor(value):
     colors = [
@@ -72,7 +72,7 @@ def readSnts(filename):
     with open(filename, 'r', encoding='utf-8') as fh:
         return [escape(line).strip().split() for line in fh]
 
-def readNematus(filename):
+def readNematus(filename, openNMT = 0):
     with open(filename, 'r', encoding='utf-8') as fh:
         alis = []
         tgts = []
@@ -84,12 +84,14 @@ def readNematus(filename):
                 if len(aliTXT) > 0:
                     c = StringIO(aliTXT)
                     ali = np.loadtxt(c)
-                    ali = ali.transpose()
+                    if openNMT == 0:
+                        ali = ali.transpose()
                     alis.append(ali)
                     aliTXT = ''
                 lineparts = line.split(' ||| ')
-                lineparts[1] += ' <EOS>'
-                lineparts[3] += ' <EOS>'
+                if openNMT == 0:
+                    lineparts[1] += ' <EOS>'
+                    lineparts[3] += ' <EOS>'
                 tgts.append(escape(lineparts[1]).strip().split())
                 srcs.append(escape(lineparts[3]).strip().split())
                 wasNew = False
@@ -101,7 +103,8 @@ def readNematus(filename):
         if len(aliTXT) > 0:
             c = StringIO(aliTXT)
             ali = np.loadtxt(c)
-            ali = ali.transpose()
+            if openNMT == 0:
+                ali = ali.transpose()
             alis.append(ali)
             aliTXT = ''
     return srcs, tgts, alis
@@ -199,6 +202,8 @@ def main(argv):
         alis = np.load(inputfile)
     if from_system == "Nematus":
         (srcs, tgts, alis) = readNematus(inputfile)
+    if from_system == "OpenNMT":
+        (srcs, tgts, alis) = readNematus(inputfile, 1)
     if from_system == "AmuNMT":
         (srcs, tgts, alis) = readAmu(inputfile, sourcefile)
 
