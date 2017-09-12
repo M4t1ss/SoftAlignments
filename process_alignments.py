@@ -21,7 +21,7 @@ def printHelp():
     print ('input_file is the file with alignment weights (required)')
     print ('source_sentence_file and target_sentence_file are required only for NeuralMonkey')
     print ('output_type can be web (default), block, block2 or color')
-    print ('from_system can be Nematus, AmuNMT, OpenNMT or NeuralMonkey (default)')
+    print ('from_system can be Nematus, AmuNMT, Sockeye,  OpenNMT or NeuralMonkey (default)')
 
 def printColor(value):
     colors = [
@@ -200,7 +200,7 @@ def main(argv):
         srcs = readSnts(sourcefile)
         tgts = readSnts(targetfile)
         alis = np.load(inputfile)
-    if from_system == "Nematus":
+    if from_system == "Nematus" or from_system == "Sockeye":
         (srcs, tgts, alis) = readNematus(inputfile)
     if from_system == "OpenNMT":
         (srcs, tgts, alis) = readNematus(inputfile, 1)

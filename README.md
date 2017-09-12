@@ -24,10 +24,10 @@ Requirements
 How to get alignment files from NMT systems
 ---------
 
-* Nematus
-	* Run [**nematus/translate.py**](https://github.com/rsennrich/nematus/#using-a-trained-model) with the **--output_alignment** or **-a** parameter
+* [Nematus](https://github.com/EdinburghNLP/nematus)
+	* Run [**nematus/translate.py**](https://github.com/EdinburghNLP/nematus#using-a-trained-model) with the **--output_alignment** or **-a** parameter
 
-* Neural Monkey
+* [Neural Monkey](https://github.com/ufal/neuralmonkey)
 	* In the training.ini file add
 
 	```sh
@@ -55,8 +55,11 @@ How to get alignment files from NMT systems
 	return-alignment: yes
 	```
 	
-* OpenNMT
-	Use [assets/OpenNMT/translate.lua](https://github.com/M4t1ss/sAliViz/blob/master/assets/OpenNMT/translate.lua) to translate with the `-attention` parameter to save attentions to a file
+* [OpenNMT](https://github.com/OpenNMT/OpenNMT)
+	Run translate.lua to translate with the `-save_attention` parameter to save attentions to a file
+
+* [Sockeye](https://github.com/awslabs/sockeye)
+	Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file
 
 Publications
 ---------
@@ -139,7 +142,7 @@ Parameters for process_alignments.py
 | -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'				| 'web'			 |
 | -s     | source sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
 | -t     | target sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
-| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'AmuNMT', 'OpenNMT' 	| 'NeuralMonkey' |
+| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'AmuNMT', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
 | -n     | Number of a specific sentence | No     	 		 | Integer 											| -1 (show all)	 |
 
 Screenshots
