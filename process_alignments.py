@@ -118,16 +118,16 @@ def main(argv):
                             StrippedSource = ''.join(c for c in JoinedSource if unicodedata.category(c).startswith('L')).replace('EOS','')
                             StrippedTarget = ''.join(c for c in JoinedTarget if unicodedata.category(c).startswith('L')).replace('EOS','')
                             
-                            print StrippedSource + '\n'
-                            print StrippedTarget + '\n'
-                            print functions.similar(JoinedSource, JoinedTarget)
-                            print '\n'
-                            
                             #Get the confidence metrics
                             CDP = round(functions.getCP(ali), 10)
                             APout = round(functions.getEnt(ali), 10)
                             APin = round(functions.getRevEnt(ali), 10)
                             Total = round(CDP + APout + APin, 10)
+                            
+                            similarity = functions.similar(StrippedSource, StrippedTarget)
+                            if similarity > 0.7:
+                                Total = round(CDP + APout + APin + (4 * math.tan(similarity)), 10)
+                            
                             # e^(-1(x^2))
                             CDP_pr = round(math.pow(math.e, -1 * math.pow(CDP, 2)) * 100, 2)
                             # e^(-0.05(x^2))
@@ -142,7 +142,7 @@ def main(argv):
                             out_t_js.write('["'+ JoinedTarget.replace(' ','", "') +'"], \n')
                             out_c_js.write(u'['+ repr(CDP_pr) + u', '+ repr(APout_pr) + u', '+ repr(APin_pr) + u', '+ repr(Total_pr) 
                                 + u', '+ repr(Len) + u', '+ repr(len(JoinedSource)) + u', '
-                                + repr(round(functions.similar(JoinedSource, JoinedTarget), 2)) 
+                                + repr(round(similarity, 2)) 
                                 + u'], \n')
                             out_sc_js.write(u'[[' + ", ".join(srcTotal) + u'], ' + u'[' + ", ".join(trgTotal) + u'], ' + u'], \n')
                             
