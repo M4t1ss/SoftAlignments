@@ -4,10 +4,6 @@ import unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, nt
 from time import gmtime, strftime
 from io import open, StringIO
 from imp import reload
-try:
-    from itertools import izip
-except ImportError:
-    izip = zip
 
 def main(argv):
     try:

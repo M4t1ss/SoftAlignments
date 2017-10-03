@@ -6,6 +6,10 @@ from io import open, StringIO
 from imp import reload
 from collections import Counter
 from difflib import SequenceMatcher
+try:
+    from itertools import izip
+except ImportError:
+    izip = zip
 
 WORD = re.compile(r'\w+')
 
