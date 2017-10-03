@@ -1,13 +1,6 @@
 # coding: utf-8
 
-import thecode
-import sys, getopt
-import numpy as np
-import string
-import os
-import webbrowser
-import math
-import ntpath
+import unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
 from time import gmtime, strftime
 from io import open, StringIO
 from imp import reload
@@ -16,136 +9,15 @@ try:
 except ImportError:
     izip = zip
 
-def printHelp():
-    print ('process_alignments.py -i <input_file> [-o <output_type>] [-f <from_system>] [-s <source_sentence_file>] [-t <target_sentence_file>]')
-    print ('input_file is the file with alignment weights (required)')
-    print ('source_sentence_file and target_sentence_file are required only for NeuralMonkey')
-    print ('output_type can be web (default), block, block2 or color')
-    print ('from_system can be Nematus, AmuNMT, Sockeye,  OpenNMT or NeuralMonkey (default)')
-
-def printColor(value):
-    colors = [
-        '[48;5;232m[K  [m[K',
-        '[48;5;233m[K  [m[K',
-        '[48;5;234m[K  [m[K',
-        '[48;5;235m[K  [m[K',
-        '[48;5;236m[K  [m[K',
-        '[48;5;237m[K  [m[K',
-        '[48;5;238m[K  [m[K',
-        '[48;5;239m[K  [m[K',
-        '[48;5;240m[K  [m[K',
-        '[48;5;240m[K  [m[K',
-        '[48;5;241m[K  [m[K',
-        '[48;5;242m[K  [m[K',
-        '[48;5;243m[K  [m[K',
-        '[48;5;244m[K  [m[K',
-        '[48;5;245m[K  [m[K',
-        '[48;5;246m[K  [m[K',
-        '[48;5;247m[K  [m[K',
-        '[48;5;248m[K  [m[K',
-        '[48;5;249m[K  [m[K',
-        '[48;5;250m[K  [m[K',
-        '[48;5;251m[K  [m[K',
-        '[48;5;252m[K  [m[K',
-        '[48;5;253m[K  [m[K',
-        '[48;5;254m[K  [m[K',
-        '[48;5;255m[K  [m[K',
-        '[48;5;255m[K  [m[K',
-    ]
-    num = int(math.floor((value-0.01)*25))
-    if num<0: num = 0
-    sys.stdout.write(colors[num])
-
-def printBlock2(value):
-    blocks2 = ['██', '▉▉', '▊▊', '▋▋', '▌▌', '▍▍', '▎▎', '▏▏', '  ',]
-    num = int(math.floor((value-0.01)*8))
-    if num<0: num = 0
-    sys.stdout.write(blocks2[num])
-        
-def printBlock(value):
-    blocks = ['██', '▓▓', '▒▒', '░░', '  ',]
-    num = int(math.floor((value-0.01)*4))
-    if num<0: num = 0
-    sys.stdout.write(blocks[num])
-        
-def readSnts(filename):
-    with open(filename, 'r', encoding='utf-8') as fh:
-        return [escape(line).strip().split() for line in fh]
-
-def readNematus(filename, openNMT = 0):
-    with open(filename, 'r', encoding='utf-8') as fh:
-        alis = []
-        tgts = []
-        srcs = []
-        wasNew = True
-        aliTXT = ''
-        for line in fh:
-            if wasNew:
-                if len(aliTXT) > 0:
-                    c = StringIO(aliTXT)
-                    ali = np.loadtxt(c)
-                    if openNMT == 0:
-                        ali = ali.transpose()
-                    alis.append(ali)
-                    aliTXT = ''
-                lineparts = line.split(' ||| ')
-                if openNMT == 0:
-                    lineparts[1] += ' <EOS>'
-                    lineparts[3] += ' <EOS>'
-                tgts.append(escape(lineparts[1]).strip().split())
-                srcs.append(escape(lineparts[3]).strip().split())
-                wasNew = False
-                continue
-            if line != '\n' and line != '\r\n':
-                aliTXT += line
-            else:
-                wasNew = True
-        if len(aliTXT) > 0:
-            c = StringIO(aliTXT)
-            ali = np.loadtxt(c)
-            if openNMT == 0:
-                ali = ali.transpose()
-            alis.append(ali)
-            aliTXT = ''
-    return srcs, tgts, alis
-    
-def escape(string):
-    return string.replace('"','&quot;').replace("'","&apos;")
-    
-def readAmu(in_file, src_file):
-    with open(src_file, 'r', encoding='utf-8') as fi:
-        with open(in_file, 'r', encoding='utf-8') as fh:
-            alis = []
-            tgts = []
-            srcs = []
-            aliTXT = ''
-            for src_line, out_line in izip(fi, fh):
-                lineparts = out_line.split(' ||| ')
-                lineparts[0] += ' <EOS>'
-                src_line = src_line.strip() + ' <EOS>'
-                tgts.append(escape(lineparts[0]).strip().split())
-                srcs.append(escape(src_line).split())
-                #alignment weights
-                weightparts = lineparts[1].split(') | (')
-                for weightpart in weightparts:
-                    aliTXT += weightpart.replace('(','') + '\n'
-                if len(aliTXT) > 0:
-                    c = StringIO(aliTXT.replace(' ) | ',''))
-                    ali = np.loadtxt(c)
-                    ali = ali.transpose()
-                    alis.append(ali)
-                    aliTXT = ''
-    return srcs, tgts, alis
-
 def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hi:o:s:t:f:n:")
     except getopt.GetoptError:
-        printHelp()
+        functions.printHelp()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            printHelp()
+            functions.printHelp()
             sys.exit()
         elif opt == '-i':
             inputfile = arg
@@ -163,7 +35,7 @@ def main(argv):
         inputfile
     except NameError:
         print ('Provide an input file!')
-        printHelp()
+        functions.printHelp()
         sys.exit()
     try:
         from_system
@@ -183,29 +55,29 @@ def main(argv):
             sourcefile
         except NameError:
             print ('Provide a source sentence file!')
-            printHelp()
+            functions.printHelp()
             sys.exit()
         if from_system == 'NeuralMonkey':
             try:
                 targetfile
             except NameError:
                 print ('Provide a target sentence file!')
-                printHelp()
+                functions.printHelp()
                 sys.exit()
     if outputType != 'color' and outputType != 'block' and outputType != 'block2':
         # Set output type to 'web' by default
         outputType = 'web'
 
     if from_system == "NeuralMonkey":
-        srcs = readSnts(sourcefile)
-        tgts = readSnts(targetfile)
+        srcs = functions.readSnts(sourcefile)
+        tgts = functions.readSnts(targetfile)
         alis = np.load(inputfile)
     if from_system == "Nematus" or from_system == "Sockeye":
-        (srcs, tgts, alis) = readNematus(inputfile)
+        (srcs, tgts, alis) = functions.readNematus(inputfile)
     if from_system == "OpenNMT":
-        (srcs, tgts, alis) = readNematus(inputfile, 1)
+        (srcs, tgts, alis) = functions.readNematus(inputfile, 1)
     if from_system == "AmuNMT":
-        (srcs, tgts, alis) = readAmu(inputfile, sourcefile)
+        (srcs, tgts, alis) = functions.readAmu(inputfile, sourcefile)
 
     data = list(zip(srcs, tgts, alis))
 
@@ -237,15 +109,24 @@ def main(argv):
                             trgTotal = []
                             tali = np.array(ali).transpose()
                             for a in range(0, len(ali)):
-                                srcTotal.append(str(math.pow(math.e, -0.05 * math.pow((thecode.getCP([ali[a]]) + thecode.getEnt([ali[a]]) + thecode.getRevEnt([ali[a]])), 2))))
+                                srcTotal.append(str(math.pow(math.e, -0.05 * math.pow((functions.getCP([ali[a]]) + functions.getEnt([ali[a]]) + functions.getRevEnt([ali[a]])), 2))))
                             for a in range(0, len(tali)):
-                                trgTotal.append(str(math.pow(math.e, -0.05 * math.pow((thecode.getCP([tali[a]]) + thecode.getEnt([tali[a]]) + thecode.getRevEnt([tali[a]])), 2))))
+                                trgTotal.append(str(math.pow(math.e, -0.05 * math.pow((functions.getCP([tali[a]]) + functions.getEnt([tali[a]]) + functions.getRevEnt([tali[a]])), 2))))
                             
+                            JoinedSource = " ".join(src)
+                            JoinedTarget = " ".join(tgt)
+                            StrippedSource = ''.join(c for c in JoinedSource if unicodedata.category(c).startswith('L')).replace('EOS','')
+                            StrippedTarget = ''.join(c for c in JoinedTarget if unicodedata.category(c).startswith('L')).replace('EOS','')
+                            
+                            print StrippedSource + '\n'
+                            print StrippedTarget + '\n'
+                            print functions.similar(JoinedSource, JoinedTarget)
+                            print '\n'
                             
                             #Get the confidence metrics
-                            CDP = round(thecode.getCP(ali), 10)
-                            APout = round(thecode.getEnt(ali), 10)
-                            APin = round(thecode.getRevEnt(ali), 10)
+                            CDP = round(functions.getCP(ali), 10)
+                            APout = round(functions.getEnt(ali), 10)
+                            APin = round(functions.getRevEnt(ali), 10)
                             Total = round(CDP + APout + APin, 10)
                             # e^(-1(x^2))
                             CDP_pr = round(math.pow(math.e, -1 * math.pow(CDP, 2)) * 100, 2)
@@ -254,12 +135,15 @@ def main(argv):
                             APin_pr = round(math.pow(math.e, -0.05 * math.pow(APin, 2)) * 100, 2)
                             Total_pr = round(math.pow(math.e, -0.05 * math.pow(Total, 2)) * 100, 2)
                             # 1-e^(-0.0001(x^2))
-                            Len = round((1-math.pow(math.e, -0.0001 * math.pow(len(" ".join(src)), 2))) * 100, 2)
+                            Len = round((1-math.pow(math.e, -0.0001 * math.pow(len(JoinedSource), 2))) * 100, 2)
                             
-                            out_s_js.write('["'+ " ".join(src).replace(' ','", "') +'"], \n')
-                            out_t_js.write('["'+ " ".join(tgt).replace(' ','", "') +'"], \n')
+                            
+                            out_s_js.write('["'+ JoinedSource.replace(' ','", "') +'"], \n')
+                            out_t_js.write('["'+ JoinedTarget.replace(' ','", "') +'"], \n')
                             out_c_js.write(u'['+ repr(CDP_pr) + u', '+ repr(APout_pr) + u', '+ repr(APin_pr) + u', '+ repr(Total_pr) 
-                                + u', '+ repr(Len) + u', '+ repr(len(" ".join(src))) + u'], \n')
+                                + u', '+ repr(Len) + u', '+ repr(len(JoinedSource)) + u', '
+                                + repr(round(functions.similar(JoinedSource, JoinedTarget), 2)) 
+                                + u'], \n')
                             out_sc_js.write(u'[[' + ", ".join(srcTotal) + u'], ' + u'[' + ", ".join(trgTotal) + u'], ' + u'], \n')
                             
                             word = 0
@@ -270,11 +154,11 @@ def main(argv):
                                     out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
                                     linePartC+=1
                                     if outputType == 'color':
-                                        printColor(ali_j)
+                                        functions.printColor(ali_j)
                                     elif outputType == 'block':
-                                        printBlock(ali_j)
+                                        functions.printBlock(ali_j)
                                     elif outputType == 'block2':
-                                        printBlock2(ali_j)
+                                        functions.printBlock2(ali_j)
                                 if outputType != 'web':
                                     sys.stdout.write(src[word])
                                 word+=1
