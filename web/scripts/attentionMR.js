@@ -3,8 +3,6 @@
 !function(){
 	var bP={};	
 	var b=30, bb=150, height=600, buffMargin=1, minHeight=14;
-	var c1=[-130, 40], c2=[-50, 100], c3=[-10, 140]; //Column positions of labels.
-	var colors =["#3366CC", "#DC3912",  "#FF9900","#109618", "#990099", "#0099C6"];
 	
 	bP.partData = function(data,source,target){
 		var sData={};
@@ -134,10 +132,23 @@
 			})
 			.attr("transform", function(d) {
 				var y = (d.p == 1 ? "-15" : "-2");
+				if (other===true && d.p == 1){
+					y = 10;
+				}
 				return "translate("+(d.middle/size_coef+30)+","+y+")rotate(45)";
 				
 			})
-			.attr("fill","black");
+			.attr("fill",function(d) {
+				var color = (d.p == 1 ? "#E36234" : "black");
+				if (other===true && d.p == 1){
+					color = "#228811";
+				}
+				return color;
+				
+			})
+			.style("font-weight", function(d) { 
+				return d.p == 1 ? "bold" : "";
+			});
 		}
 	
 	function drawEdges(data, id){
@@ -148,6 +159,9 @@
 		}
 		
 		var color = d3.interpolateLab("#FBCEB1","#E34234");
+		if (other===true){
+			color = d3.interpolateLab("#DBF2DA","#228811");
+		}
 		d3.select("#"+id).append("g").attr("class","edges").attr("transform","translate("+ b+",0)");
 
 		d3.select("#"+id).select(".edges").selectAll(".edge")

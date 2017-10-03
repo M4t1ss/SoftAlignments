@@ -129,6 +129,7 @@ $allConfidences = getAllConfidences($f4, $count);
 </div>
 <div class="row">
 	<div id="svg"></div>
+	<div id="other" style="margin-top:-681px;"></div>
     <div id="matrix"></div>
 </div>
 <div class="row" style="margin-left:5px;" id="bottomRow">
