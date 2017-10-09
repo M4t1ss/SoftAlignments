@@ -53,7 +53,7 @@ def printHelp():
     print ('input_file is the file with alignment weights (required)')
     print ('source_sentence_file and target_sentence_file are required only for NeuralMonkey')
     print ('output_type can be web (default), block, block2 or color')
-    print ('from_system can be Nematus, AmuNMT, Sockeye,  OpenNMT or NeuralMonkey (default)')
+    print ('from_system can be Nematus, Marian, Sockeye,  OpenNMT or NeuralMonkey (default)')
 
 def printColor(value):
     colors = [

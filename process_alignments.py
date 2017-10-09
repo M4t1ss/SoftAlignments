@@ -46,7 +46,7 @@ def main(argv):
     except NameError:
         # Set output type to 'web' by default
         outputType = 'web'
-    if from_system == 'NeuralMonkey' or from_system == 'AmuNMT':
+    if from_system == 'NeuralMonkey' or from_system == 'Marian':
         try:
             sourcefile
         except NameError:
@@ -72,7 +72,7 @@ def main(argv):
         (srcs, tgts, alis) = functions.readNematus(inputfile)
     if from_system == "OpenNMT":
         (srcs, tgts, alis) = functions.readNematus(inputfile, 1)
-    if from_system == "AmuNMT":
+    if from_system == "Marian":
         (srcs, tgts, alis) = functions.readAmu(inputfile, sourcefile)
 
     data = list(zip(srcs, tgts, alis))

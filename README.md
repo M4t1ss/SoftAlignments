@@ -130,10 +130,10 @@ Examples
 	
 	```sh
 	python process_alignments.py \
-	-i test_data/amunmt/amu.out.lv \
-	-s test_data/amunmt/amu.src.en \
+	-i test_data/marian/marian.out.lv \
+	-s test_data/marian/marian.src.en \
 	-o web \
-	-f AmuNMT
+	-f Marian
 	```
 
 Parameters for process_alignments.py
@@ -145,7 +145,7 @@ Parameters for process_alignments.py
 | -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'				| 'web'			 |
 | -s     | source sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
 | -t     | target sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
-| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'AmuNMT', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
+| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
 | -n     | Number of a specific sentence | No     	 		 | Integer 											| -1 (show all)	 |
 
 Screenshots
