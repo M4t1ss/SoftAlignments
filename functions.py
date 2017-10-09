@@ -13,40 +13,40 @@ except ImportError:
 WORD = re.compile(r'\w+')
 
 def getCP(ali, w = 6):
-	l = len(ali)
-	if l == 0:
-		l = 1
-	
-	result = 0.0
-	
-	for ali_i in ali:
-		s = sum(ali_i)
-		
-		pen = 1/ (1 + (abs(1 - s))**w)
-		
-		result += math.log(pen)
-	return result / l
+    l = len(ali)
+    if l == 0:
+        l = 1
+    
+    result = 0.0
+    
+    for ali_i in ali:
+        s = sum(ali_i)
+        
+        pen = 1/ (1 + (abs(1 - s))**w)
+        
+        result += math.log(pen)
+    return result / l
 
 def getEnt(ali):
-	l = len(ali)
-	if l == 0:
-		l = 1
-	
-	res = 0.0
-	
-	for pd in ali:
-		norm = sum(pd)
-		if norm > 0:
-			normPd = [p / norm for p in pd]
-			entr = -sum([(p * math.log(p) if p else 0) for p in normPd])
-			res -= entr
+    l = len(ali)
+    if l == 0:
+        l = 1
+    
+    res = 0.0
+    
+    for pd in ali:
+        norm = sum(pd)
+        if norm > 0:
+            normPd = [p / norm for p in pd]
+            entr = -sum([(p * math.log(p) if p else 0) for p in normPd])
+            res -= entr
         else:
-			res = 0
-	
-	return res / l
+            res = 0
+    
+    return res / l
 
 def getRevEnt(ali, w = 0.1):
-	return getEnt(list(zip(*ali)))
+    return getEnt(list(zip(*ali)))
 
 def printHelp():
     print ('process_alignments.py -i <input_file> [-o <output_type>] [-f <from_system>] [-s <source_sentence_file>] [-t <target_sentence_file>]')
