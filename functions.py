@@ -116,16 +116,15 @@ def readNematus(filename, openNMT = 0):
                 if len(aliTXT) > 0:
                     c = StringIO(aliTXT)
                     ali = np.loadtxt(c)
-                    if openNMT == 0:
-                        ali = ali.transpose()
+                    ali = ali.transpose()
                     alis.append(ali)
                     aliTXT = ''
                 lineparts = line.split(' ||| ')
                 if openNMT == 0:
-                    lineparts[3] += ' <EOS>'
                     lineparts[1] += ' <EOS>'
-                tgts.append(escape(lineparts[3]).strip().split())
-                srcs.append(escape(lineparts[1]).strip().split())
+                    lineparts[3] += ' <EOS>'
+                tgts.append(escape(lineparts[1]).strip().split())
+                srcs.append(escape(lineparts[3]).strip().split())
                 wasNew = False
                 continue
             if line != '\n' and line != '\r\n':
