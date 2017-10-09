@@ -49,11 +49,14 @@ How to get alignment files from NMT systems
 	s_ali_out="out.alignment"
 	```
 
-* [AmuNMT](https://github.com/barvins/amunmt)
+* [Marian](https://github.com/marian-nmt/marian)
 	* In the config.yml file add
 	```sh
-	return-alignment: yes
+	no-debpe: true
+	return-alignment: false
+	return-soft-alignment: true
 	```
+	* Or run **amun** with the parameters **--no-debpe --return-soft-alignment**
 	
 * [OpenNMT](https://github.com/OpenNMT/OpenNMT)
 	Run translate.lua to translate with the `-save_attention` parameter to save attentions to a file

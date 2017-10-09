@@ -152,16 +152,15 @@ def readAmu(in_file, src_file):
             aliTXT = ''
             for src_line, out_line in izip(fi, fh):
                 lineparts = out_line.split(' ||| ')
-                lineparts[0] += ' <EOS>'
                 src_line = src_line.strip() + ' <EOS>'
                 tgts.append(escape(lineparts[0]).strip().split())
                 srcs.append(escape(src_line).split())
                 #alignment weights
-                weightparts = lineparts[1].split(') | (')
+                weightparts = lineparts[1].split(' ')
                 for weightpart in weightparts:
-                    aliTXT += weightpart.replace('(','') + '\n'
+                    aliTXT += weightpart.replace(',',' ') + '\n'
                 if len(aliTXT) > 0:
-                    c = StringIO(aliTXT.replace(' ) | ',''))
+                    c = StringIO(aliTXT)
                     ali = np.loadtxt(c)
                     ali = ali.transpose()
                     alis.append(ali)
