@@ -130,8 +130,8 @@ Examples
 	
 	```sh
 	python process_alignments.py \
-	-i test_data/amunmt/amu.out.en \
-	-s test_data/amunmt/amu.src.de \
+	-i test_data/amunmt/amu.out.lv \
+	-s test_data/amunmt/amu.src.en \
 	-o web \
 	-f AmuNMT
 	```
