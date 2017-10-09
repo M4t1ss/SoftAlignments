@@ -25,7 +25,7 @@ How to get alignment files from NMT systems
 ---------
 
 * [Nematus](https://github.com/EdinburghNLP/nematus)
-	* Run [**nematus/translate.py**](https://github.com/EdinburghNLP/nematus#using-a-trained-model) with the **--output_alignment** or **-a** parameter
+	* Run [**nematus/translate.py**](https://github.com/EdinburghNLP/nematus#using-a-trained-model) with the `--output_alignment` or `-a` parameter
 
 * [Neural Monkey](https://github.com/ufal/neuralmonkey)
 	* In the training.ini file add
@@ -56,7 +56,7 @@ How to get alignment files from NMT systems
 	return-alignment: false
 	return-soft-alignment: true
 	```
-	* Or run **amun** with the parameters **--no-debpe --return-soft-alignment**
+	* Or run **amun** with the parameters `--no-debpe --return-soft-alignment`
 	
 * [OpenNMT](https://github.com/OpenNMT/OpenNMT)
 	Run translate.lua to translate with the `-save_attention` parameter to save attentions to a file
