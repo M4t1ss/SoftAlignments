@@ -156,7 +156,7 @@ def main(argv):
                                     elif outputType == 'block2':
                                         functions.printBlock2(ali_j)
                                 if outputType != 'web':
-                                    sys.stdout.write(src[word])
+                                    sys.stdout.write(src[word].encode(sys.stdout.encoding, errors='replace'))
                                 word+=1
                                 if outputType != 'web':
                                     sys.stdout.write('\n')
@@ -207,7 +207,7 @@ def main(argv):
                             #print 2d array
                             if outputType != 'web':
                                 for liline in outchars:
-                                    sys.stdout.write(''.join(liline) + '\n')
+                                    sys.stdout.write(''.join(liline).encode(sys.stdout.encoding, errors='replace') + '\n')
                                 # print scores
                                 sys.stdout.write('\nCoverage Deviation Penalty: \t\t' + repr(CDP) + ' (' + repr(CDP_pr) + '%)' + '\n')
                                 sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(APin) + ' (' + repr(APin_pr) + '%)' + '\n')

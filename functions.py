@@ -36,9 +36,12 @@ def getEnt(ali):
 	
 	for pd in ali:
 		norm = sum(pd)
-		normPd = [p / norm for p in pd]
-		entr = -sum([(p * math.log(p) if p else 0) for p in normPd])
-		res -= entr
+		if norm > 0:
+			normPd = [p / norm for p in pd]
+			entr = -sum([(p * math.log(p) if p else 0) for p in normPd])
+			res -= entr
+        else:
+			res = 0
 	
 	return res / l
 
@@ -119,10 +122,10 @@ def readNematus(filename, openNMT = 0):
                     aliTXT = ''
                 lineparts = line.split(' ||| ')
                 if openNMT == 0:
-                    lineparts[1] += ' <EOS>'
                     lineparts[3] += ' <EOS>'
-                tgts.append(escape(lineparts[1]).strip().split())
-                srcs.append(escape(lineparts[3]).strip().split())
+                    lineparts[1] += ' <EOS>'
+                tgts.append(escape(lineparts[3]).strip().split())
+                srcs.append(escape(lineparts[1]).strip().split())
                 wasNew = False
                 continue
             if line != '\n' and line != '\r\n':
