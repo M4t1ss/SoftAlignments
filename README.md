@@ -64,6 +64,21 @@ How to get alignment files from NMT systems
 * [Sockeye](https://github.com/awslabs/sockeye)
 	Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file
 
+* Other
+	The esiest format to use (and convert to) is the one used by Nematus.
+	For each sentence the first row should be `<sentence id> ||| <target words> ||| <score> ||| <source words> ||| <number of source words> ||| <number of target words>`
+	After that follow `<number of target words> + 1 (for <EOS> token)` rows with `<number of source words> + 1 (for <EOS> token)` columns with attention weights separated by spaces. 
+	After each sentence there should be an empty line.
+	An example:
+	```sh
+	0 ||| Obama welcomes Netanyahu ||| 0 ||| Obama empfängt Net@@ any@@ ah@@ u ||| 7 4
+	0.723834 0.0471278 0.126415 0.000413103 0.000774298 0.000715227 0.10072 
+	0.00572539 0.743366 0.0342341 0.000315413 0.00550132 0.00150629 0.209351 
+	0.0122618 0.0073559 0.909192 0.000606444 0.00614908 0.00256837 0.0618667 
+	0.00110054 0.0214063 0.0759918 0.000446028 0.104856 0.0435644 0.752634 
+	
+	```
+		
 Publications
 ---------
 
