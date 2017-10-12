@@ -64,7 +64,7 @@ How to get alignment files from NMT systems
 * [Sockeye](https://github.com/awslabs/sockeye)
 	Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file
 
-* Other
+* **Other**
 	The esiest format to use (and convert to) is the one used by Nematus.
 	
 	For each sentence the first row should be `<sentence id> ||| <target words> ||| <score> ||| <source words> ||| <number of source words> ||| <number of target words>`
