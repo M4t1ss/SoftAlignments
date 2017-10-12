@@ -66,9 +66,15 @@ How to get alignment files from NMT systems
 
 * Other
 	The esiest format to use (and convert to) is the one used by Nematus.
+	
 	For each sentence the first row should be `<sentence id> ||| <target words> ||| <score> ||| <source words> ||| <number of source words> ||| <number of target words>`
+	
 	After that follow `<number of target words> + 1 (for <EOS> token)` rows with `<number of source words> + 1 (for <EOS> token)` columns with attention weights separated by spaces. 
+	
 	After each sentence there should be an empty line.
+	
+	Note that the values of `<sentence id>`, ` <score>`, `<number of source words>` and `<number of target words>` are actually ignored when creating visualizations, so they may as well all be 0.
+	
 	An example:
 	```sh
 	0 ||| Obama welcomes Netanyahu ||| 0 ||| Obama empfängt Net@@ any@@ ah@@ u ||| 7 4
