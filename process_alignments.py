@@ -99,6 +99,8 @@ def main(argv):
         data2 = list(zip(srcs2, tgts2, alis2))
 
     foldername = ntpath.basename(inputfile).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
+    if outputType == 'compare':
+        foldername = 'cmp_' + foldername
     folder = './web/data/' + foldername
     try:
         os.stat(folder)
