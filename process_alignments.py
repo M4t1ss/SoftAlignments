@@ -117,7 +117,7 @@ def main(argv):
         functions.processAlignments(data, folder + '/NMT1', inputfile, outputType, num)
         functions.processAlignments(data2, folder + '/NMT2', inputfile2, outputType, num)
     else:
-        functions.processAlignments(data, folder, inputfile, outputType)
+        functions.processAlignments(data, folder, inputfile, outputType, num)
             
     # Get rid of some junk
     if outputType == 'web' or outputType == 'compare':
