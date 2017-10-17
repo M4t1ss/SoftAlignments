@@ -46,7 +46,7 @@ def main(argv):
     except NameError:
         # Set output type to 'web' by default
         outputType = 'web'
-    if from_system == 'NeuralMonkey' or from_system == 'AmuNMT':
+    if from_system == 'NeuralMonkey' or from_system == 'Marian':
         try:
             sourcefile
         except NameError:
@@ -72,7 +72,7 @@ def main(argv):
         (srcs, tgts, alis) = functions.readNematus(inputfile)
     if from_system == "OpenNMT":
         (srcs, tgts, alis) = functions.readNematus(inputfile, 1)
-    if from_system == "AmuNMT":
+    if from_system == "Marian":
         (srcs, tgts, alis) = functions.readAmu(inputfile, sourcefile)
 
     data = list(zip(srcs, tgts, alis))
@@ -156,7 +156,7 @@ def main(argv):
                                     elif outputType == 'block2':
                                         functions.printBlock2(ali_j)
                                 if outputType != 'web':
-                                    sys.stdout.write(src[word])
+                                    sys.stdout.write(src[word].encode('utf-8', errors='replace').decode('utf-8'))
                                 word+=1
                                 if outputType != 'web':
                                     sys.stdout.write('\n')
@@ -207,7 +207,7 @@ def main(argv):
                             #print 2d array
                             if outputType != 'web':
                                 for liline in outchars:
-                                    sys.stdout.write(''.join(liline) + '\n')
+                                    sys.stdout.write(''.join(liline).encode('utf-8', errors='replace').decode('utf-8') + '\n')
                                 # print scores
                                 sys.stdout.write('\nCoverage Deviation Penalty: \t\t' + repr(CDP) + ' (' + repr(CDP_pr) + '%)' + '\n')
                                 sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(APin) + ' (' + repr(APin_pr) + '%)' + '\n')

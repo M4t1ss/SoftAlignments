@@ -25,7 +25,7 @@ How to get alignment files from NMT systems
 ---------
 
 * [Nematus](https://github.com/EdinburghNLP/nematus)
-	* Run [**nematus/translate.py**](https://github.com/EdinburghNLP/nematus#using-a-trained-model) with the **--output_alignment** or **-a** parameter
+	* Run [**nematus/translate.py**](https://github.com/EdinburghNLP/nematus#using-a-trained-model) with the `--output_alignment` or `-a` parameter
 
 * [Neural Monkey](https://github.com/ufal/neuralmonkey)
 	* In the training.ini file add
@@ -49,11 +49,14 @@ How to get alignment files from NMT systems
 	s_ali_out="out.alignment"
 	```
 
-* [AmuNMT](https://github.com/barvins/amunmt)
+* [Marian](https://github.com/marian-nmt/marian)
 	* In the config.yml file add
 	```sh
-	return-alignment: yes
+	no-debpe: true
+	return-alignment: false
+	return-soft-alignment: true
 	```
+	* Or run **amun** with the parameters `--no-debpe --return-soft-alignment`
 	
 * [OpenNMT](https://github.com/OpenNMT/OpenNMT)
 	Run translate.lua to translate with the `-save_attention` parameter to save attentions to a file
@@ -61,6 +64,27 @@ How to get alignment files from NMT systems
 * [Sockeye](https://github.com/awslabs/sockeye)
 	Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file
 
+* **Other**
+	The esiest format to use (and convert to) is the one used by Nematus.
+	
+	For each sentence the first row should be `<sentence id> ||| <target words> ||| <score> ||| <source words> ||| <number of source words> ||| <number of target words>`
+	
+	After that follow `<number of target words> + 1 (for <EOS> token)` rows with `<number of source words> + 1 (for <EOS> token)` columns with attention weights separated by spaces. 
+	
+	After each sentence there should be an empty line.
+	
+	Note that the values of `<sentence id>`, ` <score>`, `<number of source words>` and `<number of target words>` are actually ignored when creating visualizations, so they may as well all be 0.
+	
+	An example:
+	```sh
+	0 ||| Obama welcomes Netanyahu ||| 0 ||| Obama empfängt Net@@ any@@ ah@@ u ||| 7 4
+	0.723834 0.0471278 0.126415 0.000413103 0.000774298 0.000715227 0.10072 
+	0.00572539 0.743366 0.0342341 0.000315413 0.00550132 0.00150629 0.209351 
+	0.0122618 0.0073559 0.909192 0.000606444 0.00614908 0.00256837 0.0618667 
+	0.00110054 0.0214063 0.0759918 0.000446028 0.104856 0.0435644 0.752634 
+	
+	```
+		
 Publications
 ---------
 
@@ -127,10 +151,10 @@ Examples
 	
 	```sh
 	python process_alignments.py \
-	-i test_data/amunmt/amu.out.en \
-	-s test_data/amunmt/amu.src.de \
+	-i test_data/marian/marian.out.lv \
+	-s test_data/marian/marian.src.en \
 	-o web \
-	-f AmuNMT
+	-f Marian
 	```
 
 Parameters for process_alignments.py
@@ -142,7 +166,7 @@ Parameters for process_alignments.py
 | -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'				| 'web'			 |
 | -s     | source sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
 | -t     | target sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
-| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'AmuNMT', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
+| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
 | -n     | Number of a specific sentence | No     	 		 | Integer 											| -1 (show all)	 |
 
 Screenshots
