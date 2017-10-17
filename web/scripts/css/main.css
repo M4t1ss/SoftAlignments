@@ -104,3 +104,7 @@ th.left {
     border-right: 0.1px solid #000;
     padding-right: 3px;
 }
+
+#svg{
+	height: 681px;
+}

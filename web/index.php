@@ -34,7 +34,7 @@ $allConfidences = getAllConfidences($f4, $count);
 <head>
 	<meta name="description" content="NMT Attention Alignments">
 	<meta name="author" content="Matīss Rikters">
-	<title>NMT Attention Alignments</title>
+	<title>Compare NMT Attention Alignments</title>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -67,14 +67,14 @@ $allConfidences = getAllConfidences($f4, $count);
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">NMT Attention Alignments</a>
+      <a class="navbar-brand" href="#">Compare NMT Attention Alignments </a><a style="font-size:small;" class="navbar-brand" href="../">[<span style="color:red;">back</span>]</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-center">
 		<li>
-			<a href="#" onclick="getPrev(dataDir, sentenceNum);">
+			<a href="?directory=<? echo $dataDir; ?>&s=<? echo ($sentence-1); ?>">
 				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 			</a>
 		</li>
@@ -102,7 +102,7 @@ $allConfidences = getAllConfidences($f4, $count);
 			</form>
 		</li>
 		<li>
-			<a href="#" onclick="getNext(dataDir, sentenceNum);">
+			<a href="?directory=<? echo $dataDir; ?>&s=<? echo ($sentence+1); ?>">
 				<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
 			</a>
 		</li>
