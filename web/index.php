@@ -74,7 +74,7 @@ $allConfidences = getAllConfidences($f4, $count);
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-center">
 		<li>
-			<a href="?directory=<? echo $dataDir; ?>&s=<? echo ($sentence-1); ?>">
+			<a href="?directory=<?php echo $dataDir; ?>&s=<?php echo ($sentence-1); ?>">
 				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 			</a>
 		</li>
@@ -102,7 +102,7 @@ $allConfidences = getAllConfidences($f4, $count);
 			</form>
 		</li>
 		<li>
-			<a href="?directory=<? echo $dataDir; ?>&s=<? echo ($sentence+1); ?>">
+			<a href="?directory=<?php echo $dataDir; ?>&s=<?php echo ($sentence+1); ?>">
 				<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
 			</a>
 		</li>
