@@ -1,9 +1,9 @@
 $(document).ready(function(){
-    getValues(dataDir, sentenceNum);
+    getValues(dataDir+"/NMT1", sentenceNum);
     addHighlight(sentenceNum);
 	setTimeout(function(){
 		other = true;
-		getValues("nematus", sentenceNum);
+		getValues(dataDir+"/NMT2", sentenceNum);
 	}, 500)
 })
 
@@ -72,7 +72,11 @@ function processTop(content) {
     $("#topRow").html(content);
 }
 function processBottom(content) {
-    $("#bottomRow").html(content);
+	if (other===false){
+		$("#bottomRow").html(content);
+	}else{
+		$("#bottomRow2").html(content);
+	}
 }
 
 function processData(ali_data) {
@@ -86,7 +90,7 @@ function processData(ali_data) {
         render(ali_data.source,ali_data.target,ali_data.alignment_data);
         html2canvas($("#matrix"), {
             onrendered: function (canvas) {
-                    getCanvas = canvas;
+				getCanvas = canvas;
             }
         });
     }

@@ -108,3 +108,19 @@ th.left {
 #svg{
 	height: 681px;
 }
+
+#bottomRow{
+    border: 2px solid indianred;
+    margin-left: 5px;
+    padding-top: 14px;
+    border-radius: 8px;
+    margin-bottom: 3px;
+}
+
+#bottomRow2{
+    border: 2px solid darkgreen;
+    margin-left: 5px;
+    padding-top: 14px;
+    border-radius: 8px;
+    margin-bottom: 3px;
+}

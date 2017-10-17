@@ -22,8 +22,8 @@ if (!isset($_GET['directory'])){
 }
 
 //Get a list of all confidences for browsing
-$dataFiles = cleanDirArray(scandir("./data/".$dataDir));
-$confidences = "./data/".$dataDir."/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
+$dataFiles = cleanDirArray(scandir("./data/".$dataDir."/NMT1"));
+$confidences = "./data/".$dataDir."/NMT1/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
 $f4 = gotoLine($confidences, $sentence);
 $count = getLineCount($confidences)-2;
 $allConfidences = getAllConfidences($f4, $count);
@@ -81,21 +81,23 @@ $allConfidences = getAllConfidences($f4, $count);
         <li>
 			<form class="navbar-form" action="?" method="GET" onsubmit="return jumpForm()">
                 <div class="btn-group" data-toggle="buttons">
-                  <label class="btn btn-default active" id="svgBut">
+                  <!--
+				  <label class="btn btn-default active" id="svgBut">
                     <input type="radio" name="type" value="svg" autocomplete="off" checked><span class="glyphicon glyphicon-random" aria-hidden="true"></span>
                   </label>
                   <label class="btn btn-default" id="matBut">
                     <input type="radio" name="type" value="matrix" autocomplete="off"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                   </label>
+				  -->
+                    <a type="reset" id="save" style="display:inline;" class="btn btn-default">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                    </a>
                 </div>
 				<input class="form-control" style="width:75px; display:inline;" name="s" id="sentenceNum" value="<?php echo $sentence; ?>" type="text" /> 
                 <div class="btn-group" role="group">
                     <button style="display:inline;" class="btn btn-default" type="submit">
                         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     </button>
-                    <a type="reset" id="save" style="display:inline;" class="btn btn-default">
-                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                    </a>
                 </div>
 				<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
 				<input type="hidden" name="changeNum" value="True" />
@@ -134,13 +136,15 @@ $allConfidences = getAllConfidences($f4, $count);
 </div>
 <div class="row" style="margin-left:5px;" id="bottomRow">
 </div>
+<div class="row" style="margin-left:5px;" id="bottomRow2">
+</div>
 <div id="c5" class="row collapse">
 	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(6)"></span>
 	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
 	<div id="length" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="le-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="#" onclick="jumpTo(\''.$dataDir.'\', '.($key+1).')" title="Sentence '.($key+1).' - Length '.$scfd[5].' symbols">
+				echo '<a id="le-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Length '.$scfd[5].' symbols">
 						<div class="progress progress-bar-vertical">
 							<div id="translation-'.($key+1).'" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$scfd[4].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[4].'%;">
 								<span class="sr-only">'.$scfd[4].'% Complete</span>
@@ -157,7 +161,7 @@ $allConfidences = getAllConfidences($f4, $count);
 	<div id="confidence" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="co-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="#" onclick="jumpTo(\''.$dataDir.'\', '.($key+1).')" title="Sentence '.($key+1).' - Confidence '.$scfd[3].'%">
+				echo '<a id="co-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Confidence '.$scfd[3].'%">
 						<div class="progress progress-bar-vertical">
 							<div id="confidence-'.($key+1).'" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$scfd[3].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[3].'%;">
 								<span class="sr-only">'.$scfd[3].'% Complete</span>
@@ -174,7 +178,7 @@ $allConfidences = getAllConfidences($f4, $count);
 	<div id="cdp" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="cd-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="#" onclick="jumpTo(\''.$dataDir.'\', '.($key+1).')" title="Sentence '.($key+1).' - CDP '.$scfd[0].'%">
+				echo '<a id="cd-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - CDP '.$scfd[0].'%">
 						<div class="progress progress-bar-vertical">
 							<div id="deviation-'.($key+1).'" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="'.$scfd[0].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[0].'%;">
 								<span class="sr-only">'.$scfd[0].'% Complete</span>
@@ -191,7 +195,7 @@ $allConfidences = getAllConfidences($f4, $count);
 	<div id="apout" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="ao-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="#" onclick="jumpTo(\''.$dataDir.'\', '.($key+1).')" title="Sentence '.($key+1).' - APout '.$scfd[1].'%">
+				echo '<a id="ao-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APout '.$scfd[1].'%">
 						<div class="progress progress-bar-vertical">
 							<div id="apout-'.($key+1).'" class="progress-bar" role="progressbar" aria-valuenow="'.$scfd[1].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[1].'%;">
 								<span class="sr-only">'.$scfd[1].'% Complete</span>
@@ -208,7 +212,7 @@ $allConfidences = getAllConfidences($f4, $count);
 	<div id="apin" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="ai-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="#" onclick="jumpTo(\''.$dataDir.'\', '.($key+1).')" title="Sentence '.($key+1).' - APin '.$scfd[2].'%">
+				echo '<a id="ai-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APin '.$scfd[2].'%">
 						<div class="progress progress-bar-vertical">
 							<div id="apin-'.($key+1).'" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'.$scfd[2].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[2].'%;">
 								<span class="sr-only">'.$scfd[2].'% Complete</span>
