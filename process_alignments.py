@@ -3,7 +3,10 @@
 import io, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
 from time import gmtime, strftime
 from imp import reload
-from configparser import ConfigParser
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 
 def main(argv):
     try:
