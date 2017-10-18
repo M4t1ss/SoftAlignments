@@ -21,7 +21,7 @@ if (!isset($_GET['directory'])){
 	$dataDir = $_GET['directory'];
 }
 $compare = false;
-if(substr($dataDir, 0, 4) == "cmp_") $compare = true;
+if(file_exists("./data/".$dataDir."/NMT1") && file_exists("./data/".$dataDir."/NMT2")) $compare = true;
 
 //Get a list of all confidences for browsing
 $dataFiles = cleanDirArray(scandir("./data/".$dataDir.($compare?"/NMT1":"")));
@@ -70,7 +70,7 @@ $allConfidences = getAllConfidences($f4, $count);
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><?php echo ($compare?"Compare ":""); ?>NMT Attention Alignments </a><a style="font-size:small;" class="navbar-brand" href="../">[<span style="color:red;">back</span>]</a>
+      <a class="navbar-brand" href="#"><?php echo ($compare?"Compare ":""); ?>NMT Attention Alignments </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -84,23 +84,29 @@ $allConfidences = getAllConfidences($f4, $count);
         <li>
 			<form class="navbar-form" action="?" method="GET" onsubmit="return jumpForm()">
                 <div class="btn-group" data-toggle="buttons">
-                  <!--
-				  <label class="btn btn-default active" id="svgBut">
-                    <input type="radio" name="type" value="svg" autocomplete="off" checked><span class="glyphicon glyphicon-random" aria-hidden="true"></span>
-                  </label>
-                  <label class="btn btn-default" id="matBut">
-                    <input type="radio" name="type" value="matrix" autocomplete="off"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                  </label>
-				  -->
+					<?php echo (!$compare?'
+					  <label class="btn btn-default active" id="svgBut">
+						<input type="radio" name="type" value="svg" autocomplete="off" checked><span class="glyphicon glyphicon-random" aria-hidden="true"></span>
+					  </label>
+					  <label class="btn btn-default" id="matBut">
+						<input type="radio" name="type" value="matrix" autocomplete="off"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+					  </label>
+				  ':'
                     <a type="reset" id="save" style="display:inline;" class="btn btn-default">
                         <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                     </a>
+					'); ?>
                 </div>
 				<input class="form-control" style="width:75px; display:inline;" name="s" id="sentenceNum" value="<?php echo $sentence; ?>" type="text" /> 
                 <div class="btn-group" role="group">
                     <button style="display:inline;" class="btn btn-default" type="submit">
                         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     </button>
+					<?php echo (!$compare?'
+                    <a type="reset" id="save" style="display:inline;" class="btn btn-default">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                    </a>
+				  ':''); ?>
                 </div>
 				<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
 				<input type="hidden" name="changeNum" value="True" />
