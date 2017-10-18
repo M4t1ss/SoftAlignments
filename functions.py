@@ -170,6 +170,14 @@ def readAmu(in_file, src_file):
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
     
+def compare(srcs1, srcs2):
+    for i in range(0, len(srcs1)):
+        if srcs1[i][len(srcs1[i])-1] != '<EOS>':
+            srcs1[i].append('<EOS>')
+        if srcs2[i][len(srcs2[i])-1] != '<EOS>':
+            srcs2[i].append('<EOS>')
+    return srcs1==srcs2
+
 def processAlignments(data, folder, inputfile, outputType, num):
     with open(folder + "/" + ntpath.basename(inputfile) + '.ali.js', 'w', encoding='utf-8') as out_a_js:
         with open(folder + "/" + ntpath.basename(inputfile) + '.src.js', 'w', encoding='utf-8') as out_s_js:

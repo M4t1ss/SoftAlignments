@@ -38,7 +38,7 @@ def main(argv):
     try:
         inputfile
     except NameError:
-        print ('Provide an input file!')
+        print ('Provide an input file!\n')
         functions.printHelp()
         sys.exit()
     try:
@@ -58,14 +58,14 @@ def main(argv):
         try:
             sourcefile
         except NameError:
-            print ('Provide a source sentence file!')
+            print ('Provide a source sentence file!\n')
             functions.printHelp()
             sys.exit()
         if from_system == 'NeuralMonkey':
             try:
                 targetfile
             except NameError:
-                print ('Provide a target sentence file!')
+                print ('Provide a target sentence file!\n')
                 functions.printHelp()
                 sys.exit()
     if outputType != 'color' and outputType != 'block' and outputType != 'block2' and outputType != 'compare':
@@ -97,6 +97,11 @@ def main(argv):
         if from_system2 == "Marian":
             (srcs2, tgts2, alis2) = functions.readAmu(inputfile2, sourcefile2)
         data2 = list(zip(srcs2, tgts2, alis2))
+        
+        if functions.compare(srcs, srcs2) == False:
+            print ('Source senctences from both systems need to be identical!\n')
+            functions.printHelp()
+            sys.exit()
 
     foldername = ntpath.basename(inputfile).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
     if outputType == 'compare':
