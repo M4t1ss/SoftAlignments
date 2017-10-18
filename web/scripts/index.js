@@ -1,10 +1,15 @@
 $(document).ready(function(){
-    getValues(dataDir+"/NMT1", sentenceNum);
-    addHighlight(sentenceNum);
-	setTimeout(function(){
-		other = true;
-		getValues(dataDir+"/NMT2", sentenceNum);
-	}, 500)
+	if(compare===true){
+		getValues(dataDir+"/NMT1", sentenceNum);
+		addHighlight(sentenceNum);
+		setTimeout(function(){
+			other = true;
+			getValues(dataDir+"/NMT2", sentenceNum);
+		}, 500)
+	}else{
+		getValues(dataDir, sentenceNum);
+		addHighlight(sentenceNum);
+	}
 })
 
 var other = false;

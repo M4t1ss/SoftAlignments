@@ -109,7 +109,7 @@ th.left {
 	height: 681px;
 }
 
-#bottomRow{
+.bottomRow{
     border: 2px solid indianred;
     margin-left: 5px;
     padding-top: 14px;
@@ -117,7 +117,7 @@ th.left {
     margin-bottom: 3px;
 }
 
-#bottomRow2{
+.bottomRow2{
     border: 2px solid darkgreen;
     margin-left: 5px;
     padding-top: 14px;

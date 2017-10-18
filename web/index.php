@@ -20,10 +20,12 @@ if (!isset($_GET['directory'])){
 }else{
 	$dataDir = $_GET['directory'];
 }
+$compare = false;
+if(substr($dataDir, 0, 4) == "cmp_") $compare = true;
 
 //Get a list of all confidences for browsing
-$dataFiles = cleanDirArray(scandir("./data/".$dataDir."/NMT1"));
-$confidences = "./data/".$dataDir."/NMT1/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
+$dataFiles = cleanDirArray(scandir("./data/".$dataDir.($compare?"/NMT1":"")));
+$confidences = "./data/".$dataDir.($compare?"/NMT1/":"/").array_pop(preg_grep("/\.con\.js/", $dataFiles));
 $f4 = gotoLine($confidences, $sentence);
 $count = getLineCount($confidences)-2;
 $allConfidences = getAllConfidences($f4, $count);
@@ -34,7 +36,7 @@ $allConfidences = getAllConfidences($f4, $count);
 <head>
 	<meta name="description" content="NMT Attention Alignments">
 	<meta name="author" content="Matīss Rikters">
-	<title>Compare NMT Attention Alignments</title>
+	<title><?php echo ($compare?"Compare ":""); ?>NMT Attention Alignments</title>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -53,6 +55,7 @@ $allConfidences = getAllConfidences($f4, $count);
     <script type="text/javascript">
     var sentenceNum = <?php echo $sentence; ?>;
     var dataDir = "<?php echo $dataDir; ?>";
+	var compare = <?php echo ($compare?"true":"false"); ?>;
     </script>
     <script src="scripts/index.js"></script>
 </head>
@@ -67,7 +70,7 @@ $allConfidences = getAllConfidences($f4, $count);
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Compare NMT Attention Alignments </a><a style="font-size:small;" class="navbar-brand" href="../">[<span style="color:red;">back</span>]</a>
+      <a class="navbar-brand" href="#"><?php echo ($compare?"Compare ":""); ?>NMT Attention Alignments </a><a style="font-size:small;" class="navbar-brand" href="../">[<span style="color:red;">back</span>]</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -134,9 +137,9 @@ $allConfidences = getAllConfidences($f4, $count);
 	<div id="other" style="margin-top:-681px;"></div>
     <div id="matrix"></div>
 </div>
-<div class="row" style="margin-left:5px;" id="bottomRow">
+<div class="row<?php echo ($compare?" bottomRow":""); ?>" style="margin-left:5px;" id="bottomRow">
 </div>
-<div class="row" style="margin-left:5px;" id="bottomRow2">
+<div class="row<?php echo ($compare?" bottomRow2":""); ?>" style="margin-left:5px;" id="bottomRow2">
 </div>
 <div id="c5" class="row collapse">
 	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(6)"></span>
