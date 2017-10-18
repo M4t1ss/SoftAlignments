@@ -160,14 +160,14 @@ Examples
 Parameters for process_alignments.py
 ---------
 
-| Option | Description                   | Required 		 | Possible Values 			 						| Default Value  |
-|:------:|:------------------------------|:-----------------:|:-------------------------------------------------|:---------------|
-| -i     | input alignment file			 | yes     			 | Path to file										|				 |
-| -o     | output alignment matrix type	 | No      		 	 | 'web', 'color', 'block', 'block2'				| 'web'			 |
-| -s     | source sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
-| -t     | target sentence subword units | For Neural Monkey | Path to file			  	 						|				 |
-| -f     | Where are the alignments from | No     	 		 | 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
-| -n     | Number of a specific sentence | No     	 		 | Integer 											| -1 (show all)	 |
+| Option | Description                   | Required 		 			| Possible Values 			 									| Default Value  |
+|:------:|:------------------------------|:----------------------------:|:--------------------------------------------------------------|:---------------|
+| -i     | input alignment file			 | yes     			 			| Path to file													|				 |
+| -o     | output alignment matrix type	 | No      		 	 			| 'web', 'color', 'block', 'block2', 'compare'					| 'web'			 |
+| -s     | source sentence subword units | For Neural Monkey and Marian | Path to file			  	 									|				 |
+| -t     | target sentence subword units | For Neural Monkey 			| Path to file			  	 									|				 |
+| -f     | Where are the alignments from | No     	 		 			| 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
+| -n     | Number of a specific sentence | No     	 		 			| Integer 														| -1 (show all)	 |
 
 Screenshots
 ---------

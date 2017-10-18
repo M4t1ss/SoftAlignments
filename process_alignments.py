@@ -1,13 +1,12 @@
 # coding: utf-8
 
-import unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
+import io, ConfigParser, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
 from time import gmtime, strftime
-from io import open, StringIO
 from imp import reload
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv,"hi:o:s:t:f:n:a:b:c:d:")
+        opts, args = getopt.getopt(argv,"hi:o:s:t:f:n:a:b:c:d:g:")
     except getopt.GetoptError:
         functions.printHelp()
         sys.exit(2)
@@ -27,47 +26,148 @@ def main(argv):
             from_system = arg
         elif opt == '-n':
             num = arg
-        elif opt == '-a':
-            inputfile2 = arg
-        elif opt == '-b':
-            sourcefile2 = arg
-        elif opt == '-c':
-            targetfile2 = arg
-        elif opt == '-d':
+        elif opt == '-v':
             from_system2 = arg
+        elif opt == '-w':
+            inputfile2 = arg
+        elif opt == '-x':
+            sourcefile2 = arg
+        elif opt == '-y':
+            targetfile2 = arg
+        elif opt == '-c':
+            config_file = arg
+    
     try:
-        inputfile
+        config_file
     except NameError:
-        print ('Provide an input file!\n')
-        functions.printHelp()
-        sys.exit()
-    try:
-        from_system
-    except NameError:
-        from_system = 'NeuralMonkey'
-    try:
-        num
-    except NameError:
-        num = -1
-    try:
-        outputType
-    except NameError:
-        # Set output type to 'web' by default
-        outputType = 'web'
-    if from_system == 'NeuralMonkey' or from_system == 'Marian':
+        config_file = False
+    
+    if(config_file):
+        # There is a config file! Get info about inputs
+        with open(config_file) as cfg:
+            sample_config = cfg.read()
+        config = ConfigParser.RawConfigParser(allow_no_value=True)
+        config.readfp(io.BytesIO(sample_config))
         try:
-            sourcefile
+            inputfile = config.get('AlignmentsOne', 'InputFile')
         except NameError:
-            print ('Provide a source sentence file!\n')
+            print ('Provide an input file!\n')
             functions.printHelp()
             sys.exit()
-        if from_system == 'NeuralMonkey':
+        try:
+            from_system = config.get('AlignmentsOne', 'From')
+        except ConfigParser.NoOptionError:
+            from_system = 'NeuralMonkey'
+        try:
+            num = config.getint('Options', 'Number')
+        except ConfigParser.NoOptionError:
+            num = -1
+        try:
+            outputType = config.get('Options', 'OutputType')
+        except ConfigParser.NoOptionError:
+            # Set output type to 'web' by default
+            outputType = 'web'
+        
+        if from_system == 'NeuralMonkey' or from_system == 'Marian':
             try:
-                targetfile
-            except NameError:
-                print ('Provide a target sentence file!\n')
+                sourcefile = config.get('AlignmentsOne', 'SourceFile')
+            except ConfigParser.NoOptionError:
+                print ('Provide a source sentence file!\n')
                 functions.printHelp()
                 sys.exit()
+            if from_system == 'NeuralMonkey':
+                try:
+                    targetfile = config.get('AlignmentsOne', 'TargetFile')
+                except ConfigParser.NoOptionError:
+                    print ('Provide a target sentence file!\n')
+                    functions.printHelp()
+                    sys.exit()
+        if outputType == 'compare':
+            try:
+                from_system2 = config.get('AlignmentsTwo', 'From')
+            except ConfigParser.NoOptionError:
+                from_system2 = 'NeuralMonkey'
+            try:
+                inputfile2 = config.get('AlignmentsTwo', 'InputFile')
+            except ConfigParser.NoOptionError:
+                print ('Provide a input file for the second system!\n')
+                functions.printHelp()
+                sys.exit()
+            if from_system2 == 'NeuralMonkey' or from_system2 == 'Marian':
+                try:
+                    sourcefile2 = config.get('AlignmentsTwo', 'SourceFile')
+                except ConfigParser.NoOptionError:
+                    print ('Provide a source sentence file for the second system!\n')
+                    functions.printHelp()
+                    sys.exit()
+                if from_system2 == 'NeuralMonkey':
+                    try:
+                        targetfile2 = config.get('AlignmentsTwo', 'TargetFile')
+                    except ConfigParser.NoOptionError:
+                        print ('Provide a target sentence file for the second system!\n')
+                        functions.printHelp()
+                        sys.exit()
+        
+    else:
+        # There is no config file. Look for inputs in parameters
+        try:
+            inputfile
+        except NameError:
+            print ('Provide an input file!\n')
+            functions.printHelp()
+            sys.exit()
+        try:
+            from_system
+        except NameError:
+            from_system = 'NeuralMonkey'
+        try:
+            num
+        except NameError:
+            num = -1
+        try:
+            outputType
+        except NameError:
+            # Set output type to 'web' by default
+            outputType = 'web'
+        if from_system == 'NeuralMonkey' or from_system == 'Marian':
+            try:
+                sourcefile
+            except NameError:
+                print ('Provide a source sentence file!\n')
+                functions.printHelp()
+                sys.exit()
+            if from_system == 'NeuralMonkey':
+                try:
+                    targetfile
+                except NameError:
+                    print ('Provide a target sentence file!\n')
+                    functions.printHelp()
+                    sys.exit()
+        if outputType == 'compare':
+            try:
+                from_system2
+            except NameError:
+                from_system2 = 'NeuralMonkey'
+            try:
+                inputfile2
+            except NameError:
+                print ('Provide a input file for the second system!\n')
+                functions.printHelp()
+                sys.exit()
+            if from_system2 == 'NeuralMonkey' or from_system2 == 'Marian':
+                try:
+                    sourcefile2
+                except NameError:
+                    print ('Provide a source sentence file for the second system!\n')
+                    functions.printHelp()
+                    sys.exit()
+                if from_system2 == 'NeuralMonkey':
+                    try:
+                        targetfile2
+                    except NameError:
+                        print ('Provide a target sentence file for the second system!\n')
+                        functions.printHelp()
+                        sys.exit()
     if outputType != 'color' and outputType != 'block' and outputType != 'block2' and outputType != 'compare':
         # Set output type to 'web' by default
         outputType = 'web'
