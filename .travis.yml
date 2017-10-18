@@ -25,5 +25,4 @@ script:
   - python process_alignments.py -i test_data/marian/marian.out.lv -s test_data/marian/marian.src.en -f Marian -o block -n 2
   - python process_alignments.py -i test_data/opennmt/attention.txt -f OpenNMT -o color
   - python process_alignments.py -i test_data/opennmt/attention.txt -f OpenNMT -o block -n 2
-  - python process_alignments.py -c test_data/compare/compare.ini
   - test_data/tests/test.sh

@@ -1,8 +1,9 @@
 # coding: utf-8
 
-import io, ConfigParser, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
+import io, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
 from time import gmtime, strftime
 from imp import reload
+from configparser import ConfigParser
 
 def main(argv):
     try:
