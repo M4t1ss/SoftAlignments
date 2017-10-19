@@ -160,14 +160,20 @@ Examples
 Parameters for process_alignments.py
 ---------
 
-| Option | Description                   | Required 		 			| Possible Values 			 									| Default Value  |
-|:------:|:------------------------------|:----------------------------:|:--------------------------------------------------------------|:---------------|
-| -i     | input alignment file			 | yes     			 			| Path to file													|				 |
-| -o     | output alignment matrix type	 | No      		 	 			| 'web', 'color', 'block', 'block2', 'compare'					| 'web'			 |
-| -s     | source sentence subword units | For Neural Monkey and Marian | Path to file			  	 									|				 |
-| -t     | target sentence subword units | For Neural Monkey 			| Path to file			  	 									|				 |
-| -f     | Where are the alignments from | No     	 		 			| 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
-| -n     | Number of a specific sentence | No     	 		 			| Integer 														| -1 (show all)	 |
+| Option | Description                   					| Required 		 										| Possible Values 			 									| Default Value  |
+|:------:|:-------------------------------------------------|:-----------------------------------------------------:|:--------------------------------------------------------------|:---------------|
+| -f     | NMT framework where the alignments are from 		| No     	 		 									| 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
+| -i     | input alignment file			 					| Only if no configuration file is provided				| Path to file													|				 |
+| -s     | source sentence subword units 					| For Neural Monkey or Marian 							| Path to file			  	 									|				 |
+| -t     | target sentence subword units 					| For Neural Monkey 									| Path to file			  	 									|				 |
+| -o     | output type					 					| No      		 	 									| 'web', 'color', 'block', 'block2', 'compare'					| 'web'			 |
+| -n     | Number of a specific sentence 					| No     	 		 									| Integer 														| -1 (show all)	 |
+| -c     | configuration file 								| No     	 		 									| Path to file													| 				 |
+|:------:|:-------------------------------------------------|:-----------------------------------------------------:|:--------------------------------------------------------------|:---------------|
+| -v     | NMT framework where the 2nd alignments are from 	| For output type'compare'     							| 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
+| -w     | input file for the 2nd alignments		 		| For output type'compare'     							| Path to file													|				 |
+| -x     | 2nd source sentence subword unit file  			| For output type'compare' and Neural Monkey or Marian 	| Path to file			  	 									|				 |
+| -y     | 2nd target sentence subword unit file 			| For output type'compare' and Neural Monkey 			| Path to file			  	 									|				 |
 
 Screenshots
 ---------
