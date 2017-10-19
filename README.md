@@ -169,11 +169,44 @@ Parameters for process_alignments.py
 | -o     | output type					 					| No      		 	 									| 'web', 'color', 'block', 'block2', 'compare'					| 'web'			 |
 | -n     | Number of a specific sentence 					| No     	 		 									| Integer 														| -1 (show all)	 |
 | -c     | configuration file 								| No     	 		 									| Path to file													| 				 |
-|:------:|:-------------------------------------------------|:-----------------------------------------------------:|:--------------------------------------------------------------|:---------------|
+|		 |													|														|																|				 |
 | -v     | NMT framework where the 2nd alignments are from 	| For output type'compare'     							| 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
 | -w     | input file for the 2nd alignments		 		| For output type'compare'     							| Path to file													|				 |
 | -x     | 2nd source sentence subword unit file  			| For output type'compare' and Neural Monkey or Marian 	| Path to file			  	 									|				 |
 | -y     | 2nd target sentence subword unit file 			| For output type'compare' and Neural Monkey 			| Path to file			  	 									|				 |
+
+Configuration file
+---------
+
+The parameters can be provided via configuration .ini file to have a smaller mess in the command line when calling the script. 
+
+| Block 		| Option	 | Description                   				   |
+|:-------------:|:-----------|:------------------------------------------------|
+| AlignmentsOne | 			 |								 				   |
+|				| From 		 | NMT framework where the alignments are from 	   |
+|				| InputFile  | input alignment file			 				   |
+|				| SourceFile | source sentence subword units 				   |
+|				| TargetFile | target sentence subword units 				   |
+| Options 		|			 |												   |
+|				| OutputType | output type					 				   |
+|				| Number	 | Number of a specific sentence 				   |
+| AlignmentsTwo	|			 |												   |
+|				| From 		 | NMT framework where the 2nd alignments are from |
+|				| InputFile  | input file for the 2nd alignments		 	   |
+|				| SourceFile | 2nd source sentence subword unit file  		   |
+|				| TargetFile | 2nd target sentence subword unit file 		   |
+
+An example config.ini file:
+```Ini
+[AlignmentsOne]
+InputFile: ./test_data/neuralmonkey/alignments.npy
+SourceFile: ./test_data/neuralmonkey/src.en.bpe
+TargetFile: ./test_data/neuralmonkey/out.lv.bpe
+From: NeuralMonkey
+
+[Options]
+OutputType: color
+```
 
 Screenshots
 ---------
