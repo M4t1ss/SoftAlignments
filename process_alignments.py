@@ -4,9 +4,9 @@ import io, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math
 from time import gmtime, strftime
 from imp import reload
 try:
-    from configparser import ConfigParser
+    import configparser as cp
 except ImportError:
-    import ConfigParser
+    import ConfigParser as cp
 
 def main(argv):
     try:
@@ -48,10 +48,10 @@ def main(argv):
     
     if(config_file):
         # There is a config file! Get info about inputs
-        with open(config_file) as cfg:
-            sample_config = cfg.read()
-        config = ConfigParser.RawConfigParser(allow_no_value=True)
-        config.readfp(io.BytesIO(sample_config))
+        # with open(config_file) as cfg:
+            # sample_config = cfg.read()
+        config = cp.ConfigParser()
+        config.read(config_file)
         try:
             inputfile = config.get('AlignmentsOne', 'InputFile')
         except NameError:
@@ -60,54 +60,54 @@ def main(argv):
             sys.exit()
         try:
             from_system = config.get('AlignmentsOne', 'From')
-        except ConfigParser.NoOptionError:
+        except cp.NoOptionError:
             from_system = 'NeuralMonkey'
         try:
             num = config.getint('Options', 'Number')
-        except ConfigParser.NoOptionError:
+        except cp.NoOptionError:
             num = -1
         try:
             outputType = config.get('Options', 'OutputType')
-        except ConfigParser.NoOptionError:
+        except cp.NoOptionError:
             # Set output type to 'web' by default
             outputType = 'web'
         
         if from_system == 'NeuralMonkey' or from_system == 'Marian':
             try:
                 sourcefile = config.get('AlignmentsOne', 'SourceFile')
-            except ConfigParser.NoOptionError:
+            except cp.NoOptionError:
                 print ('Provide a source sentence file!\n')
                 functions.printHelp()
                 sys.exit()
             if from_system == 'NeuralMonkey':
                 try:
                     targetfile = config.get('AlignmentsOne', 'TargetFile')
-                except ConfigParser.NoOptionError:
+                except cp.NoOptionError:
                     print ('Provide a target sentence file!\n')
                     functions.printHelp()
                     sys.exit()
         if outputType == 'compare':
             try:
                 from_system2 = config.get('AlignmentsTwo', 'From')
-            except ConfigParser.NoOptionError:
+            except cp.NoOptionError:
                 from_system2 = 'NeuralMonkey'
             try:
                 inputfile2 = config.get('AlignmentsTwo', 'InputFile')
-            except ConfigParser.NoOptionError:
+            except cp.NoOptionError:
                 print ('Provide a input file for the second system!\n')
                 functions.printHelp()
                 sys.exit()
             if from_system2 == 'NeuralMonkey' or from_system2 == 'Marian':
                 try:
                     sourcefile2 = config.get('AlignmentsTwo', 'SourceFile')
-                except ConfigParser.NoOptionError:
+                except cp.NoOptionError:
                     print ('Provide a source sentence file for the second system!\n')
                     functions.printHelp()
                     sys.exit()
                 if from_system2 == 'NeuralMonkey':
                     try:
                         targetfile2 = config.get('AlignmentsTwo', 'TargetFile')
-                    except ConfigParser.NoOptionError:
+                    except cp.NoOptionError:
                         print ('Provide a target sentence file for the second system!\n')
                         functions.printHelp()
                         sys.exit()
