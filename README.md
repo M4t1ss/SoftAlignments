@@ -30,7 +30,7 @@ How to get alignment files from NMT systems
 * [Neural Monkey](https://github.com/ufal/neuralmonkey)
 	* In the training.ini file add
 
-	```sh
+	```Ini
 	[alignment_saver]
 	class=runners.word_alignment_runner.WordAlignmentRunner
 	output_series="ali"
@@ -40,18 +40,18 @@ How to get alignment files from NMT systems
 
 	and add __alignment_saver__ to the __runners__ in **main**
 
-	```sh
+	```Ini
 	runners=[<runner_greedy>, <alignment_saver>]
 	```
 
 	* In the translation.ini file in **eval_data** add
-	```sh
+	```Ini
 	s_ali_out="out.alignment"
 	```
 
 * [Marian](https://github.com/marian-nmt/marian)
 	* In the config.yml file add
-	```sh
+	```YAML
 	no-debpe: true
 	return-alignment: false
 	return-soft-alignment: true
@@ -161,7 +161,7 @@ Parameters for process_alignments.py
 ---------
 
 | Option | Description                   					| Required 		 										| Possible Values 			 									| Default Value  |
-|:------:|:-------------------------------------------------|:-----------------------------------------------------:|:--------------------------------------------------------------|:---------------|
+|:------:|:-------------------------------------------------|:------------------------------------------------------|:--------------------------------------------------------------|:--------------:|
 | -f     | NMT framework where the alignments are from 		| No     	 		 									| 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
 | -i     | input alignment file			 					| Only if no configuration file is provided				| Path to file													|				 |
 | -s     | source sentence subword units 					| For Neural Monkey or Marian 							| Path to file			  	 									|				 |
@@ -181,7 +181,7 @@ Configuration file
 The parameters can be provided via configuration .ini file to have a smaller mess in the command line when calling the script. 
 
 | Block 		| Option	 | Description                   				   |
-|:-------------:|:-----------|:------------------------------------------------|
+|:--------------|:-----------|:------------------------------------------------|
 | AlignmentsOne | 			 |								 				   |
 |				| From 		 | NMT framework where the alignments are from 	   |
 |				| InputFile  | input alignment file			 				   |
