@@ -1,7 +1,18 @@
 $(document).ready(function(){
-    getValues(dataDir, sentenceNum);
-    addHighlight(sentenceNum);
+	if(compare===true){
+		getValues(dataDir+"/NMT1", sentenceNum);
+		addHighlight(sentenceNum);
+		setTimeout(function(){
+			other = true;
+			getValues(dataDir+"/NMT2", sentenceNum);
+		}, 500)
+	}else{
+		getValues(dataDir, sentenceNum);
+		addHighlight(sentenceNum);
+	}
 })
+
+var other = false;
 
 function changeSentence(dataDirectory, sentenceNumber){
     getValues(dataDirectory, sentenceNumber)
@@ -66,7 +77,11 @@ function processTop(content) {
     $("#topRow").html(content);
 }
 function processBottom(content) {
-    $("#bottomRow").html(content);
+	if (other===false){
+		$("#bottomRow").html(content);
+	}else{
+		$("#bottomRow2").html(content);
+	}
 }
 
 function processData(ali_data) {
@@ -80,29 +95,45 @@ function processData(ali_data) {
         render(ali_data.source,ali_data.target,ali_data.alignment_data);
         html2canvas($("#matrix"), {
             onrendered: function (canvas) {
-                    getCanvas = canvas;
+				getCanvas = canvas;
             }
         });
     }
         
-    var width = 2200, height = 600, margin ={b:0, t:40, l:-10, r:0};
+    var margin ={b:0, t:40, l:-10, r:0};
     
-    d3.selectAll("#svg > *").remove();
+	if (other===false){
+		d3.selectAll("#other > *").remove();
+		var svg = d3.select("#other")
+			.append("svg")
+			.attr("preserveAspectRatio", "xMinYMin meet")
+			.attr("viewBox", "0 0 620 265")
+			.attr("id", "ali")
+			.classed("svg-content-responsive", true)
+			.append("g")
+			.attr("transform","translate("+ margin.l+","+margin.t+")");
+		var data = [ 
+			{data:bP.partData(ali_data.alignment_data,ali_data.source,ali_data.target), id:'SubWordAlignments'}
+		];
+
+		bP.draw(data, svg);
+	}else{
+		var svg = d3.select("#svg")
+			.append("svg")
+			.attr("preserveAspectRatio", "xMinYMin meet")
+			.attr("viewBox", "0 0 620 265")
+			.attr("id", "ali")
+			.classed("svg-content-responsive", true)
+			.append("g")
+			.attr("transform","translate("+ margin.l+","+margin.t+")");
+		var data = [ 
+			{data:bP.partData(ali_data.alignment_data,ali_data.source,ali_data.target), id:'SubWordAlignments'}
+		];
+
+		bP.draw(data, svg);
+	}
     
-    var svg = d3.select("#svg")
-        .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 620 235")
-        .attr("id", "ali")
-        .classed("svg-content-responsive", true)
-        .append("g")
-        .attr("transform","translate("+ margin.l+","+margin.t+")");
 
-    var data = [ 
-        {data:bP.partData(ali_data.alignment_data,ali_data.source,ali_data.target), id:'SubWordAlignments'}
-    ];
-
-    bP.draw(data, svg);
 
     var getCanvas; // global variable
 
