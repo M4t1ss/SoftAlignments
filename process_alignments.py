@@ -6,7 +6,7 @@ from imp import reload
 try:
     from configparser import ConfigParser
 except ImportError:
-    from ConfigParser import ConfigParser
+    import ConfigParser
 
 def main(argv):
     try:

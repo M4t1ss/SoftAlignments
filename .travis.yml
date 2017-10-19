@@ -20,7 +20,9 @@ script:
   - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block
   - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block2
   - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block -n 4 > test_data/tests/weHope-test.txt
+  - python process_alignments.py -c test_data/neuralmonkey.ini
   - python process_alignments.py -i test_data/nematus/alignments.txt -f Nematus -o color
+  - python process_alignments.py -c test_data/nematus.ini
   - python process_alignments.py -i test_data/marian/marian.out.lv -s test_data/marian/marian.src.en -f Marian -o color
   - python process_alignments.py -i test_data/marian/marian.out.lv -s test_data/marian/marian.src.en -f Marian -o block -n 2
   - python process_alignments.py -i test_data/opennmt/attention.txt -f OpenNMT -o color
