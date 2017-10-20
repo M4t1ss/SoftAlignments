@@ -2,6 +2,9 @@
 // Report simple running errors
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 header('Content-Type: text/html; charset=utf-8');
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 include('functions.php');
 
 // Get a list of directories in ./data
@@ -78,12 +81,12 @@ if($sentence > $count) $sentence = $count;
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-center">
 		<li>
-			<a href="?directory=<?php echo $dataDir; ?>&s=<?php echo ($sentence-1); ?>">
+			<a href="<?php echo ($compare?"?directory=".$dataDir."&s=".($sentence-1):"#"); ?>" <?php echo (!$compare?'onclick="getPrev(dataDir, sentenceNum);"':''); ?>>
 				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 			</a>
 		</li>
         <li>
-			<form class="navbar-form" action="?" method="GET" onsubmit="return jumpForm()">
+			<form class="navbar-form" action="?" method="GET" <?php echo (!$compare?'onsubmit="return jumpForm()"':''); ?>>
                 <div class="btn-group" data-toggle="buttons">
 					<?php echo (!$compare?'
 					  <label class="btn btn-default active" id="svgBut">
@@ -114,7 +117,7 @@ if($sentence > $count) $sentence = $count;
 			</form>
 		</li>
 		<li>
-			<a href="?directory=<?php echo $dataDir; ?>&s=<?php echo ($sentence+1); ?>">
+			<a href="<?php echo ($compare?"?directory=".$dataDir."&s=".($sentence+1):"#"); ?>" <?php echo (!$compare?'onclick="getNext(dataDir, sentenceNum);"':''); ?>>
 				<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
 			</a>
 		</li>
