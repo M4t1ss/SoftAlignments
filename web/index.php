@@ -29,6 +29,7 @@ $confidences = "./data/".$dataDir.($compare?"/NMT1/":"/").array_pop(preg_grep("/
 $f4 = gotoLine($confidences, $sentence);
 $count = getLineCount($confidences)-2;
 $allConfidences = getAllConfidences($f4, $count);
+if($sentence > $count) $sentence = $count;
 
 ?>
 <!DOCTYPE html>

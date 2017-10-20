@@ -107,7 +107,7 @@ function processData(ali_data) {
 		var svg = d3.select("#other")
 			.append("svg")
 			.attr("preserveAspectRatio", "xMinYMin meet")
-			.attr("viewBox", "0 0 620 265")
+			.attr("viewBox", "0 0 620 "+(compare === true ? "265" : "240")+"")
 			.attr("id", "ali")
 			.classed("svg-content-responsive", true)
 			.append("g")
