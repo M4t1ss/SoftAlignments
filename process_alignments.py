@@ -64,11 +64,11 @@ def main(argv):
             from_system = 'NeuralMonkey'
         try:
             num = config.getint('Options', 'Number')
-        except cp.NoOptionError:
+        except (cp.NoOptionError, cp.NoSectionError):
             num = -1
         try:
             outputType = config.get('Options', 'OutputType')
-        except cp.NoOptionError:
+        except (cp.NoOptionError, cp.NoSectionError):
             # Set output type to 'web' by default
             outputType = 'web'
         
