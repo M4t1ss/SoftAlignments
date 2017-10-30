@@ -318,7 +318,6 @@ var sentence = [];
 function loadAlignment(name, line) {
     if (!sentence) sentence = {};
     var maxRow = null, maxCol = null;
-    
     line.forEach(function(alignment) {
         if (!alignment) return;
         var x = alignment[0];
@@ -340,6 +339,7 @@ function loadText(name, line) {
 }
 
 function render(M_sources, M_targets, M_alignments) {
+	sentence.maxRow = null; sentence.maxCol = null;
     loadText('src', M_sources[0]);
     loadText('trg', M_targets[0]);
     loadAlignment('sym', M_alignments);

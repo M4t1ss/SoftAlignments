@@ -15,7 +15,14 @@ $(document).ready(function(){
 var other = false;
 
 function changeSentence(dataDirectory, sentenceNumber){
-    getValues(dataDirectory, sentenceNumber)
+	$('#loadCont').show();
+	
+    getValues(dataDirectory, sentenceNumber);
+	window.history.pushState('NMT Attention Alignments', 'NMT Attention Alignments', '?directory='+dataDirectory+'&s='+sentenceNumber);
+	
+	setTimeout(function(){
+		$('#loadCont').hide();
+	}, 200)
 }
 
 function removeHighlight(sentenceNumber){
@@ -91,6 +98,7 @@ function processData(ali_data) {
     if(hide == 'matrix'){
         $('#svgBut').button('toggle');
     }else{
+		$("#other").hide();
         $('#matBut').button('toggle');
         render(ali_data.source,ali_data.target,ali_data.alignment_data);
         html2canvas($("#matrix"), {
@@ -118,6 +126,8 @@ function processData(ali_data) {
 
 		bP.draw(data, svg);
 	}else{
+		hideShow('matrix','svg');
+		$("#other").show();
 		var svg = d3.select("#svg")
 			.append("svg")
 			.attr("preserveAspectRatio", "xMinYMin meet")
@@ -157,10 +167,12 @@ function processData(ali_data) {
         $('input[type=radio][name=type]').change(function() {
             if (this.value == 'svg') {
                 hideShow('matrix','svg');
+				$("#other").show();
             }
             else if (this.value == 'matrix') {
                 render(ali_data.source,ali_data.target,ali_data.alignment_data);
                 hideShow('svg','matrix');
+				$("#other").hide();
                 html2canvas($("#matrix"), {
                     onrendered: function (canvas) {
                             getCanvas = canvas;

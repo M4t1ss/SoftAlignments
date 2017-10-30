@@ -65,6 +65,24 @@ table {
     line-height:1;
 }
 
+#loadCont{
+	position:absolute;
+	margin-bottom:-20px;
+	margin: auto auto;
+	text-align:center;
+	width:100%;
+	display:none;
+}
+
+#load{
+	margin: auto auto;
+	text-align:center;
+}
+
+#other{
+	margin-top:-681px;
+}
+
 #matrix {
     background-color: white;
     display: table;

@@ -140,11 +140,14 @@ if($sentence > $count) $sentence = $count;
   </div>
 </nav>
 <div style="height:55px;display:block;"></div>
+    <div id="loadCont">
+		<img id="load" src="scripts/load.svg">
+	</div>
 <div class="row" style="margin-left:5px;" id="topRow">
 </div>
 <div class="row">
 	<div id="svg"></div>
-	<div id="other" style="margin-top:-681px;"></div>
+	<div id="other"></div>
     <div id="matrix"></div>
 </div>
 <div class="row<?php echo ($compare?" bottomRow":""); ?>" style="margin-left:5px;" id="bottomRow">
