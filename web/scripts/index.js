@@ -1,11 +1,8 @@
 $(document).ready(function(){
 	if(compare===true){
+		$('#loadCont').show();
 		getValues(dataDir+"/NMT1", sentenceNum);
 		addHighlight(sentenceNum);
-		setTimeout(function(){
-			other = true;
-			getValues(dataDir+"/NMT2", sentenceNum);
-		}, 500)
 	}else{
 		getValues(dataDir, sentenceNum);
 		addHighlight(sentenceNum);
@@ -15,7 +12,6 @@ $(document).ready(function(){
 var other = false;
 
 function changeSentence(dataDirectory, sentenceNumber){
-	$('#loadCont').show();
 	
     getValues(dataDirectory, sentenceNumber);
 	window.history.pushState('NMT Attention Alignments', 'NMT Attention Alignments', '?directory='+dataDirectory+'&s='+sentenceNumber);
@@ -182,17 +178,15 @@ function processData(ali_data) {
         });
     });
    
+   if(compare === true && other === false){
+		other = true;
+		getValues(dataDir+"/NMT2", sentenceNum);
+   }else if(compare === true && other === true){
+		$('#loadCont').hide();
+   }
 }
 
 function getValues(dataDirectory, sentenceNumber){
-     $.ajax({
-            'url': 'data.php?directory='+dataDirectory+'&s='+sentenceNumber,
-            type: 'get',
-            dataType: 'json',
-            cache: false,
-            success: processData,
-            async:true,
-    });
     //top
     $.ajax({
             'url': 'top.php?directory='+dataDirectory+'&s='+sentenceNumber,
@@ -207,6 +201,15 @@ function getValues(dataDirectory, sentenceNumber){
             type: 'get',
             cache: false,
             success: processBottom,
+            async:true,
+    });
+	//middle
+	$.ajax({
+            'url': 'data.php?directory='+dataDirectory+'&s='+sentenceNumber,
+            type: 'get',
+            dataType: 'json',
+            cache: false,
+            success: processData,
             async:true,
     });
 };
