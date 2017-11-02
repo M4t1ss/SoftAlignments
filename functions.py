@@ -177,7 +177,34 @@ def compare(srcs1, srcs2):
         if srcs2[i][len(srcs2[i])-1] != '<EOS>':
             srcs2[i].append('<EOS>')
     return srcs1==srcs2
-
+    
+def synchData(data1,data2):
+    addEOS1 = False
+    addEOS2 = False
+    for i in range(0, len(data1)):
+        diff1 = len(data1[i][1]) - len(data2[i][1])
+        diff2 = len(data2[i][1]) - len(data1[i][1])
+        if(data1[i][1][:-1] == u'<EOS>' and data2[i][1][:-1] != u'<EOS>'):
+            diff1 = diff1 - 1
+            addEOS1 = True
+        if(data1[i][1][:-1] != u'<EOS>' and data2[i][1][:-1] == u'<EOS>'):
+            diff2 = diff2 - 1
+            addEOS2 = True
+        
+        if(diff1 > 0):
+            for j in range(0, diff1):
+                if(addEOS2 and j == 0):
+                    data2[i][1].append(u'<EOS>')
+                else:
+                    data2[i][1].append(u'')
+        if(diff2 > 0):
+            for j in range(0, diff2):
+                if(addEOS1 and j == 0):
+                    data1[i][1].append(u'<EOS>')
+                else:
+                    data1[i][1].append(u'')
+    return data1, data2
+    
 def processAlignments(data, folder, inputfile, outputType, num):
     with open(folder + "/" + ntpath.basename(inputfile) + '.ali.js', 'w', encoding='utf-8') as out_a_js:
         with open(folder + "/" + ntpath.basename(inputfile) + '.src.js', 'w', encoding='utf-8') as out_s_js:
@@ -195,11 +222,11 @@ def processAlignments(data, folder, inputfile, outputType, num):
                         for i in range(0, len(data)):
                             (src, tgt, rawAli) = data[i]
                             ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
-                            if outputType == 'compare':
-                                if src[len(src)-1] != '<EOS>':
-                                    src.append('<EOS>')
-                                if tgt[len(tgt)-1] != '<EOS>':
-                                    tgt.append('<EOS>')
+                            # if outputType == 'compare':
+                                # if src[len(src)-1] != '<EOS>':
+                                    # src.append('<EOS>')
+                                # if tgt[len(tgt)-1] != '<EOS>':
+                                    # tgt.append('<EOS>')
                             
                             srcTotal = []
                             trgTotal = []

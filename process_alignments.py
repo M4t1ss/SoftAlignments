@@ -48,8 +48,6 @@ def main(argv):
     
     if(config_file):
         # There is a config file! Get info about inputs
-        # with open(config_file) as cfg:
-            # sample_config = cfg.read()
         config = cp.ConfigParser()
         config.read(config_file)
         try:
@@ -225,6 +223,7 @@ def main(argv):
             os.stat(folder + '/NMT2')
         except:
             os.mkdir(folder + '/NMT2')
+        functions.synchData(data,data2)
         functions.processAlignments(data, folder + '/NMT1', inputfile, outputType, num)
         functions.processAlignments(data2, folder + '/NMT2', inputfile2, outputType, num)
     else:
