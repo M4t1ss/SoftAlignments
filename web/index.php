@@ -96,7 +96,7 @@ if($sentence > $count) $sentence = $count;
 						<input type="radio" name="type" value="matrix" autocomplete="off"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
 					  </label>
 				  ':'
-                    <button style="display:inline;" class="btn btn-default" onclick="toggle(\'#svg\')">
+                    <button type="reset" style="display:inline;" class="btn btn-default" onclick="toggle(\'#svg\')">
                         <span id="togglesvg" class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                     </button>
                     <a type="reset" id="save" style="display:inline;" class="btn btn-default">
