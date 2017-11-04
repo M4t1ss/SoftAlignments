@@ -184,25 +184,13 @@ def synchData(data1,data2):
     for i in range(0, len(data1)):
         diff1 = len(data1[i][1]) - len(data2[i][1])
         diff2 = len(data2[i][1]) - len(data1[i][1])
-        if(data1[i][1][:-1] == u'<EOS>' and data2[i][1][:-1] != u'<EOS>'):
-            diff1 = diff1 - 1
-            addEOS1 = True
-        if(data1[i][1][:-1] != u'<EOS>' and data2[i][1][:-1] == u'<EOS>'):
-            diff2 = diff2 - 1
-            addEOS2 = True
         
         if(diff1 > 0):
             for j in range(0, diff1):
-                if(addEOS2 and j == 0):
-                    data2[i][1].append(u'<EOS>')
-                else:
-                    data2[i][1].append(u'')
+                data2[i][1].append(u'')
         if(diff2 > 0):
             for j in range(0, diff2):
-                if(addEOS1 and j == 0):
-                    data1[i][1].append(u'<EOS>')
-                else:
-                    data1[i][1].append(u'')
+                data1[i][1].append(u'')
     return data1, data2
     
 def processAlignments(data, folder, inputfile, outputType, num):
@@ -221,12 +209,7 @@ def processAlignments(data, folder, inputfile, outputType, num):
                             data = [data[num]]
                         for i in range(0, len(data)):
                             (src, tgt, rawAli) = data[i]
-                            ali = [l[:len(tgt)] for l in rawAli[:len(src)]]
-                            # if outputType == 'compare':
-                                # if src[len(src)-1] != '<EOS>':
-                                    # src.append('<EOS>')
-                                # if tgt[len(tgt)-1] != '<EOS>':
-                                    # tgt.append('<EOS>')
+                            ali = [l[:len(list(filter(None, tgt)))] for l in rawAli[:len(src)]]
                             
                             srcTotal = []
                             trgTotal = []
