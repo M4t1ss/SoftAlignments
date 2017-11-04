@@ -11,6 +11,16 @@ $(document).ready(function(){
 
 var other = false;
 
+function toggle(svg){
+    if($(svg+" > #ali > g").is(":visible")){
+        $(svg+" > #ali > g").hide()
+        $(svg.replace("#", "#toggle")).removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+    }else{
+        $(svg+" > #ali > g").show()
+        $(svg.replace("#", "#toggle")).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+    }
+}
+
 function changeSentence(dataDirectory, sentenceNumber){
 	
     getValues(dataDirectory, sentenceNumber);

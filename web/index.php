@@ -96,6 +96,9 @@ if($sentence > $count) $sentence = $count;
 						<input type="radio" name="type" value="matrix" autocomplete="off"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
 					  </label>
 				  ':'
+                    <button type="reset" style="display:inline;" class="btn btn-default" onclick="toggle(\'#svg\')">
+                        <span id="togglesvg" class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </button>
                     <a type="reset" id="save" style="display:inline;" class="btn btn-default">
                         <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                     </a>
@@ -110,7 +113,10 @@ if($sentence > $count) $sentence = $count;
                     <a type="reset" id="save" style="display:inline;" class="btn btn-default">
                         <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                     </a>
-				  ':''); ?>
+				  ':'
+                    <button type="reset" style="display:inline;" class="btn btn-default" onclick="toggle(\'#other\')">
+                        <span id="toggleother" class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </button>'); ?>
                 </div>
 				<input type="hidden" name="directory" value="<?php echo $dataDir; ?>" />
 				<input type="hidden" name="changeNum" value="True" />
