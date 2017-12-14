@@ -206,7 +206,6 @@ def main(argv):
             functions.printHelp()
             sys.exit()
 
-    print ('outputType: ', outputType, '\n')
     foldername = ntpath.basename(inputfile).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
     if outputType == 'compare':
         foldername = 'cmp_' + foldername
