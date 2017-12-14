@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import io, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
+import tempfile
 from time import gmtime, strftime
 from imp import reload
 try:
@@ -201,14 +202,19 @@ def main(argv):
         data2 = list(zip(srcs2, tgts2, alis2))
         
         if functions.compare(srcs, srcs2) == False:
-            print ('Source senctences from both systems need to be identical!\n')
+            print ('Source sentences from both systems need to be identical!\n')
             functions.printHelp()
             sys.exit()
 
+    print ('outputType: ', outputType, '\n')
     foldername = ntpath.basename(inputfile).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
     if outputType == 'compare':
         foldername = 'cmp_' + foldername
-    folder = './web/data/' + foldername
+    if outputType == 'web' or outputType == 'compare':
+        folder = './web/data/' + foldername
+    else:
+        folder = tempfile.mkdtemp()
+
     try:
         os.stat(folder)
     except:
