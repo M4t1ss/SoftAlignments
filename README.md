@@ -90,7 +90,7 @@ Publications
 
 If you use this tool, please cite the following paper:
 
-Matīss Rikters, Mark Fishel, Ondřej Bojar (2017). "[Visualizing Neural Machine Translation Attention and Confidence.](https://ufal.mff.cuni.cz/pbml)" In The Prague Bulletin of Mathematical Linguistics volume 109 (2017).
+Matīss Rikters, Mark Fishel, Ondřej Bojar (2017). "[Visualizing Neural Machine Translation Attention and Confidence.](https://ufal.mff.cuni.cz/pbml/109/art-rikters-fishel-bojar.pdf)" In The Prague Bulletin of Mathematical Linguistics volume 109 (2017).
 
 ```
 @inproceedings{Rikters-EtAl2017PBML,
