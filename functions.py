@@ -193,7 +193,7 @@ def synchData(data1,data2):
                 data1[i][1].append(u'')
     return data1, data2
     
-def processAlignments(data, folder, inputfile, outputType, num):
+def processAlignments(data, folder, inputfile, outputType, num, refs=False):
     with open(folder + "/" + ntpath.basename(inputfile) + '.ali.js', 'w', encoding='utf-8') as out_a_js:
         with open(folder + "/" + ntpath.basename(inputfile) + '.src.js', 'w', encoding='utf-8') as out_s_js:
             with open(folder + "/" + ntpath.basename(inputfile) + '.trg.js', 'w', encoding='utf-8') as out_t_js:
@@ -230,6 +230,20 @@ def processAlignments(data, folder, inputfile, outputType, num):
                             APin = round(getRevEnt(ali), 10)
                             Total = round(CDP + APout + APin, 10)
                             
+                            #Can we calculate BLEU?
+                            if(refs):
+                                try:
+                                    from nltk.translate import bleu
+                                    deBpeSrc = " ".join(refs[i]).replace('@@ ','')
+                                    deBpeTgt = JoinedTarget.replace('@@ ','')
+                                    bleuScore = u', ' + repr(round(bleu([deBpeSrc.split()], deBpeTgt.split()), 2))
+                                except ImportError:
+                                    sys.stdout.write('NLTK not found! BLEU will not be calculated\n')
+                                    refs = False
+                                    bleuScore = u''
+                            else:
+                                bleuScore = u''
+                            
                             similarity = similar(StrippedSource, StrippedTarget)
                             if similarity > 0.7:
                                 Total = round(CDP + APout + APin + (4 * math.tan(similarity)), 10)
@@ -249,6 +263,7 @@ def processAlignments(data, folder, inputfile, outputType, num):
                             out_c_js.write(u'['+ repr(CDP_pr) + u', '+ repr(APout_pr) + u', '+ repr(APin_pr) + u', '+ repr(Total_pr) 
                                 + u', '+ repr(Len) + u', '+ repr(len(JoinedSource)) + u', '
                                 + repr(round(similarity, 2)) 
+                                + bleuScore 
                                 + u'], \n')
                             out_sc_js.write(u'[[' + ", ".join(srcTotal) + u'], ' + u'[' + ", ".join(trgTotal) + u'], ' + u'], \n')
                             
