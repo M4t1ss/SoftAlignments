@@ -44,7 +44,7 @@ $f5 = gotoLine($subword_confidences, $sentence);
 $target 	= getJSvalue($f3->current());
 $CDP 		= getScores($f4->current(), 0);
 $APout 		= getScores($f4->current(), 1);
-$APin 		= getScores($f4->current(), 2);
+$APin 		= getScores($f4->current(), 7)*100;
 $confidence = getScores($f4->current(), 3);
 
 $subword_scores = explode("], [",str_replace("], ],","",str_replace("[[","",trim($f5->current()))));

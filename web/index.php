@@ -166,7 +166,7 @@ if($sentence > $count) $sentence = $count;
 	<div id="length" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="le-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Length '.$scfd[5].' symbols">
+				echo '<a id="le-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[6].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Length '.$scfd[5].' symbols">
 						<div class="progress progress-bar-vertical">
 							<div id="translation-'.($key+1).'" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$scfd[4].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[4].'%;">
 								<span class="sr-only">'.$scfd[4].'% Complete</span>
@@ -183,7 +183,7 @@ if($sentence > $count) $sentence = $count;
 	<div id="confidence" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="co-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Confidence '.$scfd[3].'%">
+				echo '<a id="co-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[6].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Confidence '.$scfd[3].'%">
 						<div class="progress progress-bar-vertical">
 							<div id="confidence-'.($key+1).'" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$scfd[3].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[3].'%;">
 								<span class="sr-only">'.$scfd[3].'% Complete</span>
@@ -200,7 +200,7 @@ if($sentence > $count) $sentence = $count;
 	<div id="cdp" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="cd-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - CDP '.$scfd[0].'%">
+				echo '<a id="cd-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[6].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - CDP '.$scfd[0].'%">
 						<div class="progress progress-bar-vertical">
 							<div id="deviation-'.($key+1).'" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="'.$scfd[0].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[0].'%;">
 								<span class="sr-only">'.$scfd[0].'% Complete</span>
@@ -217,7 +217,7 @@ if($sentence > $count) $sentence = $count;
 	<div id="apout" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="ao-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APout '.$scfd[1].'%">
+				echo '<a id="ao-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[6].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APout '.$scfd[1].'%">
 						<div class="progress progress-bar-vertical">
 							<div id="apout-'.($key+1).'" class="progress-bar" role="progressbar" aria-valuenow="'.$scfd[1].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[1].'%;">
 								<span class="sr-only">'.$scfd[1].'% Complete</span>
@@ -234,10 +234,10 @@ if($sentence > $count) $sentence = $count;
 	<div id="apin" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
 		<?php
 			foreach($allConfidences as $key => $scfd){
-				echo '<a id="ai-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APin '.$scfd[2].'%">
+				echo '<a id="ai-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[6].'-'.$scfd[3].'-'.$scfd[4].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APin '.$scfd[6].'%">
 						<div class="progress progress-bar-vertical">
-							<div id="apin-'.($key+1).'" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'.$scfd[2].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[2].'%;">
-								<span class="sr-only">'.$scfd[2].'% Complete</span>
+							<div id="apin-'.($key+1).'" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'.$scfd[6].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[6].'%;">
+								<span class="sr-only">'.$scfd[6].'% Complete</span>
 							</div>
 						</div>
 					 </a>';
