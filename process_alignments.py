@@ -55,7 +55,7 @@ def main(argv):
         config.read(config_file)
         try:
             referencefile = config.get('AlignmentsOne', 'ReferenceFile')
-        except NameError:
+        except (cp.NoOptionError, cp.NoSectionError):
             referencefile = False
         try:
             inputfile = config.get('AlignmentsOne', 'InputFile')
