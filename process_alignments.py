@@ -4,6 +4,7 @@ import io, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math
 import tempfile
 from time import gmtime, strftime
 from imp import reload
+from shutil import copyfile
 try:
     import configparser as cp
 except ImportError:
@@ -181,10 +182,6 @@ def main(argv):
                         print ('Provide a target sentence file for the second system!\n')
                         functions.printHelp()
                         sys.exit()
-    if(referencefile):
-        refs = functions.readSnts(referencefile)
-    else:
-        refs = False
     
     if outputType != 'color' and outputType != 'block' and outputType != 'block2' and outputType != 'compare':
         # Set output type to 'web' by default
@@ -233,6 +230,12 @@ def main(argv):
         os.stat(folder)
     except:
         os.mkdir(folder)
+        
+    if(referencefile):
+        copyfile(referencefile, folder + "/" + ntpath.basename(inputfile) + '.ref.txt')
+        refs = functions.readSnts(referencefile)
+    else:
+        refs = False
     
     if outputType == 'compare':
         try:
