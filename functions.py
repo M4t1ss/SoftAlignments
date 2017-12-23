@@ -236,7 +236,7 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                     from nltk.translate import bleu
                                     deBpeSrc = " ".join(refs[i]).replace('@@ ','')
                                     deBpeTgt = JoinedTarget.replace('@@ ','')
-                                    bleuScore = u', ' + repr(round(bleu([deBpeSrc.split()], deBpeTgt.split()), 2))
+                                    bleuScore = u', ' + repr(round(bleu([deBpeSrc.split()], deBpeTgt.split())*100, 2))
                                 except ImportError:
                                     sys.stdout.write('NLTK not found! BLEU will not be calculated\n')
                                     refs = False

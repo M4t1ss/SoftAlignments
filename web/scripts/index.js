@@ -37,6 +37,7 @@ function removeHighlight(sentenceNumber){
     $('#deviation-'+sentenceNumber).removeClass('highlighted')
     $('#apout-'+sentenceNumber).removeClass('highlighted')
     $('#apin-'+sentenceNumber).removeClass('highlighted')
+    $('#bleu-'+sentenceNumber).removeClass('highlighted')
 }
 
 function addHighlight(sentenceNumber){
@@ -45,6 +46,7 @@ function addHighlight(sentenceNumber){
     $('#deviation-'+sentenceNumber).addClass('highlighted')
     $('#apout-'+sentenceNumber).addClass('highlighted')
     $('#apin-'+sentenceNumber).addClass('highlighted')
+    $('#bleu-'+sentenceNumber).addClass('highlighted')
 }
 
 function jumpForm(){
@@ -163,7 +165,7 @@ function processData(ali_data) {
         }
     });
 
-    $('#c1,#c2,#c3,#c4,#c5').perfectScrollbar({
+    $('#c1,#c2,#c3,#c4,#c5,#c6').perfectScrollbar({
       suppressScrollY: true,
       useBothWheelAxes: true
     });

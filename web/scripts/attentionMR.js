@@ -217,6 +217,7 @@ $(document).ready(function(){
 	var c3 = getCookie('c3');
 	var c4 = getCookie('c4');
 	var c5 = getCookie('c5');
+	var c6 = getCookie('c6');
 	
 	if(c1 == 1){
 		$('#c1').collapse("show");
@@ -243,6 +244,11 @@ $(document).ready(function(){
 	}else{
 		setCookie('c5', -1, 1);
 	}
+	if(c6 == 1){
+		$('#c6').collapse("show");
+	}else{
+		setCookie('c6', -1, 1);
+	}
 
 }) 
 
@@ -263,12 +269,14 @@ function sortAll(SortBy, order = "", reorder = true){
 	mySort('apin', SortBy, order);
 	mySort('apout', SortBy, order);
 	mySort('cdp', SortBy, order);
+	mySort('bleu', SortBy, order);
 	
 	setCookie('sortBy', SortBy, 1);
 	setCookie('sortOrder', order, 1);
 }
 
 function mySort(ParentID, SortBy, order = ""){
+	if(document.getElementById(ParentID) !==null){
 	var toSort = document.getElementById(ParentID).children;
 	toSort = Array.prototype.slice.call(toSort, 0);
 
@@ -287,6 +295,7 @@ function mySort(ParentID, SortBy, order = ""){
 
 	for(var i = 0, l = toSort.length; i < l; i++) {
 		parent.appendChild(toSort[i]);
+		}
 	}
 }
 

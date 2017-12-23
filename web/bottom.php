@@ -44,8 +44,9 @@ $f5 = gotoLine($subword_confidences, $sentence);
 $target 	= getJSvalue($f3->current());
 $CDP 		= getScores($f4->current(), 0);
 $APout 		= getScores($f4->current(), 1);
-$APin 		= getScores($f4->current(), 7)*100;
+$APin 		= getScores($f4->current(), 2);
 $confidence = getScores($f4->current(), 3);
+$BLEU 		= getScores($f4->current(), 7);
 
 $subword_scores = explode("], [",str_replace("], ],","",str_replace("[[","",trim($f5->current()))));
 $tsw = explode(", ",$subword_scores[1]);
@@ -66,7 +67,7 @@ $tsw = explode(", ",$subword_scores[1]);
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span data-toggle="collapse" data-target="#c1" class="label label-default myLabel" onclick="toggleChart('c1')">Confidence</span> 
-		<div class="progress pr" style="width:50%; float:left;">
+		<div class="progress pr" >
 			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $confidence; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $confidence; ?>%;">
 				<?php echo $confidence; ?>%
 			</div>
@@ -74,7 +75,7 @@ $tsw = explode(", ",$subword_scores[1]);
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span data-toggle="collapse" data-target="#c2" class="label label-default myLabel" onclick="toggleChart('c2')">CDP</span> 
-		<div class="progress pr" style="width:50%; float:left;">
+		<div class="progress pr" >
 			<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo $CDP; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $CDP; ?>%;">
 				<?php echo $CDP; ?>%
 			</div>
@@ -82,7 +83,7 @@ $tsw = explode(", ",$subword_scores[1]);
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span data-toggle="collapse" data-target="#c3" class="label label-default myLabel" onclick="toggleChart('c3')">APout</span> 
-		<div class="progress pr" style="width:50%; float:left;">
+		<div class="progress pr" >
 			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $APout; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APout; ?>%;">
 				<?php echo $APout; ?>%
 			</div>
@@ -90,8 +91,23 @@ $tsw = explode(", ",$subword_scores[1]);
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span data-toggle="collapse" data-target="#c4" class="label label-default myLabel" onclick="toggleChart('c4')">APin</span> 
-		<div class="progress pr" style="width:50%; float:left;">
+		<div class="progress pr" >
 			<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo $APin; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APin; ?>%;">
 				<?php echo $APin; ?>%
 			</div>
 		</div>
+	</div>
+<?php
+if($BLEU > 0){
+?>
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<span data-toggle="collapse" data-target="#c6" class="label label-default myLabel" onclick="toggleChart('c6')">BLEU</span> 
+		<div class="progress pr" >
+			<div class="progress-bar progress-bar-purple" role="progressbar" aria-valuenow="<?php echo $BLEU; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $BLEU; ?>%;">
+				<?php echo $BLEU; ?>
+			</div>
+		</div>
+	</div>
+<?php
+}
+?>
