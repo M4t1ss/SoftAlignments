@@ -28,6 +28,7 @@ $dataFiles = cleanDirArray(scandir("./data/".$dataDir));
 
 //Get the data files
 $targets 				= "./data/".$dataDir."/".array_pop(preg_grep("/\.trg\.js/", $dataFiles));
+$references 			= "./data/".$dataDir."/".array_pop(preg_grep("/\.ref\.txt/", $dataFiles));
 $confidences 			= "./data/".$dataDir."/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
 $subword_confidences 	= "./data/".$dataDir."/".array_pop(preg_grep("/\.sc\.js/", $dataFiles));
 $count = getLineCount($targets)-2;
@@ -48,6 +49,12 @@ $APin 		= getScores($f4->current(), 2);
 $confidence = getScores($f4->current(), 3);
 $BLEU 		= getScores($f4->current(), 7);
 
+//Are there any references given?
+if($references!="./data/".$dataDir."/"){
+    $f6 = gotoLine($references, $sentence-1);
+    $reference = str_replace("@@ ", "", trim($f6->current()));
+}
+
 $subword_scores = explode("], [",str_replace("], ],","",str_replace("[[","",trim($f5->current()))));
 $tsw = explode(", ",$subword_scores[1]);
 
@@ -55,8 +62,8 @@ $tsw = explode(", ",$subword_scores[1]);
 ?>
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<span data-toggle="collapse" data-target="#c5" class="label label-default myLabel" onclick="toggleChart('c5')">Translation</span> 
-		<div style="width:50%; float:left;" class="pr">
-		<span class="label label-danger" style="cursor:help;padding:4px;"><?php 
+		<div style="width:50%; float:left; margin-top:-2px;" class="pr">
+		<span class="label label-danger" style="cursor:help;padding:3px;"><?php 
 		$sc=0;
 		foreach(getSWvalue($f3->current()) as $targetToken){
 			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="top" title="Confidence: '.round($tsw[$sc]*100,2).'%">'.htmlspecialchars($targetToken).'</span> ');
@@ -65,6 +72,20 @@ $tsw = explode(", ",$subword_scores[1]);
 		?></span>
 		</div>
 	</div>
+<?php
+if($reference){
+?>
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<span class="label label-default myLabel">Reference</span> 
+		<div style="width:50%; float:left; margin-top:-2px;" class="pr">
+            <span class="label" style="padding:3px; background-color:gray;">
+                <?php echo $reference; ?>
+            </span>
+		</div>
+	</div>
+<?php
+}
+?>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 		<span data-toggle="collapse" data-target="#c1" class="label label-default myLabel" onclick="toggleChart('c1')">Confidence</span> 
 		<div class="progress pr" >
