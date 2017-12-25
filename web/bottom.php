@@ -47,6 +47,7 @@ $CDP 		= getScores($f4->current(), 0);
 $APout 		= getScores($f4->current(), 1);
 $APin 		= getScores($f4->current(), 2);
 $confidence = getScores($f4->current(), 3);
+$similarity	= getScores($f4->current(), 6)*100;
 $BLEU 		= getScores($f4->current(), 7);
 
 //Are there any references given?
@@ -121,11 +122,30 @@ if($reference){
 <?php
 if($BLEU > 0){
 ?>
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+		<span data-toggle="collapse" data-target="#c7" class="label label-default myLabel" onclick="toggleChart('c7')">Similarity</span> 
+		<div class="progress pr" >
+			<div class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="<?php echo $similarity; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $similarity; ?>%;">
+				<?php echo $similarity; ?>%
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 		<span data-toggle="collapse" data-target="#c6" class="label label-default myLabel" onclick="toggleChart('c6')">BLEU</span> 
 		<div class="progress pr" >
 			<div class="progress-bar progress-bar-purple" role="progressbar" aria-valuenow="<?php echo $BLEU; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $BLEU; ?>%;">
 				<?php echo $BLEU; ?>
+			</div>
+		</div>
+	</div>
+<?php
+}else{
+?>
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<span data-toggle="collapse" data-target="#c7" class="label label-default myLabel" onclick="toggleChart('c7')">Similarity</span> 
+		<div class="progress pr" >
+			<div class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="<?php echo $similarity; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $similarity; ?>%;">
+				<?php echo $similarity; ?>%
 			</div>
 		</div>
 	</div>

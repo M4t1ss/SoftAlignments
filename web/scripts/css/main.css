@@ -35,7 +35,7 @@ br{clear:both;}
   transition: height 0.6s ease;
 }
 
-#c1, #c2, #c3, #c4, #c5, #c6 {
+#c1, #c2, #c3, #c4, #c5, #c6, #c7 {
 	position: relative;
 	height: 100%;
 	margin-left:20px;
@@ -145,4 +145,8 @@ th.left {
 
 .progress-bar-purple {
       background-color: purple !important;
+}
+
+.progress-bar-pink {
+      background-color: hotpink !important;
 }

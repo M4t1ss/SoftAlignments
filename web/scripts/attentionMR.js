@@ -218,6 +218,7 @@ $(document).ready(function(){
 	var c4 = getCookie('c4');
 	var c5 = getCookie('c5');
 	var c6 = getCookie('c6');
+	var c7 = getCookie('c7');
 	
 	if(c1 == 1){
 		$('#c1').collapse("show");
@@ -249,6 +250,11 @@ $(document).ready(function(){
 	}else{
 		setCookie('c6', -1, 1);
 	}
+	if(c7 == 1){
+		$('#c7').collapse("show");
+	}else{
+		setCookie('c7', -1, 1);
+	}
 
 }) 
 
@@ -270,6 +276,7 @@ function sortAll(SortBy, order = "", reorder = true){
 	mySort('apout', SortBy, order);
 	mySort('cdp', SortBy, order);
 	mySort('bleu', SortBy, order);
+	mySort('similarity', SortBy, order);
 	
 	setCookie('sortBy', SortBy, 1);
 	setCookie('sortOrder', order, 1);
