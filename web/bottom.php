@@ -67,6 +67,9 @@ $tsw = explode(", ",$subword_scores[1]);
 		<span class="label label-danger" style="cursor:help;padding:3px;"><?php 
 		$sc=0;
 		foreach(getSWvalue($f3->current()) as $targetToken){
+            $targetToken = str_replace('&quot;','"', $targetToken);
+            $targetToken = str_replace("&apos;","'", $targetToken);
+            $targetToken = str_replace("@-@","-", $targetToken);
 			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="top" title="Confidence: '.round($tsw[$sc]*100,2).'%">'.htmlspecialchars($targetToken).'</span> ');
 			$sc++;
 		}

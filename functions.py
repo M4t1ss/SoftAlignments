@@ -221,8 +221,8 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             
                             JoinedSource = " ".join(src)
                             JoinedTarget = " ".join(tgt)
-                            StrippedSource = ''.join(c for c in JoinedSource if unicodedata.category(c).startswith('L')).replace('EOS','')
-                            StrippedTarget = ''.join(c for c in JoinedTarget if unicodedata.category(c).startswith('L')).replace('EOS','')
+                            StrippedSource = ''.join(c for c in JoinedSource if unicodedata.category(c).startswith('L')).replace('EOS','').replace('quot','').replace('apos','')
+                            StrippedTarget = ''.join(c for c in JoinedTarget if unicodedata.category(c).startswith('L')).replace('EOS','').replace('quot','').replace('apos','')
                             
                             #Get the confidence metrics
                             CDP = round(getCP(ali), 10)
@@ -237,7 +237,7 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                     from nltk.translate.bleu_score import SmoothingFunction
                                     sm = SmoothingFunction()
                                     deBpeRef = " ".join(refs[i]).replace('@@ ','')
-                                    deBpeHyp = JoinedTarget.replace('@@ ','')
+                                    deBpeHyp = JoinedTarget.replace('@@ ','').replace('<EOS>','').strip()
                                     bleuScore = u', ' + repr(round(bleu([deBpeRef.split()], deBpeHyp.split(), smoothing_function=sm.method3)*100, 2))
                                 except ImportError:
                                     sys.stdout.write('NLTK not found! BLEU will not be calculated\n')
@@ -247,8 +247,13 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                 bleuScore = u''
                             
                             similarity = similar(StrippedSource, StrippedTarget)
-                            if similarity > 0.7:
-                                Total = round(CDP + APout + APin + (4 * math.tan(similarity)), 10)
+                            #Penalize sentences with more than 4 tokens
+                            if (len(tgt) > 4) and (similarity > 0.4):
+                                #The more similar, the higher penalty
+                                multiplier = 3-(((1-similarity)*100)*0.05)
+                                #It's worse to have more words with a higher similarity
+                                multiplier = (0.7+(len(tgt)*0.01)) * multiplier
+                                Total = round(CDP + APout + APin - (multiplier * math.tan(similarity)), 10)
                             
                             # e^(-1(x^2))
                             CDP_pr = round(math.pow(math.e, -1 * math.pow(CDP, 2)) * 100, 2)
