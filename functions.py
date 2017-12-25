@@ -234,9 +234,11 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             if(refs):
                                 try:
                                     from nltk.translate import bleu
-                                    deBpeSrc = " ".join(refs[i]).replace('@@ ','')
-                                    deBpeTgt = JoinedTarget.replace('@@ ','')
-                                    bleuScore = u', ' + repr(round(bleu([deBpeSrc.split()], deBpeTgt.split())*100, 2))
+                                    from nltk.translate.bleu_score import SmoothingFunction
+                                    sm = SmoothingFunction()
+                                    deBpeRef = " ".join(refs[i]).replace('@@ ','')
+                                    deBpeHyp = JoinedTarget.replace('@@ ','')
+                                    bleuScore = u', ' + repr(round(bleu([deBpeRef.split()], deBpeHyp.split(), smoothing_function=sm.method3)*100, 2))
                                 except ImportError:
                                     sys.stdout.write('NLTK not found! BLEU will not be calculated\n')
                                     refs = False
