@@ -210,39 +210,17 @@ if(sortBy == "") sortBy = 1;
 if(sortOrder == "") sortOrder = 'ASC';
 
 $(document).ready(function(){
+    IDs = ["sortable-1","sortable-2","sortable-3","sortable-4","sortable-5","sortable-6","sortable-7"];
+    
 	sortAll(sortBy, sortOrder, false);
 	
-	var c1 = getCookie('c1');
-	var c2 = getCookie('c2');
-	var c3 = getCookie('c3');
-	var c4 = getCookie('c4');
-	var c5 = getCookie('c5');
-	
-	if(c1 == 1){
-		$('#c1').collapse("show");
-	}else{
-		setCookie('c1', -1, 1);
-	}
-	if(c2 == 1){
-		$('#c2').collapse("show");
-	}else{
-		setCookie('c2', -1, 1);
-	}
-	if(c3 == 1){
-		$('#c3').collapse("show");
-	}else{
-		setCookie('c3', -1, 1);
-	}
-	if(c4 == 1){
-		$('#c4').collapse("show");
-	}else{
-		setCookie('c4', -1, 1);
-	}
-	if(c5 == 1){
-		$('#c5').collapse("show");
-	}else{
-		setCookie('c5', -1, 1);
-	}
+    IDs.forEach(function(ID){ 
+        if(getCookie(ID) == 1){
+            $('#'+ID).collapse("show");
+        }else{
+            setCookie(ID, -1, 1);
+        }
+    })
 
 }) 
 
@@ -258,17 +236,17 @@ function sortAll(SortBy, order = "", reorder = true){
 		else
 			order = "ASC";
 	
-	mySort('length', SortBy, order);
-	mySort('confidence', SortBy, order);
-	mySort('apin', SortBy, order);
-	mySort('apout', SortBy, order);
-	mySort('cdp', SortBy, order);
+    Names = ["length","confidence","apin","apout","cdp","sent-bleu","similarity"];
+    Names.forEach(function(Name){ 
+        mySort(Name, SortBy, order);
+    })
 	
 	setCookie('sortBy', SortBy, 1);
 	setCookie('sortOrder', order, 1);
 }
 
 function mySort(ParentID, SortBy, order = ""){
+	if(document.getElementById(ParentID) !==null){
 	var toSort = document.getElementById(ParentID).children;
 	toSort = Array.prototype.slice.call(toSort, 0);
 
@@ -287,6 +265,7 @@ function mySort(ParentID, SortBy, order = ""){
 
 	for(var i = 0, l = toSort.length; i < l; i++) {
 		parent.appendChild(toSort[i]);
+		}
 	}
 }
 

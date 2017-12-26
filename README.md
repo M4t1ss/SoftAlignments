@@ -19,6 +19,8 @@ Requirements
 
 * Python 2 or 3
 
+    * NLTK (for BLEU calculation)
+
 * PHP 5.4 or newer (for web visualization)
 
 How to get alignment files from NMT systems
@@ -90,7 +92,7 @@ Publications
 
 If you use this tool, please cite the following paper:
 
-Matīss Rikters, Mark Fishel, Ondřej Bojar (2017). "[Visualizing Neural Machine Translation Attention and Confidence.](https://ufal.mff.cuni.cz/pbml)" In The Prague Bulletin of Mathematical Linguistics volume 109 (2017).
+Matīss Rikters, Mark Fishel, Ondřej Bojar (2017). "[Visualizing Neural Machine Translation Attention and Confidence.](https://ufal.mff.cuni.cz/pbml/109/art-rikters-fishel-bojar.pdf)" In The Prague Bulletin of Mathematical Linguistics volume 109 (2017).
 
 ```
 @inproceedings{Rikters-EtAl2017PBML,
@@ -167,6 +169,7 @@ Parameters for process_alignments.py
 | -s     | source sentence subword units 					| For Neural Monkey or Marian 							| Path to file			  	 									|				 |
 | -t     | target sentence subword units 					| For Neural Monkey 									| Path to file			  	 									|				 |
 | -o     | output type					 					| No      		 	 									| 'web', 'color', 'block', 'block2', 'compare'					| 'web'			 |
+| -r     | reference file for calculating BLEU score		| No      		 	 									| Path to file			  	 									|				 |
 |		 |													|														|																|				 |
 | -n     | Number of a specific sentence 					| No     	 		 									| Integer 														| -1 (show all)	 |
 | -c     | configuration file 								| No     	 		 									| Path to file													| 				 |
@@ -181,20 +184,21 @@ Configuration file
 
 The parameters can be provided via configuration .ini file to have a smaller mess in the command line when calling the script. 
 
-| Block 		| Option	 | Description                   				   |
-|:--------------|:-----------|:------------------------------------------------|
-| AlignmentsOne | From 		 | NMT framework where the alignments are from 	   |
-| AlignmentsOne | InputFile  | input alignment file			 				   |
-| AlignmentsOne | SourceFile | source sentence subword units 				   |
-| AlignmentsOne | TargetFile | target sentence subword units 				   |
-|				|			 |												   |
-| Options 		| OutputType | output type					 				   |
-| Options 		| Number	 | Number of a specific sentence 				   |
-|				|			 |												   |
-| AlignmentsTwo	| From 		 | NMT framework where the 2nd alignments are from |
-| AlignmentsTwo	| InputFile  | input file for the 2nd alignments		 	   |
-| AlignmentsTwo	| SourceFile | 2nd source sentence subword unit file  		   |
-| AlignmentsTwo	| TargetFile | 2nd target sentence subword unit file 		   |
+| Block 		| Option	 	| Description                   				   |
+|:--------------|:--------------|:-------------------------------------------------|
+| AlignmentsOne | From 		 	| NMT framework where the alignments are from 	   |
+| AlignmentsOne | InputFile  	| input alignment file			 				   |
+| AlignmentsOne | SourceFile 	| source sentence subword units 				   |
+| AlignmentsOne | TargetFile 	| target sentence subword units 				   |
+| AlignmentsOne | ReferenceFile | reference file for calculating BLEU score		   |
+|				|			 	|												   |
+| Options 		| OutputType 	| output type					 				   |
+| Options 		| Number	 	| Number of a specific sentence 				   |
+|				|			 	|												   |
+| AlignmentsTwo	| From 		 	| NMT framework where the 2nd alignments are from  |
+| AlignmentsTwo	| InputFile  	| input file for the 2nd alignments				   |
+| AlignmentsTwo	| SourceFile 	| 2nd source sentence subword unit file  		   |
+| AlignmentsTwo	| TargetFile 	| 2nd target sentence subword unit file 		   |
 
 For example, create a config.ini file:
 ```Ini

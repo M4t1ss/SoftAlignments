@@ -31,20 +31,18 @@ function changeSentence(dataDirectory, sentenceNumber){
 	}, 200)
 }
 
+HighlightNames = ["translation","confidence","deviation","apout","apin","bleu","similarity"];
+
 function removeHighlight(sentenceNumber){
-    $('#translation-'+sentenceNumber).removeClass('highlighted')
-    $('#confidence-'+sentenceNumber).removeClass('highlighted')
-    $('#deviation-'+sentenceNumber).removeClass('highlighted')
-    $('#apout-'+sentenceNumber).removeClass('highlighted')
-    $('#apin-'+sentenceNumber).removeClass('highlighted')
+    HighlightNames.forEach(function(Name){ 
+        $('#'+Name+'-'+sentenceNumber).removeClass('highlighted');
+    })
 }
 
 function addHighlight(sentenceNumber){
-    $('#translation-'+sentenceNumber).addClass('highlighted')
-    $('#confidence-'+sentenceNumber).addClass('highlighted')
-    $('#deviation-'+sentenceNumber).addClass('highlighted')
-    $('#apout-'+sentenceNumber).addClass('highlighted')
-    $('#apin-'+sentenceNumber).addClass('highlighted')
+    HighlightNames.forEach(function(Name){ 
+        $('#'+Name+'-'+sentenceNumber).addClass('highlighted');
+    })
 }
 
 function jumpForm(){
@@ -163,7 +161,7 @@ function processData(ali_data) {
         }
     });
 
-    $('#c1,#c2,#c3,#c4,#c5').perfectScrollbar({
+    $('#sortable-1,#sortable-2,#sortable-3,#sortable-4,#sortable-5,#sortable-6,#sortable-7').perfectScrollbar({
       suppressScrollY: true,
       useBothWheelAxes: true
     });

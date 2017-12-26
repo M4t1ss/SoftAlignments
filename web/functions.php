@@ -39,10 +39,12 @@ function getScores($string, $score_num = NULL){
 	$confidence = $scores[3];
 	$length_pr 	= $scores[4];
 	$length 	= $scores[5];
+	$similarity	= $scores[6];
+	$BLEU 		= (count($scores) > 7 && trim($scores[7])!="") ? $scores[7] : null;
 	if($score_num!==null && $score_num < count($scores)){
 		return $scores[$score_num];
 	}else{
-		return array($CDP, $APout, $APin, $confidence, $length_pr, $length);
+		return array($CDP, $APout, $APin, $confidence, $length_pr, $length, $similarity, $BLEU);
 	}
 }
 
@@ -53,4 +55,30 @@ function getAllConfidences($file, $count){
 		$confidences[] = getScores($file->current());
 	}
 	return $confidences;
+}
+
+function printRow($name, $rowId, $sortId, $dataId, $dataDir, $allConfidences, $color, $idOne, $idTwo, $textOne, $textTwo){
+    echo '<div id="'.$rowId.'" class="row collapse">
+        <span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll('.$sortId.')"></span>
+        <span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
+        <div id="'.$name.'" style="margin-left:20px;width:'.(count($allConfidences)*7).'px;">';
+                foreach($allConfidences as $key => $scfd){
+                    $textNum = $name == "length" ? $scfd[5] : $scfd[$dataId];
+                    echo '<a id="'.$idOne.'-'.($key+1).'-'.implode("-",$scfd).'" ';
+                    echo 'href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - '.$textOne.' '.$textNum.$textTwo.'">';
+                    echo '<div class="progress progress-bar-vertical">';
+                    echo '<div id="'.$idTwo.'-'.($key+1).'" class="progress-bar progress-bar-'.$color.'" role="progressbar" aria-valuenow="'.$scfd[$dataId].'" ';
+                    echo 'aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[$dataId].'%;">';
+                    echo '<span class="sr-only">'.$scfd[$dataId].'% Complete</span>';
+                    echo '</div></div></a>';
+                }
+        echo'</div></div>';
+}
+
+function printChart($name, $value, $color, $sortableId, $size = "col-xs-12 col-sm-6 col-md-3 col-lg-3"){
+	echo '<div class="'.$size.'">';
+    echo '<span data-toggle="collapse" data-target="#'.$sortableId.'" class="label label-default myLabel" onclick="toggleChart(\''.$sortableId.'\')">'.$name.'</span> ';
+    echo '<div class="progress pr" >';
+    echo '<div class="progress-bar progress-bar-'.$color.'" role="progressbar" aria-valuenow="'.$value.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$value.'%;">';
+    echo $value.'%</div></div></div>';
 }

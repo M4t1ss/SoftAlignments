@@ -193,7 +193,7 @@ def synchData(data1,data2):
                 data1[i][1].append(u'')
     return data1, data2
     
-def processAlignments(data, folder, inputfile, outputType, num):
+def processAlignments(data, folder, inputfile, outputType, num, refs=False):
     with open(folder + "/" + ntpath.basename(inputfile) + '.ali.js', 'w', encoding='utf-8') as out_a_js:
         with open(folder + "/" + ntpath.basename(inputfile) + '.src.js', 'w', encoding='utf-8') as out_s_js:
             with open(folder + "/" + ntpath.basename(inputfile) + '.trg.js', 'w', encoding='utf-8') as out_t_js:
@@ -207,6 +207,10 @@ def processAlignments(data, folder, inputfile, outputType, num):
                         num = int(num) - 1
                         if num > -1 and (num < len(data)):
                             data = [data[num]]
+                        elif num >= len(data):
+                            print ('The selected sentence number is higher than the sentence count!\n')
+                            printHelp()
+                            sys.exit()
                         for i in range(0, len(data)):
                             (src, tgt, rawAli) = data[i]
                             ali = [l[:len(list(filter(None, tgt)))] for l in rawAli[:len(src)]]
@@ -221,8 +225,8 @@ def processAlignments(data, folder, inputfile, outputType, num):
                             
                             JoinedSource = " ".join(src)
                             JoinedTarget = " ".join(tgt)
-                            StrippedSource = ''.join(c for c in JoinedSource if unicodedata.category(c).startswith('L')).replace('EOS','')
-                            StrippedTarget = ''.join(c for c in JoinedTarget if unicodedata.category(c).startswith('L')).replace('EOS','')
+                            StrippedSource = ''.join(c for c in JoinedSource if unicodedata.category(c).startswith('L')).replace('EOS','').replace('quot','').replace('apos','')
+                            StrippedTarget = ''.join(c for c in JoinedTarget if unicodedata.category(c).startswith('L')).replace('EOS','').replace('quot','').replace('apos','')
                             
                             #Get the confidence metrics
                             CDP = round(getCP(ali), 10)
@@ -230,9 +234,34 @@ def processAlignments(data, folder, inputfile, outputType, num):
                             APin = round(getRevEnt(ali), 10)
                             Total = round(CDP + APout + APin, 10)
                             
+                            #Can we calculate BLEU?
+                            bleuNumber = -1
+                            if(refs):
+                                try:
+                                    from nltk.translate import bleu
+                                    from nltk.translate.bleu_score import SmoothingFunction
+                                    sm = SmoothingFunction()
+                                    refNumber = i if num < 0 else num
+                                    deBpeRef = " ".join(refs[refNumber]).replace('@@ ','')
+                                    deBpeHyp = JoinedTarget.replace('@@ ','').replace('<EOS>','').strip()
+                                    bleuNumber = round(bleu([deBpeRef.split()], deBpeHyp.split(), smoothing_function=sm.method3)*100, 2)
+                                    bleuScore = u', ' + repr(bleuNumber)
+                                except ImportError:
+                                    sys.stdout.write('NLTK not found! BLEU will not be calculated\n')
+                                    refs = False
+                                    bleuScore = u''
+                            else:
+                                bleuScore = u''
+                            
                             similarity = similar(StrippedSource, StrippedTarget)
-                            if similarity > 0.7:
-                                Total = round(CDP + APout + APin + (4 * math.tan(similarity)), 10)
+                            #Penalize sentences with more than 4 tokens
+                            if (len(tgt) > 4) and (similarity > 0.4):
+                                #The more similar, the higher penalty
+                                multiplier = 3-(((1-similarity)*100)*0.05)
+                                #It's worse to have more words with a higher similarity
+                                #Let's make it between 0.7 and about 1.5 for veeeery long sentences
+                                multiplier = (0.7+(len(tgt)*0.01)) * multiplier
+                                Total = round(CDP + APout + APin - (multiplier * math.tan(similarity)), 10)
                             
                             # e^(-1(x^2))
                             CDP_pr = round(math.pow(math.e, -1 * math.pow(CDP, 2)) * 100, 2)
@@ -248,7 +277,8 @@ def processAlignments(data, folder, inputfile, outputType, num):
                             out_t_js.write('["'+ JoinedTarget.replace(' ','", "') +'"], \n')
                             out_c_js.write(u'['+ repr(CDP_pr) + u', '+ repr(APout_pr) + u', '+ repr(APin_pr) + u', '+ repr(Total_pr) 
                                 + u', '+ repr(Len) + u', '+ repr(len(JoinedSource)) + u', '
-                                + repr(round(similarity, 2)) 
+                                + repr(round(similarity*100, 2)) 
+                                + bleuScore 
                                 + u'], \n')
                             out_sc_js.write(u'[[' + ", ".join(srcTotal) + u'], ' + u'[' + ", ".join(trgTotal) + u'], ' + u'], \n')
                             
@@ -319,10 +349,13 @@ def processAlignments(data, folder, inputfile, outputType, num):
                                 for liline in outchars:
                                     sys.stdout.write(''.join(liline).encode('utf-8', errors='replace').decode('utf-8') + '\n')
                                 # print scores
-                                sys.stdout.write('\nCoverage Deviation Penalty: \t\t' + repr(CDP) + ' (' + repr(CDP_pr) + '%)' + '\n')
-                                sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(APin) + ' (' + repr(APin_pr) + '%)' + '\n')
-                                sys.stdout.write('Output Absentmindedness Penalty: \t' + repr(APout) + ' (' + repr(APout_pr) + '%)' + '\n')
-                                sys.stdout.write('Confidence: \t\t\t\t' + repr(Total) + ' (' + repr(Total_pr) + '%)' + '\n')
+                                sys.stdout.write('\nCoverage Deviation Penalty: \t\t' + repr(round(CDP, 8)) + ' (' + repr(CDP_pr) + '%)' + '\n')
+                                sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(round(APin, 8)) + ' (' + repr(APin_pr) + '%)' + '\n')
+                                sys.stdout.write('Output Absentmindedness Penalty: \t' + repr(round(APout, 8)) + ' (' + repr(APout_pr) + '%)' + '\n')
+                                sys.stdout.write('Confidence: \t\t\t\t' + repr(round(Total, 8)) + ' (' + repr(Total_pr) + '%)' + '\n')
+                                sys.stdout.write('Similarity: \t\t\t\t' + repr(round(similarity*100, 2)) + '%' + '\n')
+                                if bleuNumber > -1:
+                                    sys.stdout.write('BLEU: \t\t\t\t\t' + repr(bleuNumber) + '\n')
                            
                             # write target sentences
                             word = 0

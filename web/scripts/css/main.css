@@ -35,7 +35,7 @@ br{clear:both;}
   transition: height 0.6s ease;
 }
 
-#c1, #c2, #c3, #c4, #c5 {
+div[id^='sortable-'] {
 	position: relative;
 	height: 100%;
 	margin-left:20px;
@@ -141,4 +141,12 @@ th.left {
     padding-top: 14px;
     border-radius: 8px;
     margin-bottom: 3px;
+}
+
+.progress-bar-purple {
+      background-color: purple !important;
+}
+
+.progress-bar-pink {
+      background-color: hotpink !important;
 }
