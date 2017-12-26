@@ -62,7 +62,7 @@ $tsw = explode(", ",$subword_scores[1]);
 
 ?>
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<span data-toggle="collapse" data-target="#c5" class="label label-default myLabel" onclick="toggleChart('c5')">Translation</span> 
+		<span data-toggle="collapse" data-target="#sortable-5" class="label label-default myLabel" onclick="toggleChart('sortable-5')">Translation</span> 
 		<div style="width:50%; float:left; margin-top:-2px;" class="pr">
 		<span class="label label-danger" style="cursor:help;padding:3px;"><?php 
 		$sc=0;
@@ -89,69 +89,14 @@ if($reference){
 	</div>
 <?php
 }
-?>
-	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c1" class="label label-default myLabel" onclick="toggleChart('c1')">Confidence</span> 
-		<div class="progress pr" >
-			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $confidence; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $confidence; ?>%;">
-				<?php echo $confidence; ?>%
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c2" class="label label-default myLabel" onclick="toggleChart('c2')">CDP</span> 
-		<div class="progress pr" >
-			<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo $CDP; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $CDP; ?>%;">
-				<?php echo $CDP; ?>%
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c3" class="label label-default myLabel" onclick="toggleChart('c3')">APout</span> 
-		<div class="progress pr" >
-			<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $APout; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APout; ?>%;">
-				<?php echo $APout; ?>%
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-		<span data-toggle="collapse" data-target="#c4" class="label label-default myLabel" onclick="toggleChart('c4')">APin</span> 
-		<div class="progress pr" >
-			<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo $APin; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $APin; ?>%;">
-				<?php echo $APin; ?>%
-			</div>
-		</div>
-	</div>
-<?php
+printChart("Confidence", $confidence, "success", "sortable-1");
+printChart("CDP", $CDP, "warning", "sortable-2");
+printChart("APout", $APout, "default", "sortable-3");
+printChart("APin", $APin, "info", "sortable-4");
+
 if($BLEU > 0){
-?>
-	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-		<span data-toggle="collapse" data-target="#c7" class="label label-default myLabel" onclick="toggleChart('c7')">Similarity</span> 
-		<div class="progress pr" >
-			<div class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="<?php echo $similarity; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $similarity; ?>%;">
-				<?php echo $similarity; ?>%
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-		<span data-toggle="collapse" data-target="#c6" class="label label-default myLabel" onclick="toggleChart('c6')">BLEU</span> 
-		<div class="progress pr" >
-			<div class="progress-bar progress-bar-purple" role="progressbar" aria-valuenow="<?php echo $BLEU; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $BLEU; ?>%;">
-				<?php echo $BLEU; ?>
-			</div>
-		</div>
-	</div>
-<?php
+    printChart("Similarity", $similarity, "pink", "sortable-7", "col-xs-12 col-sm-6 col-md-6 col-lg-6");
+    printChart("BLEU", $BLEU, "purple", "sortable-6", "col-xs-12 col-sm-6 col-md-6 col-lg-6");
 }else{
-?>
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<span data-toggle="collapse" data-target="#c7" class="label label-default myLabel" onclick="toggleChart('c7')">Similarity</span> 
-		<div class="progress pr" >
-			<div class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="<?php echo $similarity; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $similarity; ?>%;">
-				<?php echo $similarity; ?>%
-			</div>
-		</div>
-	</div>
-<?php
+    printChart("Similarity", $similarity, "pink", "sortable-7", "col-xs-12 col-sm-12 col-md-12 col-lg-12");
 }
-?>

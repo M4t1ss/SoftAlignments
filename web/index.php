@@ -161,14 +161,14 @@ if($sentence > $count) $sentence = $count;
 <div class="row<?php echo ($compare?" bottomRow2":""); ?>" style="margin-left:5px;" id="bottomRow2">
 </div>
 <?php
-printRow("length", "c5", "6", 4, $dataDir, $allConfidences, "danger", "le", "translation", "Length", " symbols");
-printRow("confidence", "c1", "5", 3, $dataDir, $allConfidences, "success", "co", "confidence", "Confidence", "%");
-printRow("cdp", "c2", "2", 0, $dataDir, $allConfidences, "warning", "cd", "deviation", "CDP", "%");
-printRow("apout", "c3", "3", 1, $dataDir, $allConfidences, "default", "ao", "apout", "APout", "%");
-printRow("apin", "c4", "4", 2, $dataDir, $allConfidences, "info", "ai", "apin", "APin", "%");
-printRow("similarity", "c7", "8", 6, $dataDir, $allConfidences, "pink", "si", "similarity", "Similarity", "%");
+printRow("length", "sortable-5", "6", 4, $dataDir, $allConfidences, "danger", "le", "translation", "Length", " symbols");
+printRow("confidence", "sortable-1", "5", 3, $dataDir, $allConfidences, "success", "co", "confidence", "Confidence", "%");
+printRow("cdp", "sortable-2", "2", 0, $dataDir, $allConfidences, "warning", "cd", "deviation", "CDP", "%");
+printRow("apout", "sortable-3", "3", 1, $dataDir, $allConfidences, "default", "ao", "apout", "APout", "%");
+printRow("apin", "sortable-4", "4", 2, $dataDir, $allConfidences, "info", "ai", "apin", "APin", "%");
+printRow("similarity", "sortable-7", "8", 6, $dataDir, $allConfidences, "pink", "si", "similarity", "Similarity", "%");
 if($allConfidences[0][7] != null){
-    printRow("sent-bleu", "c6", "9", 7, $dataDir, $allConfidences, "purple", "bl", "bleu", "BLEU", "");
+    printRow("sent-bleu", "sortable-6", "9", 7, $dataDir, $allConfidences, "purple", "bl", "bleu", "BLEU", "");
 }
 ?>
 

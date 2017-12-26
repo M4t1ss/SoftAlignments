@@ -74,3 +74,11 @@ function printRow($name, $rowId, $sortId, $dataId, $dataDir, $allConfidences, $c
                 }
         echo'</div></div>';
 }
+
+function printChart($name, $value, $color, $sortableId, $size = "col-xs-12 col-sm-6 col-md-3 col-lg-3"){
+	echo '<div class="'.$size.'">';
+    echo '<span data-toggle="collapse" data-target="#'.$sortableId.'" class="label label-default myLabel" onclick="toggleChart(\''.$sortableId.'\')">'.$name.'</span> ';
+    echo '<div class="progress pr" >';
+    echo '<div class="progress-bar progress-bar-'.$color.'" role="progressbar" aria-valuenow="'.$value.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$value.'%;">';
+    echo $value.'%</div></div></div>';
+}
