@@ -160,126 +160,17 @@ if($sentence > $count) $sentence = $count;
 </div>
 <div class="row<?php echo ($compare?" bottomRow2":""); ?>" style="margin-left:5px;" id="bottomRow2">
 </div>
-<div id="c5" class="row collapse">
-	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(6)"></span>
-	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
-	<div id="length" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
-		<?php
-			foreach($allConfidences as $key => $scfd){
-				echo '<a id="le-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Length '.$scfd[5].' symbols">
-						<div class="progress progress-bar-vertical">
-							<div id="translation-'.($key+1).'" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$scfd[4].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[4].'%;">
-								<span class="sr-only">'.$scfd[4].'% Complete</span>
-							</div>
-						</div>
-					 </a>';
-			}
-		?>
-	</div>
-</div>
-<div id="c1" class="row collapse">
-	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(5)"></span>
-	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
-	<div id="confidence" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
-		<?php
-			foreach($allConfidences as $key => $scfd){
-				echo '<a id="co-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Confidence '.$scfd[3].'%">
-						<div class="progress progress-bar-vertical">
-							<div id="confidence-'.($key+1).'" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$scfd[3].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[3].'%;">
-								<span class="sr-only">'.$scfd[3].'% Complete</span>
-							</div>
-						</div>
-					 </a>';
-			}
-		?>
-	</div>
-</div>
-<div id="c2" class="row collapse">
-	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(2)"></span>
-	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
-	<div id="cdp" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
-		<?php
-			foreach($allConfidences as $key => $scfd){
-				echo '<a id="cd-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - CDP '.$scfd[0].'%">
-						<div class="progress progress-bar-vertical">
-							<div id="deviation-'.($key+1).'" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="'.$scfd[0].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[0].'%;">
-								<span class="sr-only">'.$scfd[0].'% Complete</span>
-							</div>
-						</div>
-					 </a>';
-			}
-		?>
-	</div>
-</div>
-<div id="c3" class="row collapse">
-	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(3)"></span>
-	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
-	<div id="apout" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
-		<?php
-			foreach($allConfidences as $key => $scfd){
-				echo '<a id="ao-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APout '.$scfd[1].'%">
-						<div class="progress progress-bar-vertical">
-							<div id="apout-'.($key+1).'" class="progress-bar" role="progressbar" aria-valuenow="'.$scfd[1].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[1].'%;">
-								<span class="sr-only">'.$scfd[1].'% Complete</span>
-							</div>
-						</div>
-					 </a>';
-			}
-		?>
-	</div>
-</div>
-<div id="c4" class="row collapse">
-	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(4)"></span>
-	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
-	<div id="apin" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
-		<?php
-			foreach($allConfidences as $key => $scfd){
-				echo '<a id="ai-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - APin '.$scfd[2].'%">
-						<div class="progress progress-bar-vertical">
-							<div id="apin-'.($key+1).'" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'.$scfd[2].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[2].'%;">
-								<span class="sr-only">'.$scfd[2].'% Complete</span>
-							</div>
-						</div>
-					 </a>';
-			}
-		?>
-	</div>
-</div>
-<div id="c7" class="row collapse">
-	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(7)"></span>
-	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
-	<div id="similarity" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
-		<?php
-			foreach($allConfidences as $key => $scfd){
-				echo '<a id="si-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - Similarity '.$scfd[6].'%">
-						<div class="progress progress-bar-vertical">
-							<div id="similarity-'.($key+1).'" class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="'.$scfd[6].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[6].'%;">
-								<span class="sr-only">'.$scfd[6].'% Complete</span>
-							</div>
-						</div>
-					 </a>';
-			}
-		?>
-	</div>
-</div>
-<?php if($allConfidences[0][6] > 0){ ?>
-<div id="c6" class="row collapse">
-	<span class="glyphicon glyphicon-sort sort" style="margin-top:10px;" onclick="sortAll(8)"></span>
-	<span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
-	<div id="bleu" style="margin-left:20px;width:<?php echo count($allConfidences)*7;?>px;">
-		<?php
-			foreach($allConfidences as $key => $scfd){
-				echo '<a id="bl-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - BLEU '.$scfd[7].'">
-						<div class="progress progress-bar-vertical">
-							<div id="bleu-'.($key+1).'" class="progress-bar progress-bar-purple" role="progressbar" aria-valuenow="'.$scfd[7].'" aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[7].'%;">
-								<span class="sr-only">'.$scfd[7].'% Complete</span>
-							</div>
-						</div>
-					 </a>';
-			}
-		?>
-	</div>
-</div>
-<?php } ?>
+<?php
+printRow("length", "c5", "6", 4, $dataDir, $allConfidences, "danger", "le", "translation", "Length", " symbols");
+printRow("confidence", "c1", "5", 3, $dataDir, $allConfidences, "success", "co", "confidence", "Confidence", "%");
+printRow("cdp", "c2", "2", 0, $dataDir, $allConfidences, "warning", "cd", "deviation", "CDP", "%");
+printRow("apout", "c3", "3", 1, $dataDir, $allConfidences, "default", "ao", "apout", "APout", "%");
+printRow("apin", "c4", "4", 2, $dataDir, $allConfidences, "info", "ai", "apin", "APin", "%");
+printRow("similarity", "c7", "7", 6, $dataDir, $allConfidences, "pink", "si", "similarity", "Similarity", "%");
+if($allConfidences[0][7] != null){
+    printRow("sent-bleu", "c6", "8", 7, $dataDir, $allConfidences, "purple", "bl", "bleu", "BLEU", "");
+}
+?>
+
 </body>
 </html>

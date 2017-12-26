@@ -275,7 +275,7 @@ function sortAll(SortBy, order = "", reorder = true){
 	mySort('apin', SortBy, order);
 	mySort('apout', SortBy, order);
 	mySort('cdp', SortBy, order);
-	mySort('bleu', SortBy, order);
+	mySort('sent-bleu', SortBy, order);
 	mySort('similarity', SortBy, order);
 	
 	setCookie('sortBy', SortBy, 1);

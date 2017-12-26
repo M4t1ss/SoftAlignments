@@ -252,6 +252,7 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                 #The more similar, the higher penalty
                                 multiplier = 3-(((1-similarity)*100)*0.05)
                                 #It's worse to have more words with a higher similarity
+                                #Let's make it between 0.7 and about 1.5 for veeeery long sentences
                                 multiplier = (0.7+(len(tgt)*0.01)) * multiplier
                                 Total = round(CDP + APout + APin - (multiplier * math.tan(similarity)), 10)
                             
