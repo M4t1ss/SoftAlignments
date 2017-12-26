@@ -207,6 +207,10 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                         num = int(num) - 1
                         if num > -1 and (num < len(data)):
                             data = [data[num]]
+                        elif num >= len(data):
+                            print ('The selected sentence number is higher than the sentence count!\n')
+                            printHelp()
+                            sys.exit()
                         for i in range(0, len(data)):
                             (src, tgt, rawAli) = data[i]
                             ali = [l[:len(list(filter(None, tgt)))] for l in rawAli[:len(src)]]
@@ -236,14 +240,17 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                     from nltk.translate import bleu
                                     from nltk.translate.bleu_score import SmoothingFunction
                                     sm = SmoothingFunction()
-                                    deBpeRef = " ".join(refs[i]).replace('@@ ','')
+                                    refNumber = i if num < 0 else num
+                                    deBpeRef = " ".join(refs[refNumber]).replace('@@ ','')
                                     deBpeHyp = JoinedTarget.replace('@@ ','').replace('<EOS>','').strip()
-                                    bleuScore = u', ' + repr(round(bleu([deBpeRef.split()], deBpeHyp.split(), smoothing_function=sm.method3)*100, 2))
+                                    bleuNumber = round(bleu([deBpeRef.split()], deBpeHyp.split(), smoothing_function=sm.method3)*100, 2)
+                                    bleuScore = u', ' + repr(bleuNumber)
                                 except ImportError:
                                     sys.stdout.write('NLTK not found! BLEU will not be calculated\n')
                                     refs = False
                                     bleuScore = u''
                             else:
+                                bleuNumber = -1
                                 bleuScore = u''
                             
                             similarity = similar(StrippedSource, StrippedTarget)
@@ -346,6 +353,9 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                 sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(APin) + ' (' + repr(APin_pr) + '%)' + '\n')
                                 sys.stdout.write('Output Absentmindedness Penalty: \t' + repr(APout) + ' (' + repr(APout_pr) + '%)' + '\n')
                                 sys.stdout.write('Confidence: \t\t\t\t' + repr(Total) + ' (' + repr(Total_pr) + '%)' + '\n')
+                                sys.stdout.write('Similarity: \t\t\t\t' + repr(round(similarity*100, 2)) + '%' + '\n')
+                                if bleuNumber > -1:
+                                    sys.stdout.write('BLEU: \t\t\t\t\t' + repr(bleuNumber) + '\n')
                            
                             # write target sentences
                             word = 0

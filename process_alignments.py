@@ -1,10 +1,9 @@
 # coding: utf-8
 
 import io, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
-import tempfile
+import tempfile, shutil
 from time import gmtime, strftime
 from imp import reload
-from shutil import copyfile
 try:
     import configparser as cp
 except ImportError:
@@ -232,7 +231,7 @@ def main(argv):
         os.mkdir(folder)
         
     if(referencefile):
-        copyfile(referencefile, folder + "/" + ntpath.basename(inputfile) + '.ref.txt')
+        shutil.copyfile(referencefile, folder + "/" + ntpath.basename(inputfile) + '.ref.txt')
         refs = functions.readSnts(referencefile)
     else:
         refs = False
@@ -262,7 +261,7 @@ def main(argv):
         os.remove(folder + "/" + ntpath.basename(inputfile) + '.trg.js')
         os.remove(folder + "/" + ntpath.basename(inputfile) + '.con.js')
         os.remove(folder + "/" + ntpath.basename(inputfile) + '.sc.js')
-        os.rmdir(folder)
+        shutil.rmtree(folder)
 
 if __name__ == "__main__":
     if sys.version[0] == '2':
