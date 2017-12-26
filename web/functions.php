@@ -63,8 +63,9 @@ function printRow($name, $rowId, $sortId, $dataId, $dataDir, $allConfidences, $c
         <span class="glyphicon glyphicon-repeat sort" style="margin-top:40px;" onclick="sortAll(1)"></span>
         <div id="'.$name.'" style="margin-left:20px;width:'.(count($allConfidences)*7).'px;">';
                 foreach($allConfidences as $key => $scfd){
-                    echo '<a id="'.$idOne.'-'.($key+1).'-'.$scfd[0].'-'.$scfd[1].'-'.$scfd[2].'-'.$scfd[3].'-'.$scfd[4].'-'.$scfd[6].'-'.$scfd[7].'" ';
-                    echo 'href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - '.$textOne.' '.$scfd[5].$textTwo.'">';
+                    $textNum = $name == "length" ? $scfd[5] : $scfd[$dataId];
+                    echo '<a id="'.$idOne.'-'.($key+1).'-'.implode("-",$scfd).'" ';
+                    echo 'href="?directory='.$dataDir.'&s='.($key+1).'" title="Sentence '.($key+1).' - '.$textOne.' '.$textNum.$textTwo.'">';
                     echo '<div class="progress progress-bar-vertical">';
                     echo '<div id="'.$idTwo.'-'.($key+1).'" class="progress-bar progress-bar-'.$color.'" role="progressbar" aria-valuenow="'.$scfd[$dataId].'" ';
                     echo 'aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[$dataId].'%;">';

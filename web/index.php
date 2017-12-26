@@ -166,9 +166,9 @@ printRow("confidence", "c1", "5", 3, $dataDir, $allConfidences, "success", "co",
 printRow("cdp", "c2", "2", 0, $dataDir, $allConfidences, "warning", "cd", "deviation", "CDP", "%");
 printRow("apout", "c3", "3", 1, $dataDir, $allConfidences, "default", "ao", "apout", "APout", "%");
 printRow("apin", "c4", "4", 2, $dataDir, $allConfidences, "info", "ai", "apin", "APin", "%");
-printRow("similarity", "c7", "7", 6, $dataDir, $allConfidences, "pink", "si", "similarity", "Similarity", "%");
+printRow("similarity", "c7", "8", 6, $dataDir, $allConfidences, "pink", "si", "similarity", "Similarity", "%");
 if($allConfidences[0][7] != null){
-    printRow("sent-bleu", "c6", "8", 7, $dataDir, $allConfidences, "purple", "bl", "bleu", "BLEU", "");
+    printRow("sent-bleu", "c6", "9", 7, $dataDir, $allConfidences, "purple", "bl", "bleu", "BLEU", "");
 }
 ?>
 
