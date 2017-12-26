@@ -349,10 +349,10 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                 for liline in outchars:
                                     sys.stdout.write(''.join(liline).encode('utf-8', errors='replace').decode('utf-8') + '\n')
                                 # print scores
-                                sys.stdout.write('\nCoverage Deviation Penalty: \t\t' + repr(CDP) + ' (' + repr(CDP_pr) + '%)' + '\n')
-                                sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(APin) + ' (' + repr(APin_pr) + '%)' + '\n')
-                                sys.stdout.write('Output Absentmindedness Penalty: \t' + repr(APout) + ' (' + repr(APout_pr) + '%)' + '\n')
-                                sys.stdout.write('Confidence: \t\t\t\t' + repr(Total) + ' (' + repr(Total_pr) + '%)' + '\n')
+                                sys.stdout.write('\nCoverage Deviation Penalty: \t\t' + repr(round(CDP, 8)) + ' (' + repr(CDP_pr) + '%)' + '\n')
+                                sys.stdout.write('Input Absentmindedness Penalty: \t' + repr(round(APin, 8)) + ' (' + repr(APin_pr) + '%)' + '\n')
+                                sys.stdout.write('Output Absentmindedness Penalty: \t' + repr(round(APout, 8)) + ' (' + repr(APout_pr) + '%)' + '\n')
+                                sys.stdout.write('Confidence: \t\t\t\t' + repr(round(Total, 8)) + ' (' + repr(Total_pr) + '%)' + '\n')
                                 sys.stdout.write('Similarity: \t\t\t\t' + repr(round(similarity*100, 2)) + '%' + '\n')
                                 if bleuNumber > -1:
                                     sys.stdout.write('BLEU: \t\t\t\t\t' + repr(bleuNumber) + '\n')
