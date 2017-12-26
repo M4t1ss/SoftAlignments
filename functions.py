@@ -270,7 +270,7 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             out_t_js.write('["'+ JoinedTarget.replace(' ','", "') +'"], \n')
                             out_c_js.write(u'['+ repr(CDP_pr) + u', '+ repr(APout_pr) + u', '+ repr(APin_pr) + u', '+ repr(Total_pr) 
                                 + u', '+ repr(Len) + u', '+ repr(len(JoinedSource)) + u', '
-                                + repr(round(similarity, 2)) 
+                                + repr(round(similarity*100, 2)) 
                                 + bleuScore 
                                 + u'], \n')
                             out_sc_js.write(u'[[' + ", ".join(srcTotal) + u'], ' + u'[' + ", ".join(trgTotal) + u'], ' + u'], \n')

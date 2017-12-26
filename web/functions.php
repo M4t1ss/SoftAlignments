@@ -39,7 +39,7 @@ function getScores($string, $score_num = NULL){
 	$confidence = $scores[3];
 	$length_pr 	= $scores[4];
 	$length 	= $scores[5];
-	$similarity	= $scores[6]*100;
+	$similarity	= $scores[6];
 	$BLEU 		= (count($scores) > 7 && trim($scores[7])!="") ? $scores[7] : null;
 	if($score_num!==null && $score_num < count($scores)){
 		return $scores[$score_num];

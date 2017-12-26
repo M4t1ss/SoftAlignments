@@ -47,7 +47,7 @@ $CDP 		= getScores($f4->current(), 0);
 $APout 		= getScores($f4->current(), 1);
 $APin 		= getScores($f4->current(), 2);
 $confidence = getScores($f4->current(), 3);
-$similarity	= getScores($f4->current(), 6)*100;
+$similarity	= getScores($f4->current(), 6);
 $BLEU 		= getScores($f4->current(), 7);
 
 //Are there any references given?
@@ -80,7 +80,7 @@ $tsw = explode(", ",$subword_scores[1]);
 if($reference){
 ?>
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<span class="label label-default myLabel">Reference</span> 
+		<span class="label label-default myLabel" style="cursor: default;">Reference</span> 
 		<div style="width:50%; float:left; margin-top:-2px;" class="pr">
             <span class="label" style="padding:3px; background-color:gray;">
                 <?php echo $reference; ?>
