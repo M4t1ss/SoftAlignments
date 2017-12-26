@@ -235,6 +235,7 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             Total = round(CDP + APout + APin, 10)
                             
                             #Can we calculate BLEU?
+                            bleuNumber = -1
                             if(refs):
                                 try:
                                     from nltk.translate import bleu
@@ -250,7 +251,6 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                                     refs = False
                                     bleuScore = u''
                             else:
-                                bleuNumber = -1
                                 bleuScore = u''
                             
                             similarity = similar(StrippedSource, StrippedTarget)
