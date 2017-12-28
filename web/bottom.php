@@ -27,6 +27,7 @@ if(!file_exists("./data/".$dataDir) || strlen($dataDir) < 1){
 $dataFiles = cleanDirArray(scandir("./data/".$dataDir));
 
 //Get the data files
+$sources 				= "./data/".$dataDir."/".array_pop(preg_grep("/\.src\.js/", $dataFiles));
 $targets 				= "./data/".$dataDir."/".array_pop(preg_grep("/\.trg\.js/", $dataFiles));
 $references 			= "./data/".$dataDir."/".array_pop(preg_grep("/\.ref\.txt/", $dataFiles));
 $confidences 			= "./data/".$dataDir."/".array_pop(preg_grep("/\.con\.js/", $dataFiles));
@@ -38,10 +39,12 @@ $sentence=$sentence<1?1:$sentence;
 $sentence=$sentence>$count?$count:$sentence;
 
 //Load only the one line from each input file
+$f2 = gotoLine($sources, $sentence);
 $f3 = gotoLine($targets, $sentence);
 $f4 = gotoLine($confidences, $sentence);
 $f5 = gotoLine($subword_confidences, $sentence);
 
+$source 	= getJSvalue($f2->current());
 $target 	= getJSvalue($f3->current());
 $CDP 		= getScores($f4->current(), 0);
 $APout 		= getScores($f4->current(), 1);
@@ -59,18 +62,37 @@ if($references!="./data/".$dataDir."/"){
 $subword_scores = explode("], [",str_replace("], ],","",str_replace("[[","",trim($f5->current()))));
 $tsw = explode(", ",$subword_scores[1]);
 
-
+$longestMatch 	= str_replace("<EOS>","",trim(getLongestCommonSubsequence(trim($source), trim($target))));
+$matchLen 		= strlen($longestMatch);
+$matchStart 	= strpos(trim($target), $longestMatch);
+$matchEnd 		= $matchStart+$matchLen;
 ?>
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<span data-toggle="collapse" data-target="#sortable-5" class="label label-default myLabel" onclick="toggleChart('sortable-5')">Translation</span> 
 		<div style="width:50%; float:left; margin-top:-2px;" class="pr">
 		<span class="label label-danger" style="cursor:help;padding:3px;"><?php 
 		$sc=0;
+		$pos=0;
+		$posZ[] = $pos;
 		foreach(getSWvalue($f3->current()) as $targetToken){
-            $targetToken = str_replace('&quot;','"', $targetToken);
-            $targetToken = str_replace("&apos;","'", $targetToken);
-            $targetToken = str_replace("@-@","-", $targetToken);
-			echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="top" title="Confidence: '.round($tsw[$sc]*100,2).'%">'.htmlspecialchars($targetToken).'</span> ');
+            $targetToken = replaceStuff($targetToken);
+			
+			$strip = str_replace("@@", "", $targetToken);
+			$under = (strpos($longestMatch, $strip) > -1 && $pos >= $matchStart-5 && $pos <= $matchEnd) ? ' style="border-bottom: 1px solid;"' : '';
+			$pos += strlen($strip);
+			if($strip == $targetToken) $pos += 1;
+			$posZ[] = $pos;
+			
+			echo str_replace(
+				"@@</span> ",
+				"</span>",
+				'<span'
+				.$under
+				.'><span data-toggle="tooltip" data-placement="top" title="Confidence: '
+				.round($tsw[$sc]*100,2).'%">'
+				.htmlspecialchars($targetToken)
+				.'</span> </span>'
+				);
 			$sc++;
 		}
 		?></span>
