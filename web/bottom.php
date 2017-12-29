@@ -62,6 +62,9 @@ if($references!="./data/".$dataDir."/"){
 $subword_scores = explode("], [",str_replace("], ],","",str_replace("[[","",trim($f5->current()))));
 $tsw = explode(", ",$subword_scores[1]);
 
+$source = replaceStuff($source);
+$target = replaceStuff($target);
+
 $longestMatch 	= str_replace("<EOS>","",trim(getLongestCommonSubsequence(trim($source), trim($target))));
 $matchLen 		= strlen($longestMatch);
 $matchStart 	= strpos(trim($target), $longestMatch);
@@ -79,9 +82,9 @@ $matchEnd 		= $matchStart+$matchLen;
 			
 			$strip = str_replace("@@", "", $targetToken);
 			$under = (strpos($longestMatch, $strip) > -1 && $pos >= $matchStart-5 && $pos <= $matchEnd) ? ' style="border-bottom: 1px solid;"' : '';
+			$posZ[$pos] = $strip;
 			$pos += strlen($strip);
 			if($strip == $targetToken) $pos += 1;
-			$posZ[] = $pos;
 			
 			echo str_replace(
 				"@@</span> ",
@@ -117,8 +120,8 @@ printChart("APout", $APout, "default", "sortable-3");
 printChart("APin", $APin, "info", "sortable-4");
 
 if($BLEU > 0){
-    printChart("Similarity", $similarity, "pink", "sortable-7", "col-xs-12 col-sm-6 col-md-6 col-lg-6");
+    printChart("Overlap", $similarity, "pink", "sortable-7", "col-xs-12 col-sm-6 col-md-6 col-lg-6");
     printChart("BLEU", $BLEU, "purple", "sortable-6", "col-xs-12 col-sm-6 col-md-6 col-lg-6");
 }else{
-    printChart("Similarity", $similarity, "pink", "sortable-7", "col-xs-12 col-sm-12 col-md-12 col-lg-12");
+    printChart("Overlap", $similarity, "pink", "sortable-7", "col-xs-12 col-sm-12 col-md-12 col-lg-12");
 }

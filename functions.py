@@ -1,5 +1,5 @@
 # coding: utf-8
-
+from __future__ import division
 import unicodedata, math, re, sys, string, os, ntpath, numpy as np
 from time import gmtime, strftime
 from io import open, StringIO
@@ -166,9 +166,6 @@ def readAmu(in_file, src_file):
                     alis.append(ali)
                     aliTXT = ''
     return srcs, tgts, alis
-
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
     
 def compare(srcs1, srcs2):
     for i in range(0, len(srcs1)):
@@ -192,6 +189,20 @@ def synchData(data1,data2):
             for j in range(0, diff2):
                 data1[i][1].append(u'')
     return data1, data2
+    
+def longestCommonSubstring(s1, s2):
+    m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]
+    longest, x_longest = 0, 0
+    for x in range(1, 1 + len(s1)):
+        for y in range(1, 1 + len(s2)):
+            if s1[x - 1] == s2[y - 1]:
+                m[x][y] = m[x - 1][y - 1] + 1
+                if m[x][y] > longest:
+                    longest = m[x][y]
+                    x_longest = x
+            else:
+                m[x][y] = 0
+    return s1[x_longest - longest: x_longest]
     
 def processAlignments(data, folder, inputfile, outputType, num, refs=False):
     with open(folder + "/" + ntpath.basename(inputfile) + '.ali.js', 'w', encoding='utf-8') as out_a_js:
@@ -253,14 +264,19 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             else:
                                 bleuScore = u''
                             
-                            similarity = similar(StrippedSource, StrippedTarget)
+                            jls = JoinedSource.replace('@@ ','').replace('<EOS>','').replace('&quot;','"').replace("&apos;","'").replace("&amp;","&").replace("@-@","-").strip()
+                            jlt = JoinedTarget.replace('@@ ','').replace('<EOS>','').replace('&quot;','"').replace("&apos;","'").replace("&amp;","&").replace("@-@","-").strip()
+                            longest = longestCommonSubstring(jls, jlt).strip()
+                            similarity = len(longest)/len(jlt)
+                            
                             #Penalize sentences with more than 4 tokens
-                            if (len(tgt) > 4) and (similarity > 0.4):
+                            if (len(tgt) > 4) and (similarity > 0.3):
                                 #The more similar, the higher penalty
                                 multiplier = 3-(((1-similarity)*100)*0.05)
                                 #It's worse to have more words with a higher similarity
                                 #Let's make it between 0.7 and about 1.5 for veeeery long sentences
-                                multiplier = (0.7+(len(tgt)*0.01)) * multiplier
+                                multiplier = (0.8+(len(tgt)*0.01)) * multiplier
+                                multiplier = multiplier*(0.7 + similarity)
                                 Total = round(CDP + APout + APin - (multiplier * math.tan(similarity)), 10)
                             
                             # e^(-1(x^2))
