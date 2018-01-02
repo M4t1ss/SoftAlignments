@@ -81,7 +81,10 @@ $matchEnd 		= $matchStart+$matchLen;
             $targetToken = replaceStuff($targetToken);
 			
 			$strip = str_replace("@@", "", $targetToken);
-			$under = (strpos($longestMatch, $strip) > -1 && $pos >= $matchStart-5 && $pos <= $matchEnd) ? ' style="border-bottom: 1px solid;"' : '';
+			$under = (strlen($strip) > 0 
+						&& strpos($longestMatch, $strip) > -1 
+						&& $pos >= $matchStart-5 
+						&& $pos <= $matchEnd) ? ' style="border-bottom: 1px solid;"' : '';
 			$posZ[$pos] = $strip;
 			$pos += strlen($strip);
 			if($strip == $targetToken) $pos += 1;
