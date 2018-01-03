@@ -69,7 +69,7 @@ function printRow($name, $rowId, $sortId, $dataId, $dataDir, $allConfidences, $c
                     echo '<div class="progress progress-bar-vertical">';
                     echo '<div id="'.$idTwo.'-'.($key+1).'" class="progress-bar progress-bar-'.$color.'" role="progressbar" aria-valuenow="'.$scfd[$dataId].'" ';
                     echo 'aria-valuemin="0" aria-valuemax="100" style="height: '.$scfd[$dataId].'%;">';
-                    echo '<span class="sr-only">'.$scfd[$dataId].'% Complete</span>';
+                    echo '<span class="sr-only">'.$scfd[$dataId].'%</span>';
                     echo '</div></div></a>';
                 }
         echo'</div></div>';
