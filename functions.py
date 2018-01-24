@@ -224,6 +224,9 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             sys.exit()
                         for i in range(0, len(data)):
                             (src, tgt, rawAli) = data[i]
+                            #In case the source string is empty
+                            if rawAli.ndim == 1:
+                                rawAli = np.array([rawAli])
                             ali = [l[:len(list(filter(None, tgt)))] for l in rawAli[:len(src)]]
                             
                             srcTotal = []
