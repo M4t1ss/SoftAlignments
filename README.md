@@ -67,9 +67,9 @@ How to get alignment files from NMT systems
 	Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file
 
 * **Other**
-	The esiest format to use (and convert to) is the one used by Nematus.
+	The easiest format to use (and convert to) is the one used by Nematus.
 	
-	For each sentence the first row should be `<sentence id> ||| <target words> ||| <score> ||| <source words> ||| <number of source words> ||| <number of target words>`
+	For each sentence the first row should be `<sentence id> ||| <target words> ||| <score> ||| <source words> ||| <number of source words> <number of target words>`
 	
 	After that follow `<number of target words> + 1 (for <EOS> token)` rows with `<number of source words> + 1 (for <EOS> token)` columns with attention weights separated by spaces. 
 	
