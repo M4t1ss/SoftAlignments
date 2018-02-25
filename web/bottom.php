@@ -69,8 +69,13 @@ $longestMatch 	= str_replace("<EOS>","",trim(getLongestCommonSubsequence(trim($s
 $matchLen 		= strlen($longestMatch);
 $matchStart 	= strpos(trim($target), $longestMatch);
 $matchEnd 		= $matchStart+$matchLen;
+$currentName    = str_replace(".js","",array_pop(preg_grep("/\.ali\.js/", cleanDirArray(scandir("./data/".$dataDir)))));
+$bottom = strpos($dataDir, "NMT2") !== false;
 ?>
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" title="Translation from file '<?php echo $currentName; ?>'">
+    <span class="label label-default myLabel" style="cursor:default; margin-bottom:3px;">File</span> 
+    <div style="width:50%; float:left; margin-top:-2px;" class="pr"><span class="label" style="background-color: <?php echo $bottom?"#339933":"#FF5000";?>; padding:3px;"><?php echo $currentName; ?></span></div>
+    <br/>
 		<span data-toggle="collapse" data-target="#sortable-5" class="label label-default myLabel" onclick="toggleChart('sortable-5')">Translation</span> 
 		<div style="width:50%; float:left; margin-top:-2px;" class="pr">
 		<span class="label label-danger" style="cursor:help;padding:3px;"><?php 
