@@ -190,10 +190,8 @@ def main(argv):
         srcs = functions.readSnts(sourcefile)
         tgts = functions.readSnts(targetfile)
         alis = np.load(inputfile)
-    if from_system == "Nematus" or from_system == "Sockeye":
-        (srcs, tgts, alis) = functions.readNematus(inputfile)
-    if from_system == "OpenNMT":
-        (srcs, tgts, alis) = functions.readNematus(inputfile, 1)
+    if from_system == "Nematus" or from_system == "Sockeye" or from_system == "OpenNMT" or from_system == "Marian-Dev":
+        (srcs, tgts, alis) = functions.readNematus(inputfile, from_system)
     if from_system == "Marian":
         (srcs, tgts, alis) = functions.readAmu(inputfile, sourcefile)
 

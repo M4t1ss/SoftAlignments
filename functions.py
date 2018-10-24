@@ -104,7 +104,7 @@ def readSnts(filename):
     with open(filename, 'r', encoding='utf-8') as fh:
         return [escape(line).strip().split() for line in fh]
 
-def readNematus(filename, openNMT = 0):
+def readNematus(filename, from_system = "Nematus"):
     with open(filename, 'r', encoding='utf-8') as fh:
         alis = []
         tgts = []
@@ -116,11 +116,12 @@ def readNematus(filename, openNMT = 0):
                 if len(aliTXT) > 0:
                     c = StringIO(aliTXT)
                     ali = np.loadtxt(c)
-                    ali = ali.transpose()
+                    if from_system == "Nematus" or from_system == "OpenNMT" or from_system == "Marian-Dev":
+                        ali = ali.transpose()
                     alis.append(ali)
                     aliTXT = ''
                 lineparts = line.split(' ||| ')
-                if openNMT == 0:
+                if from_system == "Nematus":
                     lineparts[1] += ' <EOS>'
                     lineparts[3] += ' <EOS>'
                 tgts.append(escape(lineparts[1]).strip().split())
@@ -134,7 +135,7 @@ def readNematus(filename, openNMT = 0):
         if len(aliTXT) > 0:
             c = StringIO(aliTXT)
             ali = np.loadtxt(c)
-            if openNMT == 0:
+            if from_system == "Nematus" or from_system == "Sockeye" or from_system == "Marian-Dev":
                 ali = ali.transpose()
             alis.append(ali)
             aliTXT = ''
@@ -306,6 +307,9 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             for ali_i in ali:
                                 linePartC=0
                                 for ali_j in ali_i:
+                                    # Maybe worth playing around with this for transformer (and convolutional) NMT output
+                                    # if ali_j < 0.15:
+                                        # ali_j = 0
                                     out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
                                     linePartC+=1
                                     if outputType == 'color':
