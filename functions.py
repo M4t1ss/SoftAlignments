@@ -275,12 +275,10 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             #Penalize sentences with more than 4 tokens
                             if (len(tgt) > 4) and (similarity > 0.3):
                                 #The more similar, the higher penalty
-                                multiplier = 3-(((1-similarity)*100)*0.05)
                                 #It's worse to have more words with a higher similarity
                                 #Let's make it between 0.7 and about 1.5 for veeeery long sentences
-                                multiplier = (0.8+(len(tgt)*0.01)) * multiplier
-                                multiplier = multiplier*(0.7 + similarity)
-                                Total = round(CDP + APout + APin - (multiplier * math.tan(similarity)), 10)
+                                multiplier = ((0.8+(len(tgt)*0.01)) * (3-((1-similarity)*5)) * (0.7 + similarity) * math.tan(similarity))
+                                Total = round(CDP + APout + APin - multiplier, 10)
                             
                             # e^(-1(x^2))
                             CDP_pr = round(math.pow(math.e, -1 * math.pow(CDP, 2)) * 100, 2)
