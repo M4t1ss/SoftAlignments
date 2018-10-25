@@ -103,8 +103,56 @@ def printBlock(value):
 def readSnts(filename):
     with open(filename, 'r', encoding='utf-8') as fh:
         return [escape(line).strip().split() for line in fh]
+        
+def deBPE(srcs, tgts, ali, sources, targets):
+    slen = len(sources)
+    for i in range(slen):
+        if i > len(sources)-1:
+            break;
+        while len(sources[i]) > 2 and sources[i][-2:] == "@@":
+            sources[i] = sources[i].replace("@@","") + sources[i+1]
+            del sources[i+1]
+            slen = len(sources)
+            
+            #Now sum the alignments
+            newLength = ali.shape[1]-1
+            result = np.zeros((ali.shape[0],newLength))
+            for x in range(newLength):
+                if x == i:
+                    result[:,x] =  np.sum(ali[:,x:x+2],axis=1)
+                    ali = np.delete(ali, x+1, 1)
+                else:
+                    result[:,x] =  ali[:,x]
+            ali = result
+    srcs[-1] = sources
+    tlen = len(targets)
+    for i in range(tlen):
+        if i > len(targets)-1:
+            break;
+        n = 0
+        while len(targets[i]) > 2 and targets[i][-2:] == "@@":
+            n+=1
+            targets[i] = targets[i].replace("@@","") + targets[i+1]
+            del targets[i+1]
+            tlen = len(targets)
+            
+        if n>0:
+            #Now average the alignments
+            newLength = ali.shape[0]-n
+            result = np.zeros((newLength, ali.shape[1]))
+            for x in range(newLength):
+                if x == i:
+                    result[x,:] =  np.average(ali[x:x+n+1,:],axis=0)
+                    for c in range(x+n, x, -1):
+                        ali = np.delete(ali, c, 0)
+                else:
+                    result[x,:] = ali[x,:]
+            ali = result
+    tgts[-1] = targets
+    
+    return srcs, tgts, ali
 
-def readNematus(filename, openNMT = 0):
+def readNematus(filename, from_system = "Nematus", de_bpe = False):
     with open(filename, 'r', encoding='utf-8') as fh:
         alis = []
         tgts = []
@@ -112,21 +160,32 @@ def readNematus(filename, openNMT = 0):
         wasNew = True
         aliTXT = ''
         for line in fh:
+            # Reads the first line that contains a translation and it's source sentence
             if wasNew:
                 if len(aliTXT) > 0:
                     c = StringIO(aliTXT)
                     ali = np.loadtxt(c)
-                    ali = ali.transpose()
+                
+                    # Now we probably have source and target tokens + attentions
+                    if de_bpe == True:
+                        # In case we want to combine subword units and the respective attentions (by summing columns and averaging rows)
+                        sources = escape(lineparts[3]).strip().split()
+                        targets = escape(lineparts[1]).strip().split()
+                        (srcs, tgts, ali) = deBPE(srcs, tgts, ali, sources, targets)
+                        
+                    if from_system == "Nematus" or from_system == "OpenNMT" or from_system == "Marian-Dev":
+                        ali = ali.transpose()
                     alis.append(ali)
                     aliTXT = ''
                 lineparts = line.split(' ||| ')
-                if openNMT == 0:
+                if from_system == "Nematus":
                     lineparts[1] += ' <EOS>'
                     lineparts[3] += ' <EOS>'
                 tgts.append(escape(lineparts[1]).strip().split())
                 srcs.append(escape(lineparts[3]).strip().split())
                 wasNew = False
                 continue
+            # Reads the attention matrix into "aliTXT"
             if line != '\n' and line != '\r\n':
                 aliTXT += line
             else:
@@ -134,7 +193,12 @@ def readNematus(filename, openNMT = 0):
         if len(aliTXT) > 0:
             c = StringIO(aliTXT)
             ali = np.loadtxt(c)
-            if openNMT == 0:
+            if de_bpe == True:
+                # In case we want to combine subword units and the respective attentions (by summing columns and averaging rows)
+                sources = escape(lineparts[3]).strip().split()
+                targets = escape(lineparts[1]).strip().split()
+                (srcs, tgts, ali) = deBPE(srcs, tgts, ali, sources, targets)
+            if from_system == "Nematus" or from_system == "Sockeye" or from_system == "Marian-Dev":
                 ali = ali.transpose()
             alis.append(ali)
             aliTXT = ''
@@ -306,6 +370,9 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             for ali_i in ali:
                                 linePartC=0
                                 for ali_j in ali_i:
+                                    # Maybe worth playing around with this for transformer (and convolutional) NMT output
+                                    # if ali_j < 0.15:
+                                        # ali_j = 0
                                     out_a_js.write(u'['+repr(word)+u', ' + str(np.round(ali_j, 8)) + u', '+repr(linePartC)+u'], ')
                                     linePartC+=1
                                     if outputType == 'color':
