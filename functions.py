@@ -123,7 +123,8 @@ def readNematus(filename, from_system = "Nematus"):
                     if from_system == "Marian-Dev":
                         sources = escape(lineparts[3]).strip().split()
                         slen = len(sources)
-                        for i in range(len(sources)):
+                        
+                        for i in range(slen):
                             if i > len(sources)-1:
                                 break;
                             while len(sources[i]) > 2 and sources[i][-2:] == "@@":
@@ -136,7 +137,7 @@ def readNematus(filename, from_system = "Nematus"):
                                 result = np.zeros((ali.shape[0],newLength))
                                 for x in range(newLength):
                                     if x == i:
-                                        result[:,x] =  np.sum(ali[:,[x, x+1]],axis=1)
+                                        result[:,x] =  np.sum(ali[:,x:x+2],axis=1)
                                         ali = np.delete(ali, x+1, 1)
                                     else:
                                         result[:,x] =  ali[:,x]
@@ -161,8 +162,8 @@ def readNematus(filename, from_system = "Nematus"):
                                 result = np.zeros((newLength, ali.shape[1]))
                                 for x in range(newLength):
                                     if x == i:
-                                        result[x,:] =  np.average(ali[x:x+n,:],axis=0)
-                                        for c in range(x+n, x+1, -1):
+                                        result[x,:] =  np.average(ali[x:x+n+1,:],axis=0)
+                                        for c in range(x+n, x, -1):
                                             ali = np.delete(ali, c, 0)
                                     else:
                                         result[x,:] = ali[x,:]
