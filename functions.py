@@ -122,48 +122,51 @@ def readNematus(filename, from_system = "Nematus"):
                     # We should combine subword units and the respective attentions (by summing columns and averaging rows)
                     if from_system == "Marian-Dev":
                         sources = escape(lineparts[3]).strip().split()
+                        slen = len(sources)
                         for i in range(len(sources)):
                             if i > len(sources)-1:
                                 break;
-                            n = 0
                             while len(sources[i]) > 2 and sources[i][-2:] == "@@":
-                                n = 1
-                                sources[i] = sources[i].replace("@@","") + sources[i+n]
-                                del sources[i+n]
+                                sources[i] = sources[i].replace("@@","") + sources[i+1]
+                                del sources[i+1]
+                                slen = len(sources)
                                 
                                 #Now sum the alignments
                                 newLength = ali.shape[1]-1
                                 result = np.zeros((ali.shape[0],newLength))
                                 for x in range(newLength):
                                     if x == i:
-                                        result[:,x] =  np.sum(ali[:,[x, n]],axis=1)
-                                        ali = np.delete(ali, n, 1)
+                                        result[:,x] =  np.sum(ali[:,[x, x+1]],axis=1)
+                                        ali = np.delete(ali, x+1, 1)
                                     else:
                                         result[:,x] =  ali[:,x]
                                 ali = result
-                                n+=1
                         srcs[-1] = sources
+                        
                         targets = escape(lineparts[1]).strip().split()
-                        for i in range(len(targets)):
+                        tlen = len(targets)
+                        for i in range(tlen):
                             if i > len(targets)-1:
                                 break;
                             n = 0
                             while len(targets[i]) > 2 and targets[i][-2:] == "@@":
-                                n = 1
-                                targets[i] = targets[i].replace("@@","") + targets[i+n]
-                                del targets[i+n]
+                                n+=1
+                                targets[i] = targets[i].replace("@@","") + targets[i+1]
+                                del targets[i+1]
+                                tlen = len(targets)
                                 
+                            if n>0:
                                 #Now sum the alignments
-                                newLength = ali.shape[0]-1
+                                newLength = ali.shape[0]-n
                                 result = np.zeros((newLength, ali.shape[1]))
                                 for x in range(newLength):
                                     if x == i:
-                                        result[x,:] =  np.average(ali[[x, n],:],axis=0)
-                                        ali = np.delete(ali, n, 0)
+                                        result[x,:] =  np.average(ali[x:x+n,:],axis=0)
+                                        for c in range(x+n, x+1, -1):
+                                            ali = np.delete(ali, c, 0)
                                     else:
                                         result[x,:] = ali[x,:]
                                 ali = result
-                                n+=1
                         tgts[-1] = targets
                     if from_system == "Nematus" or from_system == "OpenNMT" or from_system == "Marian-Dev":
                         ali = ali.transpose()
