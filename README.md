@@ -173,6 +173,7 @@ Parameters for process_alignments.py
 |		 |													|														|																|				 |
 | -n     | Number of a specific sentence 					| No     	 		 									| Integer 														| -1 (show all)	 |
 | -c     | configuration file 								| No     	 		 									| Path to file													| 				 |
+| -d     | Combine subword units (De-BPE) 					| No     	 		 									| Integer 														| 				 |
 |		 |													|														|																|				 |
 | -v     | NMT framework where the 2nd alignments are from 	| For output type'compare'     							| 'NeuralMonkey', 'Nematus', 'Marian', 'OpenNMT', 'Sockeye' 	| 'NeuralMonkey' |
 | -w     | input file for the 2nd alignments		 		| For output type'compare'     							| Path to file													|				 |

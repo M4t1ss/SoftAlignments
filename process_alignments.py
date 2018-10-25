@@ -43,11 +43,17 @@ def main(argv):
             config_file = arg
         elif opt == '-r':
             referencefile = arg
+        elif opt == '-d':
+            de_bpe = True
     
     try:
         config_file
     except NameError:
         config_file = False
+    try:
+        de_bpe
+    except NameError:
+        de_bpe = False
     
     if(config_file):
         # There is a config file! Get info about inputs
@@ -191,7 +197,7 @@ def main(argv):
         tgts = functions.readSnts(targetfile)
         alis = np.load(inputfile)
     if from_system == "Nematus" or from_system == "Sockeye" or from_system == "OpenNMT" or from_system == "Marian-Dev":
-        (srcs, tgts, alis) = functions.readNematus(inputfile, from_system)
+        (srcs, tgts, alis) = functions.readNematus(inputfile, from_system, de_bpe)
     if from_system == "Marian":
         (srcs, tgts, alis) = functions.readAmu(inputfile, sourcefile)
 
@@ -203,9 +209,9 @@ def main(argv):
             tgts2 = functions.readSnts(targetfile2)
             alis2 = np.load(inputfile2)
         if from_system2 == "Nematus" or from_system2 == "Sockeye":
-            (srcs2, tgts2, alis2) = functions.readNematus(inputfile2)
+            (srcs2, tgts2, alis2) = functions.readNematus(inputfile2, from_system2, de_bpe)
         if from_system2 == "OpenNMT":
-            (srcs2, tgts2, alis2) = functions.readNematus(inputfile2, 1)
+            (srcs2, tgts2, alis2) = functions.readNematus(inputfile2, from_system2, de_bpe)
         if from_system2 == "Marian":
             (srcs2, tgts2, alis2) = functions.readAmu(inputfile2, sourcefile2)
         data2 = list(zip(srcs2, tgts2, alis2))
