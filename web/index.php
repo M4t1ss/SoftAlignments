@@ -154,7 +154,7 @@ if($sentence > $count) $sentence = $count;
 <div class="row">
 	<div id="svg"></div>
 	<div id="other"></div>
-    <div id="matrix"></div>
+    <div id="matrix" style="white-space: nowrap;"></div>
 </div>
 <div class="row<?php echo ($compare?" bottomRow":""); ?>" style="margin-left:5px;" id="bottomRow">
 </div>
