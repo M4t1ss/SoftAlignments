@@ -11,7 +11,7 @@ except ImportError:
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv,"hi:o:s:t:f:n:a:b:c:d:g:r:")
+        opts, args = getopt.getopt(argv,"hi:o:s:t:f:n:a:b:c:d:g:r:v:w:x:y:")
     except getopt.GetoptError:
         functions.printHelp()
         sys.exit(2)
