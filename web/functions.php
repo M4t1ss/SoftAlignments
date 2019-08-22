@@ -92,8 +92,7 @@ function replaceStuff($string){
 	return $string;
 }
 
-function getLongestCommonSubsequence($string_1, $string_2)
-{
+function getLongestCommonSubsequence($string_1, $string_2){
 	$string_1_length = strlen($string_1);
 	$string_2_length = strlen($string_2);
 	$return          = '';
@@ -151,4 +150,27 @@ function getLongestCommonSubsequence($string_1, $string_2)
 	
 	// Return the list of matches
 	return $return;
+}
+
+
+
+function format_sentencepiece($myString){
+	$myStringParts = explode("</span> <span", $myString);
+	$partCount = count($myStringParts)-1;
+	$finalOutput = "";
+
+	for ($i = $partCount; $i >= 0; $i--){
+		$space = false;
+		
+		if(strpos($myStringParts[$i], '▁') !== false) {
+			$space = true;
+		}
+		
+		if($space){
+			$finalOutput = ($i!=0?"</span> <span":"").$myStringParts[$i].$finalOutput;
+		}else{
+			$finalOutput = ($i!=0?"</span><span":"").$myStringParts[$i].$finalOutput;
+		}
+	}
+	return str_replace('▁', '', $finalOutput);
 }
