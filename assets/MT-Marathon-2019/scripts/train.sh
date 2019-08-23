@@ -1,0 +1,51 @@
+#!/bin/bash
+. ./data.sh
+	
+
+$MARIAN_DIR/marian \
+    --devices 0 \
+	--type transformer \
+    --model $EXP_MODELS_SAVETO \
+    --train-sets $EXP_TRAIN_SRC $EXP_TRAIN_TRG \
+    --vocabs $EXP_DICT_SRC $EXP_DICT_TRG \
+    --max-length 128 \
+    --mini-batch-fit \
+	--workspace 9000 \
+	--maxi-batch 200  \
+    --early-stopping 10 \
+    --valid-freq 5000  \
+	--save-freq 10000 \
+	--disp-freq 500 \
+    --valid-metrics cross-entropy translation \
+    --valid-sets $EXP_VALID_SRC $EXP_VALID_TRG \
+    --log $EXP_MODEL_DIR/train.log \
+	--valid-log $EXP_MODEL_DIR/valid.log \
+	--seed 347155 \
+    --exponential-smoothing \
+	--normalize 1 \
+    --beam-size 12 \
+	--quiet-translation \
+    --valid-translation-output $EXP_MODEL_DIR/valid.output.txt \
+    --valid-mini-batch 16 \
+    --enc-depth 6 \
+	--dec-depth 6 \
+    --transformer-heads 8 \
+	--transformer-preprocess d \
+	--transformer-postprocess-emb d \
+	--transformer-postprocess dan \
+    --learn-rate 0.0006 \
+	--lr-warmup 16000 \
+	--lr-decay-inv-sqrt 16000 \
+	--lr-report \
+    --optimizer-params 0.9 0.98 1e-09 \
+	--clip-norm 5 \
+    --tied-embeddings-all \
+    --sync-sgd \
+	--keep-best \
+    --guided-alignment $EXP_ALIGNMENT \
+    --transformer-guided-alignment-layer 1 \
+    --guided-alignment-cost mse \
+	--guided-alignment-weight 0.1 \
+	--transformer-dropout 0.1 \
+	--transformer-dropout-attention 0.1 \
+	--transformer-dropout-ffn 0.1
