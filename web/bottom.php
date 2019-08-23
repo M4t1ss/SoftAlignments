@@ -82,6 +82,7 @@ $bottom = strpos($dataDir, "NMT2") !== false;
 		$sc=0;
 		$pos=0;
 		$posZ[] = $pos;
+		$output = "";
 		foreach(getSWvalue($f3->current()) as $targetToken){
             $targetToken = replaceStuff($targetToken);
 			
@@ -94,7 +95,8 @@ $bottom = strpos($dataDir, "NMT2") !== false;
 			$pos += strlen($strip);
 			if($strip == $targetToken) $pos += 1;
 			
-			echo str_replace(
+			
+			$output .= str_replace(
 				"@@</span> ",
 				"</span>",
 				'<span'
@@ -102,10 +104,14 @@ $bottom = strpos($dataDir, "NMT2") !== false;
 				.'><span data-toggle="tooltip" data-placement="top" title="Confidence: '
 				.round($tsw[$sc]*100,2).'%">'
 				.htmlspecialchars($targetToken)
-				.'</span> </span>'
+				.'</span> '
 				);
 			$sc++;
 		}
+		if(strpos($output, '▁') !== false) {
+			$output = format_sentencepiece($output);
+		}
+		echo $output;
 		?></span>
 		</div>
 	</div>

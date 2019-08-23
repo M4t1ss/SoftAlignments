@@ -48,11 +48,17 @@ $ssw = explode(", ",$subword_scores[0]);
     <span class="label label-default" style="width: 100px;display: inline-block;padding: 4px;">Source</span> 
     <span class="label label-danger" style="cursor:help;"><?php 
     $sc=0;
+	$output = "";
     foreach(getSWvalue($f2->current()) as $sourceToken){
 		$sourceToken = replaceStuff($sourceToken);
 			
-        echo str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="bottom" title="Confidence: '.round($ssw[$sc]*100,2).'%">'.htmlspecialchars($sourceToken).'</span> ');
+        $output .= str_replace("@@</span> ","</span>",'<span data-toggle="tooltip" data-placement="bottom" title="Confidence: '.round($ssw[$sc]*100,2).'%">'.htmlspecialchars($sourceToken).'</span> ');
+		
         $sc++;
     }
+	if(strpos($output, '▁') !== false) {
+		$output = format_sentencepiece($output);
+	}
+	echo $output;
     ?></span>
 </p>
