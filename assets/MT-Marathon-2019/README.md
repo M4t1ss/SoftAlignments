@@ -24,3 +24,7 @@ Presentation
 
   - [Here](https://github.com/M4t1ss/SoftAlignments/tree/master/assets/MT-Marathon-2019/presentation/MTM-2019-presentation.pdf)
 
+Lazy version of the lab
+---------
+
+Open the [web demo](http://attention.lielakeda.lv) and browse the data there
