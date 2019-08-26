@@ -10,6 +10,10 @@ Models and data
 	- WMT 2019 test set
 	- Several Lithuanian folk songs
 	
+Conect to PuTTY with port forwarding
+---------
+
+![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/MT-Marathon-2019/putty.png?raw=true)
 
 Scripts
 ---------

@@ -1,4 +1,9 @@
 # MT Marathon 2019 Tutorial
+	
+Conect to PuTTY with port forwarding
+---------
+
+![N|Solid](https://github.com/M4t1ss/sAliViz/blob/master/assets/MT-Marathon-2019/putty.png?raw=true)
 
 Get everything
 ---------
@@ -30,23 +35,23 @@ Run the Alignment Visualization
 
 Run each of these separately and open http://127.0.0.1:47155/ in your browser
 
-RNN alignments
+ - RNN alignments
 
-`python ./process_alignments.py -f Marian -i songs.rnn.alignments.en -s songs.piece.lt`
+ `python ./process_alignments.py -f Marian -i songs.rnn.alignments.en -s songs.piece.lt`
 
-`python ./process_alignments.py -f Marian -i newstest2019.rnn.alignments.en -s newstest2019.piece.lt`
+ `python ./process_alignments.py -f Marian -i newstest2019.rnn.alignments.en -s newstest2019.piece.lt`
 
-Transformer alignments
+ - Transformer alignments
 
-`python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt`
+ `python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt`
 
-`python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt`
+ `python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt`
 
-Compare RNN and Transformer alignments
+ - Compare RNN and Transformer alignments
 
-`python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt -o compare -v Marian -w songs.rnn.alignments.en -x songs.piece.lt`
+ `python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt -o compare -v Marian -w songs.rnn.alignments.en -x songs.piece.lt`
 
-`python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt -o compare -v Marian -w newstest2019.rnn.alignments.en -x newstest2019.piece.lt`
+ `python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt -o compare -v Marian -w newstest2019.rnn.alignments.en -x newstest2019.piece.lt`
 	
 
 Try all of this on your own data
