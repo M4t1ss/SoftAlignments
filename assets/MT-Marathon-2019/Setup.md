@@ -20,9 +20,11 @@ fast_align
 Marian
 ---------
 
-`git clone https://github.com/marian-nmt/marian-dev.git`
-`cd marian-dev`
-`mkdir build`
-`cd build`
-`cd cmake ..`
-`cd make -j`
+```
+git clone https://github.com/marian-nmt/marian-dev.git
+cd marian-dev
+mkdir build
+cd build
+cd cmake ..
+cd make -j
+```
