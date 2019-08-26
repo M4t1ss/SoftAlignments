@@ -20,8 +20,8 @@ Generate translations with attention alignments
 
 ```
 cd
-mkdir lab2
-cd lab2/assets/MT-Marathon-2019/scripts
+cd lab2/SoftAlignments/assets/MT-Marathon-2019/scripts
+chmod +x translate.sh
 ./translate.sh
 ```
 
@@ -30,24 +30,31 @@ Run the Alignment Visualization
 
 Run each of these separately and open http://127.0.0.1:47155/ in your browser
 
+RNN alignments
+
 `python ./process_alignments.py -f Marian -i songs.rnn.alignments.en -s songs.piece.lt`
+
 `python ./process_alignments.py -f Marian -i newstest2019.rnn.alignments.en -s newstest2019.piece.lt`
 
+Transformer alignments
+
 `python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt`
+
 `python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt`
 
+Compare RNN and Transformer alignments
+
 `python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt -o compare -v Marian -w songs.rnn.alignments.en -x songs.piece.lt`
+
 `python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt -o compare -v Marian -w newstest2019.rnn.alignments.en -x newstest2019.piece.lt`
 	
 
-Marian
+Try all of this on your own data
 ---------
 
-```
-git clone https://github.com/marian-nmt/marian-dev.git
-cd marian-dev
-mkdir build
-cd build
-cmake ..
-make -j
-```
+ - Prepare training data up to the point of encoding it to subword units (Subword NMT, Sentencepiece or any other)
+ - Edit the `data.sh` script accordingly
+ - Use the `fast_align.sh` script to generate alignments for the training data (this may take some time)
+ - Use the `train.sh` script to train your model (training takes a lot of time)
+ - Edit the `translate.sh` script so that it translates using the newly trained model
+ - Translate an evaluation set and browse the resulting translations using the Alignment Visualization

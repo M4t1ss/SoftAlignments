@@ -1,9 +1,9 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export DATA_DIR=
+export DATA_DIR=/home/mtm/lab2
 export MOSES_DIR=
-export MARIAN_DIR=
+export MARIAN_DIR=/home/mtm/marian-dev/build
 export FAST_ALIGN_DIR=
 
 export EXP_SRC=en
