@@ -37,22 +37,46 @@ Run each of these separately and open http://127.0.0.1:47155/ in your browser
 
  - RNN alignments
 
- `python ./process_alignments.py -f Marian -i songs.rnn.alignments.en -s songs.piece.lt`
-
- `python ./process_alignments.py -f Marian -i newstest2019.rnn.alignments.en -s newstest2019.piece.lt`
+```
+cd
+cd lab2/SoftAlignments
+python ./process_alignments.py -f Marian -i ../songs.rnn.alignments.en -s ../songs.piece.lt
+python ./process_alignments.py -f Marian -i ../newstest2019.rnn.alignments.en -s ../newstest2019.piece.lt
+```
 
  - Transformer alignments
 
- `python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt`
-
- `python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt`
+```
+python ./process_alignments.py -f Marian -i ../newstest2019.transformer.alignments.en -s ../newstest2019.piece.lt
+python ./process_alignments.py -f Marian -i ../songs.transformer.alignments.en -s ../songs.piece.lt
+```
 
  - Compare RNN and Transformer alignments
 
- `python ./process_alignments.py -f Marian -i songs.transformer.alignments.en -s songs.piece.lt -o compare -v Marian -w songs.rnn.alignments.en -x songs.piece.lt`
+```
+python ./process_alignments.py -f Marian -i ../songs.transformer.alignments.en -s ../songs.piece.lt -o compare -v Marian -w ../songs.rnn.alignments.en -x ../songs.piece.lt
+python ./process_alignments.py -f Marian -i ../newstest2019.transformer.alignments.en -s ../newstest2019.piece.lt -o compare -v Marian -w ../newstest2019.rnn.alignments.en -x ../newstest2019.piece.lt
+```
 
- `python ./process_alignments.py -f Marian -i newstest2019.transformer.alignments.en -s newstest2019.piece.lt -o compare -v Marian -w newstest2019.rnn.alignments.en -x newstest2019.piece.lt`
-	
+Translate with Sockeye
+---------
+
+ - Download the provided English -> Japanese model trained with Sockeye
+ - Download the version of Sockeye that supports outputting attention for transformer models
+  - This one https://github.com/tilde-nlp/sockeye/tree/transformer-attention
+  - Or copy the changes from this PR https://github.com/awslabs/sockeye/pull/504/files to the latest version of Sockeye
+ - Translate the provided test file using `translate.sh` and run the visualization
+
+```
+cd
+cd lab2
+wget http://lielakeda.lv/ENJA_Sockeye_model_data.zip
+unzip ENJA_Sockeye_model_data.zip
+chmod +x translate.sh
+./translate.sh
+cd SoftAlignments
+python ./process_alignments.py -f Sockeye -i ../opensubs.test.bpe.translated.ja
+```
 
 Try all of this on your own data
 ---------
