@@ -35,7 +35,7 @@ Run the Alignment Visualization
 
 Run each of these separately and open http://127.0.0.1:47155/ in your browser
 
- - RNN alignmentsS
+ - RNN alignments
 
 ```
 cd
@@ -60,6 +60,12 @@ python ./process_alignments.py -f Marian -i ../newstest2019.transformer.alignmen
 
 Translate with Sockeye
 ---------
+
+ - Download the provided English -> Japanese model trained with Sockeye
+ - Download the version of Sockeye that supports outputting attention for transformer models
+  - This one https://github.com/tilde-nlp/sockeye/tree/transformer-attention
+  - Or copy the changes from this PR https://github.com/awslabs/sockeye/pull/504/files to the latest version of Sockeye
+ - Translate the provided test file using `translate.sh` and run the visualization
 
 ```
 cd
