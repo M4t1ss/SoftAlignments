@@ -3,6 +3,8 @@ An attention alignment visualization tool for command line and web.
 
 A part of the web version was borrowed from [Nematus utils](https://github.com/rsennrich/nematus/tree/master/utils)
 
+The [Machine Translation Marathon 2019](http://www.statmt.org/mtm19/programme.html) tutorial can be found [here](https://github.com/M4t1ss/SoftAlignments/tree/master/assets/MT-Marathon-2019)
+
 [![Build Status](https://travis-ci.org/M4t1ss/SoftAlignments.svg?branch=master)](https://travis-ci.org/M4t1ss/SoftAlignments)
 
 Usage
