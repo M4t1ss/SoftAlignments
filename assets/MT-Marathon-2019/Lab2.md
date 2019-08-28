@@ -37,7 +37,7 @@ Run the Alignment Visualization
 ---------
 
 Run each of these separately and open http://127.0.0.1:47155/ in your browser.
-To sort datasets by length or the confidence scores click on `Translation` or any of the scores - `CDP`, `APin`, `APout`, `Overlap`
+To sort datasets by length or the confidence scores click on `Translation` or any of the scores - `Confidence`, `CDP`, `APin`, `APout`, `Overlap`. Doing this will show bars for the data set where where each bar represents one sentence. The bars for `Translation` represent the source sentence length. Click a bar to navigate to that sentence.
 
 ![N|Solid](https://raw.githubusercontent.com/M4t1ss/SoftAlignments/master/assets/Screenshots/webCompare.png?raw=true)
 
