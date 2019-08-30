@@ -10,7 +10,7 @@ The [Machine Translation Marathon 2019](http://www.statmt.org/mtm19/programme.ht
 Usage
 ---------
 
-  - Train a neural MT system (like [Neural Monkey](https://github.com/ufal/neuralmonkey/) or [Nematus](https://github.com/rsennrich/nematus/))
+  - Train a neural MT system (using [Marian](https://github.com/marian-nmt/marian-dev/), [Sockeye](https://github.com/awslabs/sockeye/) or [Neural Monkey](https://github.com/ufal/neuralmonkey/))
   - Translate text and get word or subword level alignments
   - Visualize the alignments
     - in the command line standard output
