@@ -55,14 +55,14 @@ How to get alignment files from NMT systems
 
 * [Marian](https://github.com/marian-nmt/marian)
 	* Run **marian-decoder** with the parameter `--alignment soft`
-	* If you use the transformer model architecture, you will need to train it with guided alignments. See the (MT Marathon 2019 Tutorial)[https://github.com/M4t1ss/SoftAlignments/tree/master/assets/MT-Marathon-2019] for details about this.
+	* If you use the transformer model architecture, you will need to train it with guided alignments. See the [MT Marathon 2019 Tutorial](https://github.com/M4t1ss/SoftAlignments/tree/master/assets/MT-Marathon-2019) for details about this.
 	
 * [OpenNMT](https://github.com/OpenNMT/OpenNMT)
 	Run translate.lua to translate with the `-save_attention` parameter to save attentions to a file
 
 * [Sockeye](https://github.com/awslabs/sockeye)
 	* Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file.
-	* If you use the transformer model architecture, you will need to implement (copy in the correct places) code from (this pull requst)[https://github.com/awslabs/sockeye/pull/504]. Otherwise, Sockeye will return attention values of 0 for all tokens.
+	* If you use the transformer model architecture, you will need to implement (copy in the correct places) code from [this pull requst](https://github.com/awslabs/sockeye/pull/504). Otherwise, Sockeye will return attention values of 0 for all tokens.
 	
 
 * **Other**
