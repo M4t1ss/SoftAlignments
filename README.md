@@ -10,7 +10,7 @@ The [Machine Translation Marathon 2019](http://www.statmt.org/mtm19/programme.ht
 Usage
 ---------
 
-  - Train a neural MT system (like [Neural Monkey](https://github.com/ufal/neuralmonkey/) or [Nematus](https://github.com/rsennrich/nematus/))
+  - Train a neural MT system (using [Marian](https://github.com/marian-nmt/marian-dev/), [Sockeye](https://github.com/awslabs/sockeye/) or [Neural Monkey](https://github.com/ufal/neuralmonkey/))
   - Translate text and get word or subword level alignments
   - Visualize the alignments
     - in the command line standard output
@@ -28,7 +28,7 @@ Requirements
 How to get alignment files from NMT systems
 ---------
 
-* [Nematus](https://github.com/EdinburghNLP/nematus)
+* [Nematus](https://github.com/EdinburghNLP/nematus) (This worked for the Theano version. Not sure about the current Tensorflow version...)
 	* Run [**nematus/translate.py**](https://github.com/EdinburghNLP/nematus#using-a-trained-model) with the `--output_alignment` or `-a` parameter
 
 * [Neural Monkey](https://github.com/ufal/neuralmonkey)
@@ -54,19 +54,16 @@ How to get alignment files from NMT systems
 	```
 
 * [Marian](https://github.com/marian-nmt/marian)
-	* In the config.yml file add
-	```YAML
-	no-debpe: true
-	return-alignment: false
-	return-soft-alignment: true
-	```
-	* Or run **amun** with the parameters `--no-debpe --return-soft-alignment`
+	* Run **marian-decoder** with the parameter `--alignment soft`
+	* If you use the transformer model architecture, you will need to train it with guided alignments. See the [MT Marathon 2019 Tutorial](https://github.com/M4t1ss/SoftAlignments/tree/master/assets/MT-Marathon-2019) for details about this.
 	
 * [OpenNMT](https://github.com/OpenNMT/OpenNMT)
 	Run translate.lua to translate with the `-save_attention` parameter to save attentions to a file
 
 * [Sockeye](https://github.com/awslabs/sockeye)
-	Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file
+	* Run sockeye.translate to translate with the `--output-type` parameter set to `translation_with_alignment_matrix` to save attentions to a file.
+	* If you use the transformer model architecture, you will need to implement (copy in the correct places) code from [this pull requst](https://github.com/awslabs/sockeye/pull/504). Otherwise, Sockeye will return attention values of 0 for all tokens.
+	
 
 * **Other**
 	The easiest format to use (and convert to) is the one used by Nematus.
