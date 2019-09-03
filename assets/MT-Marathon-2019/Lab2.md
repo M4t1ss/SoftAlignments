@@ -8,12 +8,12 @@ Conect to the remote machine using a tunnel
 If you use Linux, either clone and run the SoftAlignments repository on your local machine or connect to the cloud machhine using 
 `ssh -L 47155:remote_address:47155 mtm@remote_address`. 
 
-Get everything
+Get everything set up
 ---------
 
 Clone the NMT Alignment Visualization repository and download the models and data
 
-```
+```Shell
 cd
 mkdir lab2
 cd lab2
@@ -22,11 +22,20 @@ wget http://lielakeda.lv/LTEN_models_data.zip
 unzip LTEN_models_data.zip
 ```
 
+Some directories in the `data.sh` script (in `assets/MT-Marathon-2019/scripts/`) are pre-configured to the ones used in the Google Cloud machines for MTM 2019 labs. If you are using a different machine, change `/home/mtm/lab2` and `/home/mtm/marian-dev/build`. For the full workflow you need to specify `MOSES_DIR` and `FAST_ALIGN_DIR` as well.
+
+```Shell
+export DATA_DIR=/home/mtm/lab2
+export MOSES_DIR=
+export MARIAN_DIR=/home/mtm/marian-dev/build
+export FAST_ALIGN_DIR=
+```
+
 
 Generate translations with attention alignments
 ---------
 
-```
+```Shell
 cd
 cd lab2/SoftAlignments/assets/MT-Marathon-2019/scripts
 chmod +x translate.sh
@@ -44,7 +53,7 @@ To sort datasets by length or the confidence scores click on `Translation` or an
 
  - RNN alignments
 
-```
+```Shell
 cd
 cd lab2/SoftAlignments
 python ./process_alignments.py -f Marian -i ../songs.rnn.alignments.en -s ../songs.piece.lt
@@ -53,14 +62,14 @@ python ./process_alignments.py -f Marian -i ../newstest2019.rnn.alignments.en -s
 
  - Transformer alignments
 
-```
+```Shell
 python ./process_alignments.py -f Marian -i ../newstest2019.transformer.alignments.en -s ../newstest2019.piece.lt
 python ./process_alignments.py -f Marian -i ../songs.transformer.alignments.en -s ../songs.piece.lt
 ```
 
  - Compare RNN and Transformer alignments
 
-```
+```Shell
 python ./process_alignments.py -f Marian -i ../songs.transformer.alignments.en -s ../songs.piece.lt -o compare -v Marian -w ../songs.rnn.alignments.en -x ../songs.piece.lt
 python ./process_alignments.py -f Marian -i ../newstest2019.transformer.alignments.en -s ../newstest2019.piece.lt -o compare -v Marian -w ../newstest2019.rnn.alignments.en -x ../newstest2019.piece.lt
 ```
@@ -76,7 +85,7 @@ Translate with Sockeye
 
 Here we will use the CPU version for translation
  
-```
+```Shell
 cd
 cd lab2
 wget http://lielakeda.lv/ENJA_Sockeye_model_data.zip
