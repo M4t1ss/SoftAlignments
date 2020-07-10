@@ -1,3 +1,7 @@
 web/data/
+softalignments.egg-info/
+dist/
+build/
 
 *.pyc
+.history-matiss

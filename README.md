@@ -19,7 +19,7 @@ Usage
 Requirements
 ---------
 
-* Python 2 or 3
+* Python 3.6 or newer
 
     * NLTK for BLEU calculation(requires Python versions 3.5, 3.6, 3.7, or 3.8)
 	
