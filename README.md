@@ -16,6 +16,23 @@ Usage
     - in the command line standard output
     - in a web browser (PHP required)
 
+Installation
+---------
+
+From the repository - this way you get all files including test data and the web version for viewing.
+	```bash
+	git clone https://github.com/M4t1ss/SoftAlignments.git
+	cd SoftAlignments
+	python softalignments/process_alignments.py -i test_data/nematus/alignments.txt -o color -f Nematus -n 1
+	```
+
+From the PyPI via pip - this will install only the Python part without the PHP web version. For now only color, block and block2 output forms work with this.
+	```bash
+	pip install softalignments
+	wget https://raw.githubusercontent.com/M4t1ss/SoftAlignments/master/test_data/nematus/alignments.txt
+	softalignments -i alignments.txt -o color -f Nematus -n 1
+	```
+
 Requirements
 ---------
 
@@ -117,7 +134,7 @@ Examples
   - in the command line as shaded blocks. Example with Neural Monkey alignments (separate source and target subword unit files are required)
 	
 	```sh
-	python process_alignments.py \
+	python softalignments/process_alignments.py \
 	-i test_data/neuralmonkey/alignments.npy  \
 	-o color \
 	-s test_data/neuralmonkey/src.en.bpe \
@@ -128,7 +145,7 @@ Examples
   - the same with Nematus alignments (source and target subword units are in the same file)
 	
 	```sh
-	python process_alignments.py \
+	python softalignments/process_alignments.py \
 	-i test_data/nematus/alignments.txt \
 	-o color \
 	-f Nematus
@@ -137,7 +154,7 @@ Examples
   - in a text file as Unicode block elements
 	
 	```sh
-	python process_alignments.py \
+	python softalignments/process_alignments.py \
 	-i test_data/neuralmonkey/alignments.npy  \
 	-o block \
 	-s test_data/neuralmonkey/src.en.bpe \
@@ -147,7 +164,7 @@ Examples
 	
 	  or
 		
-		python process_alignments.py \
+		python softalignments/process_alignments.py \
 		-i test_data/neuralmonkey/alignments.npy  \
 		-o block2 \
 		-s test_data/neuralmonkey/src.en.bpe \
@@ -157,7 +174,7 @@ Examples
   - in the browser as links between words (demo [here](http://lielakeda.lv/other/NLP/alignments/?s=19))
 	
 	```sh
-	python process_alignments.py \
+	softalignments/python process_alignments.py \
 	-i test_data/marian/marian.out.lv \
 	-s test_data/marian/marian.src.en \
 	-o web \
@@ -219,7 +236,7 @@ OutputType: color
 ```
 And run:
 ```sh
-python process_alignments.py -c config.ini
+python softalignments/process_alignments.py -c config.ini
 ```
 
 Screenshots
