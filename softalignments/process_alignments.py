@@ -4,7 +4,11 @@ import io, unicodedata, re, sys, getopt, string, os, webbrowser, math, ntpath, n
 import tempfile, shutil
 from time import gmtime, strftime
 from imp import reload
-from softalignments.functions import *
+try:
+    from softalignments.functions import *
+except ImportError:
+    sys.path.insert(1, 'softalignments')
+    from functions import *
 try:
     import configparser as cp
 except ImportError:
