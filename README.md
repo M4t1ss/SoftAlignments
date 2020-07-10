@@ -20,18 +20,18 @@ Installation
 ---------
 
 From the repository - this way you get all files including test data and the web version for viewing.
-	```bash
-	git clone https://github.com/M4t1ss/SoftAlignments.git
-	cd SoftAlignments
-	python softalignments/process_alignments.py -i test_data/nematus/alignments.txt -o color -f Nematus -n 1
-	```
+```bash
+git clone https://github.com/M4t1ss/SoftAlignments.git
+cd SoftAlignments
+python softalignments/process_alignments.py -i test_data/nematus/alignments.txt -o color -f Nematus -n 1
+```
 
 From the PyPI via pip - this will install only the Python part without the PHP web version. For now only color, block and block2 output forms work with this.
-	```bash
-	pip install softalignments
-	wget https://raw.githubusercontent.com/M4t1ss/SoftAlignments/master/test_data/nematus/alignments.txt
-	softalignments -i alignments.txt -o color -f Nematus -n 1
-	```
+```bash
+pip install softalignments
+wget https://raw.githubusercontent.com/M4t1ss/SoftAlignments/master/test_data/nematus/alignments.txt
+softalignments -i alignments.txt -o color -f Nematus -n 1
+```
 
 Requirements
 ---------
