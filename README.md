@@ -21,7 +21,13 @@ Requirements
 
 * Python 2 or 3
 
-    * NLTK (for BLEU calculation)
+    * NLTK for BLEU calculation(requires Python versions 3.5, 3.6, 3.7, or 3.8)
+	
+	* Numpy
+	
+	```bash
+	pip install numpy nltk
+	```
 
 * PHP 5.4 or newer (for web visualization)
 
@@ -93,7 +99,7 @@ If you use this tool, please cite the following paper:
 
 Matīss Rikters, Mark Fishel, Ondřej Bojar (2017). "[Visualizing Neural Machine Translation Attention and Confidence.](https://ufal.mff.cuni.cz/pbml/109/art-rikters-fishel-bojar.pdf)" In The Prague Bulletin of Mathematical Linguistics volume 109 (2017).
 
-```
+```bibtex
 @inproceedings{Rikters-EtAl2017PBML,
 	author = {Rikters, Matīss and Fishel, Mark and Bojar, Ond\v{r}ej},
 	journal={The Prague Bulletin of Mathematical Linguistics},
