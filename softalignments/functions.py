@@ -316,14 +316,20 @@ def processAlignments(data, folder, inputfile, outputType, num, refs=False):
                             bleuNumber = -1
                             if(refs):
                                 try:
-                                    from nltk.translate import bleu
-                                    from nltk.translate.bleu_score import SmoothingFunction
-                                    sm = SmoothingFunction()
-                                    refNumber = i if num < 0 else num
-                                    deBpeRef = " ".join(refs[refNumber]).replace('@@ ','')
-                                    deBpeHyp = JoinedTarget.replace('@@ ','').replace('<EOS>','').strip()
-                                    bleuNumber = round(bleu([deBpeRef.split()], deBpeHyp.split(), smoothing_function=sm.method3)*100, 2)
-                                    bleuScore = u', ' + repr(bleuNumber)
+                                    #NLTK requires Python versions 3.5, 3.6, 3.7, or 3.8
+                                    version = sys.version_info
+                                    if version.major == 3 and version.minor > 4:
+                                        from nltk.translate import bleu
+                                        from nltk.translate.bleu_score import SmoothingFunction
+                                        sm = SmoothingFunction()
+                                        refNumber = i if num < 0 else num
+                                        deBpeRef = " ".join(refs[refNumber]).replace('@@ ','')
+                                        deBpeHyp = JoinedTarget.replace('@@ ','').replace('<EOS>','').strip()
+                                        bleuNumber = round(bleu([deBpeRef.split()], deBpeHyp.split(), smoothing_function=sm.method3)*100, 2)
+                                        bleuScore = u', ' + repr(bleuNumber)
+                                    else:
+                                        refs = False
+                                        bleuScore = u''
                                 except ImportError:
                                     sys.stdout.write('NLTK not found! BLEU will not be calculated\n')
                                     refs = False

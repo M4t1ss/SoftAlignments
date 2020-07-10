@@ -3,10 +3,9 @@ sudo: required
 language: python
 
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
   - "3.6"
+  - "3.7"
+  - "3.8"
   
 before_install:
  - chmod +x test_data/tests/test.sh
@@ -15,17 +14,17 @@ install:
   - pip install numpy nltk
 
 script: 
-  - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o color
-  - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block
-  - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block2
-  - python process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block -n 4 > test_data/tests/weHope-test.txt
-  - python process_alignments.py -c test_data/neuralmonkey.ini
-  - python process_alignments.py -i test_data/nematus/alignments.txt -f Nematus -o color
-  - python process_alignments.py -i test_data/nematus/newstest2017.hyp -f Nematus -o block -r test_data/nematus/newstest2017.ref -n 15
-  - python process_alignments.py -c test_data/nematus.ini
-  - python process_alignments.py -c test_data/nematus-BLEU.ini
-  - python process_alignments.py -i test_data/marian/marian.out.lv -s test_data/marian/marian.src.en -f Marian -o color
-  - python process_alignments.py -i test_data/marian/marian.out.lv -s test_data/marian/marian.src.en -f Marian -o block -n 2
-  - python process_alignments.py -i test_data/opennmt/attention.txt -f OpenNMT -o color
-  - python process_alignments.py -i test_data/opennmt/attention.txt -f OpenNMT -o block -n 2
+  - python softalignments/process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o color
+  - python softalignments/process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block
+  - python softalignments/process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block2
+  - python softalignments/process_alignments.py -i test_data/neuralmonkey/alignments.npy -s test_data/neuralmonkey/src.en.bpe -t test_data/neuralmonkey/out.lv.bpe -f NeuralMonkey -o block -n 4 > test_data/tests/weHope-test.txt
+  - python softalignments/process_alignments.py -c test_data/neuralmonkey.ini
+  - python softalignments/process_alignments.py -i test_data/nematus/alignments.txt -f Nematus -o color
+  - python softalignments/process_alignments.py -i test_data/nematus/newstest2017.hyp -f Nematus -o block -r test_data/nematus/newstest2017.ref -n 15
+  - python softalignments/process_alignments.py -c test_data/nematus.ini
+  - python softalignments/process_alignments.py -c test_data/nematus-BLEU.ini
+  - python softalignments/process_alignments.py -i test_data/marian/marian.out.lv -s test_data/marian/marian.src.en -f Marian -o color
+  - python softalignments/process_alignments.py -i test_data/marian/marian.out.lv -s test_data/marian/marian.src.en -f Marian -o block -n 2
+  - python softalignments/process_alignments.py -i test_data/opennmt/attention.txt -f OpenNMT -o color
+  - python softalignments/process_alignments.py -i test_data/opennmt/attention.txt -f OpenNMT -o block -n 2
   - test_data/tests/test.sh

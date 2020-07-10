@@ -1,23 +1,29 @@
 # coding: utf-8
 
-import io, unicodedata, re, functions, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
+import io, unicodedata, re, sys, getopt, string, os, webbrowser, math, ntpath, numpy as np
 import tempfile, shutil
 from time import gmtime, strftime
 from imp import reload
+try:
+    from softalignments.functions import *
+except ImportError:
+    sys.path.insert(1, 'softalignments')
+    from functions import *
 try:
     import configparser as cp
 except ImportError:
     import ConfigParser as cp
 
-def main(argv):
+def main():
+    argv = sys.argv[1:]
     try:
         opts, args = getopt.getopt(argv,"hi:o:s:t:f:n:a:b:c:d:g:r:v:w:x:y:")
     except getopt.GetoptError:
-        functions.printHelp()
+        printHelp()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            functions.printHelp()
+            printHelp()
             sys.exit()
         elif opt == '-i':
             inputfile = arg
@@ -67,7 +73,7 @@ def main(argv):
             inputfile = config.get('AlignmentsOne', 'InputFile')
         except NameError:
             print ('Provide an input file!\n')
-            functions.printHelp()
+            printHelp()
             sys.exit()
         try:
             from_system = config.get('AlignmentsOne', 'From')
@@ -88,14 +94,14 @@ def main(argv):
                 sourcefile = config.get('AlignmentsOne', 'SourceFile')
             except cp.NoOptionError:
                 print ('Provide a source sentence file!\n')
-                functions.printHelp()
+                printHelp()
                 sys.exit()
             if from_system == 'NeuralMonkey':
                 try:
                     targetfile = config.get('AlignmentsOne', 'TargetFile')
                 except cp.NoOptionError:
                     print ('Provide a target sentence file!\n')
-                    functions.printHelp()
+                    printHelp()
                     sys.exit()
         if outputType == 'compare':
             try:
@@ -106,21 +112,21 @@ def main(argv):
                 inputfile2 = config.get('AlignmentsTwo', 'InputFile')
             except cp.NoOptionError:
                 print ('Provide a input file for the second system!\n')
-                functions.printHelp()
+                printHelp()
                 sys.exit()
             if from_system2 == 'NeuralMonkey' or from_system2 == 'Marian':
                 try:
                     sourcefile2 = config.get('AlignmentsTwo', 'SourceFile')
                 except cp.NoOptionError:
                     print ('Provide a source sentence file for the second system!\n')
-                    functions.printHelp()
+                    printHelp()
                     sys.exit()
                 if from_system2 == 'NeuralMonkey':
                     try:
                         targetfile2 = config.get('AlignmentsTwo', 'TargetFile')
                     except cp.NoOptionError:
                         print ('Provide a target sentence file for the second system!\n')
-                        functions.printHelp()
+                        printHelp()
                         sys.exit()
         
     else:
@@ -133,7 +139,7 @@ def main(argv):
             inputfile
         except NameError:
             print ('Provide an input file!\n')
-            functions.printHelp()
+            printHelp()
             sys.exit()
         try:
             from_system
@@ -153,14 +159,14 @@ def main(argv):
                 sourcefile
             except NameError:
                 print ('Provide a source sentence file!\n')
-                functions.printHelp()
+                printHelp()
                 sys.exit()
             if from_system == 'NeuralMonkey':
                 try:
                     targetfile
                 except NameError:
                     print ('Provide a target sentence file!\n')
-                    functions.printHelp()
+                    printHelp()
                     sys.exit()
         if outputType == 'compare':
             try:
@@ -171,21 +177,21 @@ def main(argv):
                 inputfile2
             except NameError:
                 print ('Provide a input file for the second system!\n')
-                functions.printHelp()
+                printHelp()
                 sys.exit()
             if from_system2 == 'NeuralMonkey' or from_system2 == 'Marian':
                 try:
                     sourcefile2
                 except NameError:
                     print ('Provide a source sentence file for the second system!\n')
-                    functions.printHelp()
+                    printHelp()
                     sys.exit()
                 if from_system2 == 'NeuralMonkey':
                     try:
                         targetfile2
                     except NameError:
                         print ('Provide a target sentence file for the second system!\n')
-                        functions.printHelp()
+                        printHelp()
                         sys.exit()
     
     if outputType != 'color' and outputType != 'block' and outputType != 'block2' and outputType != 'compare':
@@ -193,32 +199,32 @@ def main(argv):
         outputType = 'web'
 
     if from_system == "NeuralMonkey":
-        srcs = functions.readSnts(sourcefile)
-        tgts = functions.readSnts(targetfile)
+        srcs = readSnts(sourcefile)
+        tgts = readSnts(targetfile)
         alis = np.load(inputfile)
     if from_system == "Nematus" or from_system == "Sockeye" or from_system == "OpenNMT" or from_system == "Marian-Dev":
-        (srcs, tgts, alis) = functions.readNematus(inputfile, from_system, de_bpe)
+        (srcs, tgts, alis) = readNematus(inputfile, from_system, de_bpe)
     if from_system == "Marian":
-        (srcs, tgts, alis) = functions.readAmu(inputfile, sourcefile)
+        (srcs, tgts, alis) = readAmu(inputfile, sourcefile)
 
     data = list(zip(srcs, tgts, alis))
     
     if outputType == 'compare':
         if from_system2 == "NeuralMonkey":
-            srcs2 = functions.readSnts(sourcefile2)
-            tgts2 = functions.readSnts(targetfile2)
+            srcs2 = readSnts(sourcefile2)
+            tgts2 = readSnts(targetfile2)
             alis2 = np.load(inputfile2)
         if from_system2 == "Nematus" or from_system2 == "Sockeye":
-            (srcs2, tgts2, alis2) = functions.readNematus(inputfile2, from_system2, de_bpe)
+            (srcs2, tgts2, alis2) = readNematus(inputfile2, from_system2, de_bpe)
         if from_system2 == "OpenNMT":
-            (srcs2, tgts2, alis2) = functions.readNematus(inputfile2, from_system2, de_bpe)
+            (srcs2, tgts2, alis2) = readNematus(inputfile2, from_system2, de_bpe)
         if from_system2 == "Marian":
-            (srcs2, tgts2, alis2) = functions.readAmu(inputfile2, sourcefile2)
+            (srcs2, tgts2, alis2) = readAmu(inputfile2, sourcefile2)
         data2 = list(zip(srcs2, tgts2, alis2))
         
-        if functions.compare(srcs, srcs2) == False:
+        if compare(srcs, srcs2) == False:
             print ('Source sentences from both systems need to be identical!\n')
-            functions.printHelp()
+            printHelp()
             sys.exit()
 
     foldername = ntpath.basename(inputfile).replace(".","") + "_" + strftime("%d%m_%H%M", gmtime())
@@ -236,7 +242,7 @@ def main(argv):
         
     if(referencefile):
         shutil.copyfile(referencefile, folder + "/" + ntpath.basename(inputfile) + '.ref.txt')
-        refs = functions.readSnts(referencefile)
+        refs = readSnts(referencefile)
     else:
         refs = False
     
@@ -249,11 +255,11 @@ def main(argv):
             os.stat(folder + '/NMT2')
         except:
             os.mkdir(folder + '/NMT2')
-        functions.synchData(data,data2)
-        functions.processAlignments(data, folder + '/NMT1', inputfile, outputType, num, refs)
-        functions.processAlignments(data2, folder + '/NMT2', inputfile2, outputType, num, refs)
+        synchData(data,data2)
+        processAlignments(data, folder + '/NMT1', inputfile, outputType, num, refs)
+        processAlignments(data2, folder + '/NMT2', inputfile2, outputType, num, refs)
     else:
-        functions.processAlignments(data, folder, inputfile, outputType, num, refs)
+        processAlignments(data, folder, inputfile, outputType, num, refs)
             
     # Get rid of some junk
     if outputType == 'web' or outputType == 'compare':
@@ -271,4 +277,4 @@ if __name__ == "__main__":
     if sys.version[0] == '2':
         reload(sys)
         sys.setdefaultencoding('utf-8')
-    main(sys.argv[1:])
+    main()
